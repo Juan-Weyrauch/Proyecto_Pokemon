@@ -1,0 +1,37 @@
+SF:/Users/fmachado/Repos/PII_ProjectTemplate/src/Library/Train.cs
+FN:19,System.Boolean ClassLibrary.Train::get_IsEngineStarted()
+FNDA:8,System.Boolean ClassLibrary.Train::get_IsEngineStarted()
+DA:20,8
+FN:28,System.Boolean ClassLibrary.Train::StartEngines()
+FNDA:2,System.Boolean ClassLibrary.Train::StartEngines()
+DA:29,2
+DA:30,2
+DA:31,0
+DA:32,0
+DA:33,0
+DA:36,2
+DA:37,2
+DA:38,2
+DA:39,2
+BRDA:30,9,0,0
+BRDA:30,9,1,2
+FN:47,System.Boolean ClassLibrary.Train::StopEngines()
+FNDA:1,System.Boolean ClassLibrary.Train::StopEngines()
+DA:48,1
+DA:49,1
+DA:50,1
+DA:51,1
+DA:52,1
+DA:53,1
+DA:56,0
+DA:57,0
+DA:58,1
+BRDA:49,9,0,1
+BRDA:49,9,1,0
+LF:19
+LH:14
+BRF:4
+BRH:2
+FNF:3
+FNH:3
+end_of_record

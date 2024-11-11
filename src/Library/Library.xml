@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Library</name>
+    </assembly>
+    <members>
+        <member name="T:ClassLibrary.Train">
+            <summary>
+            Esta clase representa un tren muy básico.
+            </summary>
+        </member>
+        <member name="P:ClassLibrary.Train.IsEngineStarted">
+            <summary>
+            Obtiene un valor que indica si las maquinas del tren han sido encendidas o no.
+            </summary>
+            <value><c>true</c> si las máquinas fueron encendidas, <c>false</c> en caso contrario.</value>
+        </member>
+        <member name="M:ClassLibrary.Train.StartEngines">
+            <summary>
+            Enciende las máquinas del tren.
+            </summary>
+            <returns>
+            <c>true</c> si las máquinas pueden ser encendidas, <c>false</c> en caso contrario.
+            </returns>
+        </member>
+        <member name="M:ClassLibrary.Train.StopEngines">
+            <summary>
+            Detiene las máquinas del tren.
+            </summary>
+            <returns>
+            <c>true</c> si las máquinas pueden ser detenidas, <c>false</c> en caso contrario.
+            </returns>
+        </member>
+    </members>
+</doc>
