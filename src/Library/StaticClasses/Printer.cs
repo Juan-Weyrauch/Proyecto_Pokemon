@@ -54,7 +54,6 @@ public static class Printer
     /// </summary>
     public static void NameSelection()
     {
-        Console.Clear();
         Console.WriteLine("╔═══════════════════════════════╗");
         Console.WriteLine("║        Enter your name        ║");
         Console.Write("╚═══════════════════════════════╝\n> ");
@@ -68,8 +67,8 @@ public static class Printer
     {
         Console.Clear();
         Console.WriteLine( "╔═══════════════════════════════════╗");
-        Console.WriteLine($"║        Your turn Player {name}        ║");
-        Console.Write(     "╚═══════════════════════════════════╝\n> ");
+        Console.WriteLine($"║        Your turn Player {name}         ║");
+        Console.Write(     "╚═══════════════════════════════════╝ \n");
     }
 
     /// <summary>
@@ -83,7 +82,7 @@ public static class Printer
         foreach (var entry in pokedex)
         {
             // Get the formatted box lines for each Pokémon and add to list
-            boxes.Add(FormatPokemonBox(entry.Key, entry.Value.Name));
+            boxes.Add(FormatPokemonBox(entry.Key, entry.Value.Name, entry.Value.Health));
             count++;
 
             // After every 5 Pokémon, print a new row
@@ -107,14 +106,15 @@ public static class Printer
     /// <param name="index">The index of the Pokémon.</param>
     /// <param name="name">The name of the Pokémon.</param>
     /// <returns>An array of strings, each representing a line in the box format.</returns>
-    private static string[] FormatPokemonBox(int index, string name)
+    private static string[] FormatPokemonBox(int index, string name, int life)
     {
         string boxTop = "╔════════════════════════════╗";
         string boxBottom = "╚════════════════════════════╝";
         string indexLine = $"║  Number: {index,-18}║"; // Aligns the index within the box
         string nameLine = $"║  Name: {name,-20}║"; // Aligns the name within the box
+        string lifeLine = $"║  Life: {life,-20}║"; // Aligns the name within the box
 
-        return new string[] { boxTop, indexLine, nameLine, boxBottom };
+        return new string[] { boxTop, indexLine, nameLine, lifeLine ,boxBottom };
     }
 
     /// <summary>
@@ -164,7 +164,7 @@ public static class Printer
         foreach (IPokemon pokemon in inventory)
         {
             // Create and add the formatted box for each Pokémon to the list
-            boxes.Add(FormatPokemonBox(count + 1, pokemon.Name));
+            boxes.Add(FormatPokemonBox(count + 1, pokemon.Name, pokemon.Health));
             count++;
 
             // Print a row after every 3 Pokémon or when reaching the end of the list
@@ -189,5 +189,16 @@ public static class Printer
         Console.WriteLine(top);
         Console.WriteLine(title);
         Console.WriteLine(bottom);
+    }
+
+    public static void ShowSelectedPokemon(IPokemon pokemon, string name)
+    {
+        Console.WriteLine("╔═══════════════════════════════════╗");
+        Console.WriteLine($"║  This is your pokemon {name}!\t║");
+        Console.WriteLine("╚══════════════════════════════════╝");
+        Console.WriteLine("╔═══════════════════════════════════╗");
+        Console.WriteLine($"║    Name: {pokemon.Name}\t\t║");
+        Console.WriteLine($"║    Life: {pokemon.Health}/100\t\t    ║");
+        Console.WriteLine("╚══════════════════════════════════╝");
     }
 }

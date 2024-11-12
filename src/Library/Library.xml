@@ -34,44 +34,62 @@
         </member>
         <member name="T:Library.Classes.Player">
             <summary>
-            This class creates the objects that represent the players.
-            Player object shall have:
+            Class Player, holds the players info
+            This information is:
                 - Name
-                - Catalogue of Pokémon
-                - Catalogue of Items
+                - A list of pokemons (team)
+                - A list of items (potions)
             </summary>
+        </member>
+        <member name="P:Library.Classes.Player.Player1">
+            <summary>
+            Property to access Player1 singleton instance
+            </summary>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="P:Library.Classes.Player.Player2">
+            <summary>
+            Property to access Player2 singleton instance
+            </summary>
+            <exception cref="T:System.InvalidOperationException"></exception>
         </member>
         <member name="P:Library.Classes.Player.Name">
             <summary>
-            Name of the player
+            The Name of the player
             </summary>
         </member>
         <member name="P:Library.Classes.Player.Pokemons">
             <summary>
-            A list containing all the pokemons that the player selected (must be this way beacause of the Revive potion)
+            A list containing all the players Pokémon
             </summary>
         </member>
         <member name="P:Library.Classes.Player.Potions">
             <summary>
-            A list containing all the potions that the player has within its creation.
-            These are:
-                - 4 Super potions
-                - 1 Revive potion
-                - 2 Total Cure potions
+            A list containing all potions of the player
             </summary>
         </member>
         <member name="P:Library.Classes.Player.SelectedPokemon">
             <summary>
-            Saves the Pokémon that the user selected
+            The Pokémon that the player has selected
             </summary>
         </member>
-        <member name="M:Library.Classes.Player.#ctor(System.String,System.Collections.Generic.List{Library.IPokemon},Library.IPokemon)">
+        <member name="M:Library.Classes.Player.InitializePlayer1(System.String,System.Collections.Generic.List{Library.IPokemon},Library.IPokemon)">
             <summary>
-            Constructor for Player object
+            Static method to initialize Player1
             </summary>
             <param name="name"></param>
             <param name="pokemons"></param>
             <param name="selectedPokemon"></param>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:Library.Classes.Player.InitializePlayer2(System.String,System.Collections.Generic.List{Library.IPokemon},Library.IPokemon)">
+            <summary>
+            Static method to initialize Player2
+            </summary>
+            <param name="name"></param>
+            <param name="pokemons"></param>
+            <param name="selectedPokemon"></param>
+            <exception cref="T:System.InvalidOperationException"></exception>
         </member>
         <member name="P:Library.Pokemon.Name">
             <summary>
@@ -243,7 +261,6 @@
             <summary>
             This class is suposed to create all elements needed in the game.
             These being:
-                - The players
                 - The Pokedex / Pokemon Catalogue
             </summary>
         </member>
@@ -256,15 +273,6 @@
             <summary>
             This method creates ALL the Pokémon
             </summary>
-        </member>
-        <member name="M:Library.StaticClasses.Create.CreatePlayer(System.String,System.Collections.Generic.List{Library.IPokemon},Library.IPokemon)">
-            <summary>
-            this method receives all the parameters needed to create a player.
-            </summary>
-            <param name="name"></param>
-            <param name="pokemons"></param>
-            <param name="selectedPokemon"></param>
-            <returns></returns>
         </member>
         <member name="T:Library.StaticClasses.Facade">
             <summary>
@@ -317,7 +325,7 @@
             This method has to show the player all the Pokémon available for selection in a fashion manner.
             </summary>
         </member>
-        <member name="M:Library.StaticClasses.Printer.FormatPokemonBox(System.Int32,System.String)">
+        <member name="M:Library.StaticClasses.Printer.FormatPokemonBox(System.Int32,System.String,System.Int32)">
             <summary>
             Formats a Pokémon entry as an array of strings representing each line of the box.
             </summary>

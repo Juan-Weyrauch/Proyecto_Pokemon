@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 namespace Library.Classes;
 
+/// <summary>
+/// Class Player, holds the players info
+/// This information is:
+///     - Name
+///     - A list of pokemons (team)
+///     - A list of items (potions)
+/// </summary>
 public class Player : IPlayer
 {
     // Static fields for singleton instances
