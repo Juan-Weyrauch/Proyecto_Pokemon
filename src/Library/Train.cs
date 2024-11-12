@@ -4,7 +4,7 @@
 // </copyright>
 //--------------------------------------------------------------------------------
 
-namespace ClassLibrary;
+namespace Library;
 
 /// <summary>
 /// Esta clase representa un tren muy básico.

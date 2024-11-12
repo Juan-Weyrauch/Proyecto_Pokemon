@@ -4,10 +4,10 @@
 // </copyright>
 //--------------------------------------------------------------------------------
 
-using System;
-using ClassLibrary;
+using Library;
+using Library.StaticClasses;
 
-namespace ConsoleApplication
+namespace Program
 {
     /// <summary>
     /// Programa de consola de demostración.
@@ -19,6 +19,7 @@ namespace ConsoleApplication
         /// </summary>
         public static void Main()
         {
+            Facade.Start();
             var train = new Train();
             train.StartEngines();
             Console.WriteLine("Hello World!");

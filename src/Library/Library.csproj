@@ -11,4 +11,7 @@
     <AnalysisMode>All</AnalysisMode>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Abstract Classes\" />
+  </ItemGroup>
 </Project>

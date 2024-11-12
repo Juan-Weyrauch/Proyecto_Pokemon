@@ -4,18 +4,363 @@
         <name>Library</name>
     </assembly>
     <members>
-        <member name="T:ClassLibrary.Train">
+        <member name="T:Library.Classes.Attack">
+            <summary>
+            This are the attacks.
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Attack.Name">
+            <summary>
+            Name of the attack.
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Attack.Damage">
+            <summary>
+            Damage of the attack.
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Attack.Special">
+            <summary>
+            Check if the attack is a special one or not.
+            </summary>
+        </member>
+        <member name="M:Library.Classes.Attack.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>
+            Class constructor.
+            </summary>
+            <param name="name"></param>
+            <param name="damage"></param>
+            <param name="special"></param>
+        </member>
+        <member name="T:Library.Classes.Player">
+            <summary>
+            This class creates the objects that represent the players.
+            Player object shall have:
+                - Name
+                - Catalogue of Pokémon
+                - Catalogue of Items
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Player.Name">
+            <summary>
+            Name of the player
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Player.Pokemons">
+            <summary>
+            A list containing all the pokemons that the player selected (must be this way beacause of the Revive potion)
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Player.Potions">
+            <summary>
+            A list containing all the potions that the player has within its creation.
+            These are:
+                - 4 Super potions
+                - 1 Revive potion
+                - 2 Total Cure potions
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Player.SelectedPokemon">
+            <summary>
+            Saves the Pokémon that the user selected
+            </summary>
+        </member>
+        <member name="M:Library.Classes.Player.#ctor(System.String,System.Collections.Generic.List{Library.IPokemon},Library.IPokemon)">
+            <summary>
+            Constructor for Player object
+            </summary>
+            <param name="name"></param>
+            <param name="pokemons"></param>
+            <param name="selectedPokemon"></param>
+        </member>
+        <member name="P:Library.Pokemon.Name">
+            <summary>
+            Name for pokemons
+            </summary>
+        </member>
+        <member name="P:Library.Pokemon.Health">
+            <summary>
+            Health of the pokemon
+            </summary>
+        </member>
+        <member name="P:Library.Pokemon.Defense">
+            <summary>
+            The pokemon must have a defense status
+            </summary>
+        </member>
+        <member name="P:Library.Pokemon.Type">
+            <summary>
+            Sets the type of the pokemon
+            </summary>
+        </member>
+        <member name="P:Library.Pokemon.AtackList">
+            <summary>
+            A list of all the attacks that the pokemon has 
+            </summary>
+        </member>
+        <member name="M:Library.Pokemon.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.List{Library.Interfaces.IAttack})">
+            <summary>
+            Constructor for the class Pokemon
+            </summary>
+            <param name="name"></param>
+            <param name="health"></param>
+            <param name="defense"></param>
+            <param name="type"></param>
+            <param name="atacks"></param>
+        </member>
+        <member name="P:Library.Interfaces.IAttack.Name">
+            <summary>
+            Name of the attack
+            </summary>
+        </member>
+        <member name="P:Library.Interfaces.IAttack.Damage">
+            <summary>
+            Damage of the attack
+            </summary>
+        </member>
+        <member name="P:Library.Interfaces.IAttack.Special">
+            <summary>
+            Check if the attack is a special one or not
+            </summary>
+        </member>
+        <member name="T:Library.Interfaces.IPotions">
+            <summary>
+            This interface sets the rules for the creation of potion elements.
+            The different kind of potions are:
+                - Revive potion:     (brings back a dead Pokémon with 50% of it's health)
+                - Super potion:      (Gives back 70% of the life to a Pokémon)
+                - Total Cure potion: (Eliminates any effect the Pokémon might have)
+            </summary>
+        </member>
+        <member name="P:Library.Interfaces.IPotions.Name">
+            <summary>
+            Sets the name of the potion
+            </summary>
+        </member>
+        <member name="P:Library.Interfaces.IPotions.RegenValue">
+            <summary>
+            Sets the regeneration value of the potion
+            </summary>
+        </member>
+        <member name="T:Library.IPokemon">
+            <summary>
+            Interface for Pokemons 
+            </summary>
+        </member>
+        <member name="P:Library.IPokemon.Name">
+            <summary>
+            Name for pokemons
+            </summary>
+        </member>
+        <member name="P:Library.IPokemon.Health">
+            <summary>
+            Health of the pokemon
+            </summary>
+        </member>
+        <member name="P:Library.IPokemon.Defense">
+            <summary>
+            The pokemon must have a defense status
+            </summary>
+        </member>
+        <member name="P:Library.IPokemon.Type">
+            <summary>
+            Sets the type of the pokemon
+            </summary>
+        </member>
+        <member name="P:Library.IPokemon.State">
+            <summary>
+            Sets the state of the pokemon
+            </summary>
+        </member>
+        <member name="P:Library.IPokemon.AtackList">
+            <summary>
+            A list of all the attacks that the pokemon has 
+            </summary>
+        </member>
+        <member name="T:Library.StaticClasses.AttackGenerator">
+            <summary>
+            This static class is responsible for creating a list of attacks depending on the Pokémon type.
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.AttackGenerator.GenerateRandomAttack(System.String)">
+            <summary>
+            Generates a random list of attacks for the specified Pokémon type.
+            </summary>
+            <param name="type">The type of Pokémon.</param>
+            <returns>A list of attacks specific to the type.</returns>
+        </member>
+        <member name="M:Library.StaticClasses.AttackGenerator.GenerateAttackList(System.String,System.String,System.String)">
+            <summary>
+            Helper method to create an attack list based on the type and a random number.
+            </summary>
+        </member>
+        <member name="T:Library.StaticClasses.Calculator">
+            <summary>
+            This class has the responsabilities of making calculations, these being:
+                - Index in range
+                - Approving of inputs
+                - Damage calculations
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Calculator.ValidateSelectionInGivenRange(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Function to validate that a number is in between two given values
+            </summary>
+            <param name="number"></param>
+            <param name="min"></param>
+            <param name="max"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Library.StaticClasses.Catalogue">
+            <summary>
+            This class receives a created Pokémon and adds it to its catalog.
+            </summary>
+        </member>
+        <member name="F:Library.StaticClasses.Catalogue._pokedex">
+            <summary>
+            Contains all the Pokémon.
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Catalogue.CreateCatalogue">
+            <summary>
+            Creates the catalog, initializing all Pokémon.
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Catalogue.GetPokedex">
+            <summary>
+            Returns the complete catalogue
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Library.StaticClasses.Catalogue.GetPokemon(System.Int32)">
+            <summary>
+            Returns the pokemon that the user picked so that it can be added to its inventory.
+            </summary>
+            <param name="pokemonId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Library.StaticClasses.Create">
+            <summary>
+            This class is suposed to create all elements needed in the game.
+            These being:
+                - The players
+                - The Pokedex / Pokemon Catalogue
+            </summary>
+        </member>
+        <member name="F:Library.StaticClasses.Create.Pokedex">
+            <summary>
+            This Dictionary holds all of the pokemons
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Create.CreateCatalogue">
+            <summary>
+            This method creates ALL the Pokémon
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Create.CreatePlayer(System.String,System.Collections.Generic.List{Library.IPokemon},Library.IPokemon)">
+            <summary>
+            this method receives all the parameters needed to create a player.
+            </summary>
+            <param name="name"></param>
+            <param name="pokemons"></param>
+            <param name="selectedPokemon"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Library.StaticClasses.Facade">
+            <summary>
+            Responsable for:
+                1) Getting the users Info (Name, Pokémon Election)
+                2) Calls for the creation of the players with their elections
+                3) Calls the Battle class 
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Facade.Start">
+            <summary>
+            Starts the program and asks the player for the initial input
+            </summary>
+        </member>
+        <member name="T:Library.StaticClasses.Printer">
+            <summary>
+            This class is responsible for showing the user what's happening on console
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.StartPrint">
+            <summary>
+            Shows the message that starts the game
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.EndPrint">
+            <summary>
+            Prints the end of the game when you select to leave at the beginning 
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.IndexOutOfRange(System.Int32,System.Int32)">
+            <summary>
+            Sends a sign if the index is out of range.
+            </summary>
+            <param name="min"></param>
+            <param name="max"></param>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.NameSelection">
+            <summary>
+            This method has to show an "enter your name" badge/
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.YourTurn(System.String)">
+            <summary>
+            Shows a box specifying who has to play
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.ShowCatalogue(System.Collections.Generic.Dictionary{System.Int32,Library.IPokemon})">
+            <summary>
+            This method has to show the player all the Pokémon available for selection in a fashion manner.
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.FormatPokemonBox(System.Int32,System.String)">
+            <summary>
+            Formats a Pokémon entry as an array of strings representing each line of the box.
+            </summary>
+            <param name="index">The index of the Pokémon.</param>
+            <param name="name">The name of the Pokémon.</param>
+            <returns>An array of strings, each representing a line in the box format.</returns>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.PrintRow(System.Collections.Generic.List{System.String[]})">
+            <summary>
+            Prints a row of Pokémon boxes side-by-side without adding extra spaces between boxes.
+            </summary>
+            <param name="boxes">List of box lines for the row.</param>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.AskForPokemon(System.Int32,System.String)">
+            <summary>
+            Prints a box so that the user can visualize what he's doing.
+            </summary>
+            <param name="index"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.ShowInventory(System.Collections.Generic.List{Library.IPokemon})">
+            <summary>
+            Shows the user inventory in a boxed format.
+            </summary>
+            <param name="inventory">List of IPokemon items, between 1 and 6 items.</param>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.PrintInventoryHeader">
+            <summary>
+            Prints the header box for the inventory.
+            </summary>
+        </member>
+        <member name="T:Library.Train">
             <summary>
             Esta clase representa un tren muy básico.
             </summary>
         </member>
-        <member name="P:ClassLibrary.Train.IsEngineStarted">
+        <member name="P:Library.Train.IsEngineStarted">
             <summary>
             Obtiene un valor que indica si las maquinas del tren han sido encendidas o no.
             </summary>
             <value><c>true</c> si las máquinas fueron encendidas, <c>false</c> en caso contrario.</value>
         </member>
-        <member name="M:ClassLibrary.Train.StartEngines">
+        <member name="M:Library.Train.StartEngines">
             <summary>
             Enciende las máquinas del tren.
             </summary>
@@ -23,7 +368,7 @@
             <c>true</c> si las máquinas pueden ser encendidas, <c>false</c> en caso contrario.
             </returns>
         </member>
-        <member name="M:ClassLibrary.Train.StopEngines">
+        <member name="M:Library.Train.StopEngines">
             <summary>
             Detiene las máquinas del tren.
             </summary>
