@@ -20,4 +20,11 @@ public interface IAttack
     /// Check if the attack is a special one or not
     /// </summary>
     int Special { get; set; }
+    
+    
+    /// <summary>
+    /// Sets the type of the attack.
+    /// We use this to check for effectiveness against other Pokémon types.
+    /// </summary>
+    string Type { get; set; }
 }

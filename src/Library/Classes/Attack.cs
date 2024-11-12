@@ -1,4 +1,5 @@
 using Library.Interfaces;
+using Library.StaticClasses;
 
 namespace Library.Classes;
 
@@ -21,6 +22,12 @@ public class Attack : IAttack
     /// Check if the attack is a special one or not.
     /// </summary>
     public int Special { get; set; }
+    
+    /// <summary>
+    /// Sets the type of the attack.
+    /// We use this to check for effectiveness against other Pokémon types.
+    /// </summary>
+    public string Type { get; set; }
 
     /// <summary>
     /// Class constructor.
@@ -28,10 +35,18 @@ public class Attack : IAttack
     /// <param name="name"></param>
     /// <param name="damage"></param>
     /// <param name="special"></param>
-    public Attack(string name, int damage, int special)
+    /// <param name="type"></param>
+    public Attack(string name, int damage, int special, string type)
     {
         Name = name;
         Damage = damage;
         Special = special;
+        Type = type;
+    }
+
+    public static int IsEffective(IAttack attack, IPokemon enemy)
+    {
+        Calculator.CheckEffectiveness(attack, enemy);
+        return 0; // if attack is not 
     }
 }

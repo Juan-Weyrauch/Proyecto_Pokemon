@@ -1,3 +1,6 @@
+using Library.Classes;
+using Library.Interfaces;
+
 namespace Library.StaticClasses;
 
 /// <summary>
@@ -200,5 +203,34 @@ public static class Printer
         Console.WriteLine($"║    Name: {pokemon.Name}\t\t║");
         Console.WriteLine($"║    Life: {pokemon.Health}/100\t\t    ║");
         Console.WriteLine("╚══════════════════════════════════╝");
+    }
+
+    /// <summary>
+    /// Show the attacks of each pokemon, displaying if they are special, the damage they deal, and their effectiveness.
+    /// </summary>
+    /// <param name="pokemon">The Pokémon whose attacks will be displayed.</param>
+    public static void ShowAttacks(IPokemon pokemon)
+    {
+        // Display header box for the Pokémon's attacks
+        Console.WriteLine("╔═══════════════════════════════════════╗");
+        Console.WriteLine($"║         Attacks of {pokemon.Name}          ║");
+        Console.WriteLine("╚═══════════════════════════════════════╝");
+
+        // Iterate through each attack in the Pokémon's attack list
+        foreach (IAttack attack in pokemon.AtackList)
+        {
+            int specialType = attack.Special;
+            double special = Calculator.CheckEffectiveness(specialType);
+            
+            // Display each attack's details in a box format
+            Console.WriteLine("╔═════════════════════════════════╗");
+            Console.WriteLine($"║  Name: {attack.Name,-25}║");
+            Console.WriteLine($"║  Damage: {attack.Damage,-23}║");
+            Console.WriteLine($"║  Type: {specialStatus,-24}║");
+            Console.WriteLine($"║  Effectiveness: {effectiveness,-17}║");
+            Console.WriteLine("╚═════════════════════════════════╝");
+        }
+
+        Console.WriteLine(); // Extra line for spacing
     }
 }
