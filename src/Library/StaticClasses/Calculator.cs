@@ -65,21 +65,47 @@ public static class Calculator
     }
     
     /// <summary>
-    /// Function to validate that a number is in between two given values
+    /// Function to validate that a number is in between two given values and checks if the input is an integer.
+    /// This function also reads the number inputted, this is so that the 'asking'
+    /// and the 'validation' can happen in the same line.
     /// </summary>
-    /// <param name="number"></param>
     /// <param name="min"></param>
     /// <param name="max"></param>
     /// <returns></returns>
-    public static int ValidateSelectionInGivenRange(int number, int min, int max)
+    public static int ValidateSelectionInGivenRange(int min, int max)
     {
-        while (!(Enumerable.Range(min,max).Contains(number)))
+        int number = 0;
+        bool isValid = false;
+
+        // Loop until we get a valid integer within the range
+        while (!isValid)
         {
-            Printer.IndexOutOfRange(min, max);
-            number = Convert.ToInt16(Console.ReadLine(), CultureInfo.InvariantCulture);
+            //Printer.IndexOutOfRange(min, max);
+            string input = Console.ReadLine();
+
+            // Check if input is a valid integer
+            if (int.TryParse(input, out number))
+            {
+                // Check if the integer is within the specified range
+                if (number >= min && number <= max)
+                {
+                    isValid = true; // Input is valid, exit the loop
+                }
+                else
+                {
+                    Printer.IndexOutOfRange(min, max); // Print range error message
+                }
+            }
+            else
+            {
+                Console.WriteLine("Please enter a numeric value!");
+            }
         }
+
         return number;
     }
+
+
 
     public static int FirstTurnSelection()
     {
@@ -87,5 +113,31 @@ public static class Calculator
         Random random = new Random();
         return random.Next(1, 2);
         //Returns a random number to set a starter player.
+    }
+
+    /// <summary>
+    /// This class is responsible for:
+    ///     1) Accessing the players Pokémon,
+    ///     2) Determining the effectiveness of the attack used,
+    ///     3) Calling the 'InfringeDamage' method to effectuate the damage.
+    /// </summary>
+    /// <param name="attack"></param>
+    /// <param name="rival"></param>
+    public static int Attack(IAttack attack, IPokemon rival)
+    {
+        //We've got the attack and the rival Pokémon, now we check for effectiveness (yes, again, the first one was for display of the Attacks)
+        double efectiveness = CheckEffectiveness(attack, rival);
+        if (efectiveness == 0.0)
+        {
+            Printer.Efectiveness(0);
+        }
+        else if (efectiveness == 0.5)
+        {
+            Printer.Efectiveness(1);
+        }
+        else if (efectiveness == 2.0)
+        {
+            Printer.Efectiveness(2);
+        }
     }
 }

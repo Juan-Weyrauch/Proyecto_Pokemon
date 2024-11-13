@@ -252,4 +252,13 @@ public static class Printer
         Console.WriteLine($"║  3. Switch Pokémon              ║");
         Console.WriteLine("╚═════════════════════════════════╝");
     }
+
+    public static void Efectiveness(int value)
+    {
+        // possible values = 0.0, 0.5, 2.0
+        if (value == 0)
+        {
+            Console.WriteLine();
+        }
+    }
 }

@@ -66,8 +66,10 @@ public static class Battle
     /// </summary>
     private static void PlayerAction(Player player, Player rival)
     {
-        int choice = Convert.ToInt32(Console.ReadLine());
-        choice = Calculator.ValidateSelectionInGivenRange(choice, 1, 3);
+        // we ask and check if the value inputed is correct.
+        int choice = Calculator.ValidateSelectionInGivenRange(1, 3);
+        
+        // depending on the user input, the route we take. 
         switch (choice)
         {
             case 1:
@@ -85,30 +87,42 @@ public static class Battle
 
     private static void Attack(IPlayer player, IPlayer rival)
     {
-        IPokemon pokemon = player.SelectedPokemon;
-        IPokemon rivalPokemon = rival.SelectedPokemon;
-        // Example usage of Calculator for attack damage calculation
-        int damage = Calculator.CalculateAttack(player.SelectedPokemon, rival.SelectedPokemon);
-        rival.SelectedPokemon.Health -= damage;
-        Console.WriteLine($"{player.Name}'s {player.SelectedPokemon.Name} dealt {damage} damage to {rival.SelectedPokemon.Name}!");
+        IPokemon attacker = player.SelectedPokemon;
+        IPokemon receiver = player.SelectedPokemon;
+        
+        //Display the available attacks:
+        Printer.ShowAttacks(attacker, receiver);
+        
+        //Let the player pick one.
+        int attackInput = Calculator.ValidateSelectionInGivenRange(1, 3);
+        
+        //We get the attack of the Pokémon
+        IAttack attack = attacker.GetAttack(attackInput);
+        
+        //NOW we call for a function that calculates the damage infringed by the attack selected.
+        int damage = Calculator.Attack(attack, receiver);
+        
+        
+        
+        //End: Returns to StartBattle??? TODO Correct this loop!!!!!
     }
 
-    private static void UseItem(IPlayer player)
-    {
-        // Logic for using an item from player's inventory
-        Printer.DisplayInventory(player.Potions);
-        int itemChoice = int.Parse(Console.ReadLine() ?? "0");
-        player.UseItem(itemChoice);
-        Console.WriteLine($"{player.Name} used an item!");
-    }
-
-    private static void SwitchPokemon(Player player)
-    {
-        // Logic for switching Pokémon
-        Console.WriteLine($"{player.Name}, select a new Pokémon:");
-        Printer.DisplayPokemons(player.Pokemons);
-        int newPokemonIndex = int.Parse(Console.ReadLine() ?? "0");
-        player.SwitchPokemon(newPokemonIndex);
-        Console.WriteLine($"{player.Name} switched Pokémon!");
-    }
+    // private static void UseItem(IPlayer player)
+    // {
+    //     // Logic for using an item from player's inventory
+    //     Printer.DisplayInventory(player.Potions);
+    //     int itemChoice = int.Parse(Console.ReadLine() ?? "0");
+    //     player.UseItem(itemChoice);
+    //     Console.WriteLine($"{player.Name} used an item!");
+    // }
+    //
+    // private static void SwitchPokemon(Player player)
+    // {
+    //     // Logic for switching Pokémon
+    //     Console.WriteLine($"{player.Name}, select a new Pokémon:");
+    //     Printer.DisplayPokemons(player.Pokemons);
+    //     int newPokemonIndex = int.Parse(Console.ReadLine() ?? "0");
+    //     player.SwitchPokemon(newPokemonIndex);
+    //     Console.WriteLine($"{player.Name} switched Pokémon!");
+    // }
 }
