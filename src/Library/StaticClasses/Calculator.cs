@@ -123,7 +123,7 @@ public static class Calculator
     /// </summary>
     /// <param name="attack"></param>
     /// <param name="rival"></param>
-    public static int Attack(IAttack attack, IPokemon rival)
+    public static int CalculateAttack(IAttack attack, IPokemon rival)
     {
         //We've got the attack and the rival Pokémon, now we check for effectiveness (yes, again, the first one was for display of the Attacks)
         double efectiveness = CheckEffectiveness(attack, rival);
