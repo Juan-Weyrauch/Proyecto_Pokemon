@@ -147,5 +147,10 @@ public class Player : IPlayer
     {
         SelectedPokemon = selectedPokemon;
     }
+
+    public void UseItem(int itemChoice)
+    {
+     //On the works...   
+    }
     
 }
