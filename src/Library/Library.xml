@@ -24,13 +24,20 @@
             Check if the attack is a special one or not.
             </summary>
         </member>
-        <member name="M:Library.Classes.Attack.#ctor(System.String,System.Int32,System.Int32)">
+        <member name="P:Library.Classes.Attack.Type">
+            <summary>
+            Sets the type of the attack.
+            We use this to check for effectiveness against other Pokémon types.
+            </summary>
+        </member>
+        <member name="M:Library.Classes.Attack.#ctor(System.String,System.Int32,System.Int32,System.String)">
             <summary>
             Class constructor.
             </summary>
             <param name="name"></param>
             <param name="damage"></param>
             <param name="special"></param>
+            <param name="type"></param>
         </member>
         <member name="T:Library.Classes.Player">
             <summary>
@@ -71,6 +78,15 @@
         <member name="P:Library.Classes.Player.SelectedPokemon">
             <summary>
             The Pokémon that the player has selected
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Player.Turn">
+            <summary>
+            Sets the turn of the player.
+            This is used for enabling the user to use special attacks, which can only be used once every 2 turns.
+            The logic is:
+                - If the user selects a special attack, it starts a counter that increments the 'Turn' variable
+                - After that, we always check this variable, whenever it's 0 the user can 
             </summary>
         </member>
         <member name="M:Library.Classes.Player.InitializePlayer1(System.String,System.Collections.Generic.List{Library.IPokemon},Library.IPokemon)">
@@ -141,6 +157,12 @@
             Check if the attack is a special one or not
             </summary>
         </member>
+        <member name="P:Library.Interfaces.IAttack.Type">
+            <summary>
+            Sets the type of the attack.
+            We use this to check for effectiveness against other Pokémon types.
+            </summary>
+        </member>
         <member name="T:Library.Interfaces.IPotions">
             <summary>
             This interface sets the rules for the creation of potion elements.
@@ -207,9 +229,9 @@
             <param name="type">The type of Pokémon.</param>
             <returns>A list of attacks specific to the type.</returns>
         </member>
-        <member name="M:Library.StaticClasses.AttackGenerator.GenerateAttackList(System.String,System.String,System.String)">
+        <member name="M:Library.StaticClasses.AttackGenerator.GenerateAttackList(System.String,System.String,System.String,System.String)">
             <summary>
-            Helper method to create an attack list based on the type and a random number.
+            Helper method to create an attack list based on the type and attack names.
             </summary>
         </member>
         <member name="T:Library.StaticClasses.Calculator">
@@ -219,6 +241,23 @@
                 - Approving of inputs
                 - Damage calculations
             </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Calculator.GetEffectivenessMultiplier(System.String,System.String)">
+            <summary>
+            Method that returns the numeric percentage of boost (or not) that the attack has on the opponent. 
+            </summary>
+            <param name="attackType"></param>
+            <param name="pokemonType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Library.StaticClasses.Calculator.CheckEffectiveness(Library.Interfaces.IAttack,Library.IPokemon)">
+            <summary>
+            Checks for effectiness in the attack recieved.
+            It compares the attack type to the Pokémon type and returns a double value for the effectiveness.
+            </summary>
+            <param name="attack"></param>
+            <param name="pokemon"></param>
+            <returns></returns>
         </member>
         <member name="M:Library.StaticClasses.Calculator.ValidateSelectionInGivenRange(System.Int32,System.Int32,System.Int32)">
             <summary>
@@ -356,6 +395,13 @@
             <summary>
             Prints the header box for the inventory.
             </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.ShowAttacks(Library.IPokemon,Library.IPokemon)">
+            <summary>
+            Show the attacks of each Pokémon, displaying if they are special, the damage they deal, and their effectiveness.
+            </summary>
+            <param name="attacker">The Pokémon whose attacks will be displayed.</param>
+            <param name="receiver">The Pokémon that will receive the attack.</param>
         </member>
         <member name="T:Library.Train">
             <summary>

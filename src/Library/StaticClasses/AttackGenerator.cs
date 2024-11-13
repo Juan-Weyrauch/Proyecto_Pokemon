@@ -19,129 +19,112 @@ public static class AttackGenerator
     /// <returns>A list of attacks specific to the type.</returns>
     public static List<IAttack> GenerateRandomAttack(string type)
     {
-        int randomNumber = Rnd.Next(0, 3);
-        switch (type)
+        return type switch
         {
-            case "Plant":
-                return CreatePlantAttack(randomNumber);
-            case "Water":
-                return CreateWaterAttack(randomNumber);
-            case "Bug":
-                return CreateBugAttack(randomNumber);
-            case "Dragon":
-                return CreateDragonAttack(randomNumber);
-            case "Electric":
-                return CreateElectricAttack(randomNumber);
-            case "Ghost":
-                return CreateGhostAttack(randomNumber);
-            case "Fire":
-                return CreateFireAttack(randomNumber);
-            case "Ice":
-                return CreateIceAttack(randomNumber);
-            case "Fight":
-                return CreateFightAttack(randomNumber);
-            case "Normal":
-                return CreateNormalAttack(randomNumber);
-            case "Psychic":
-                return CreatePsychicAttack(randomNumber);
-            case "Rock":
-                return CreateRockAttack(randomNumber);
-            case "Earth":
-                return CreateEarthAttack(randomNumber);
-            case "Venom":
-                return CreateVenomAttack(randomNumber);
-            case "Flying":
-                return CreateFlyingAttack(randomNumber);
-            default:
-                return new List<IAttack>(); // Return empty list if type is unrecognized
-        }
+            "Plant" => CreatePlantAttack(),
+            "Water" => CreateWaterAttack(),
+            "Bug" => CreateBugAttack(),
+            "Dragon" => CreateDragonAttack(),
+            "Electric" => CreateElectricAttack(),
+            "Ghost" => CreateGhostAttack(),
+            "Fire" => CreateFireAttack(),
+            "Ice" => CreateIceAttack(),
+            "Fight" => CreateFightAttack(),
+            "Normal" => CreateNormalAttack(),
+            "Psychic" => CreatePsychicAttack(),
+            "Rock" => CreateRockAttack(),
+            "Earth" => CreateEarthAttack(),
+            "Venom" => CreateVenomAttack(),
+            "Flying" => CreateFlyingAttack(),
+            _ => new List<IAttack>() // Return empty list if type is unrecognized
+        };
     }
 
-    private static List<IAttack> CreatePlantAttack(int randomNumber)
+    private static List<IAttack> CreatePlantAttack()
     {
-        return GenerateAttackList("Vine Whip", "Solar Beam", "Leaf Storm");
+        return GenerateAttackList("Vine Whip", "Solar Beam", "Leaf Storm", "Plant");
     }
 
-    private static List<IAttack> CreateWaterAttack(int randomNumber)
+    private static List<IAttack> CreateWaterAttack()
     {
-        return GenerateAttackList("Water Gun", "Hydro Pump", "Aqua Tail");
+        return GenerateAttackList("Water Gun", "Hydro Pump", "Aqua Tail", "Water");
     }
 
-    private static List<IAttack> CreateBugAttack(int randomNumber)
+    private static List<IAttack> CreateBugAttack()
     {
-        return GenerateAttackList("Bug Bite", "Signal Beam", "X-Scissor");
+        return GenerateAttackList("Bug Bite", "Signal Beam", "X-Scissor", "Bug");
     }
 
-    private static List<IAttack> CreateDragonAttack(int randomNumber)
+    private static List<IAttack> CreateDragonAttack()
     {
-        return GenerateAttackList("Dragon Claw", "Dragon Tail", "Draco Meteor");
+        return GenerateAttackList("Dragon Claw", "Dragon Tail", "Draco Meteor", "Dragon");
     }
 
-    private static List<IAttack> CreateElectricAttack(int randomNumber)
+    private static List<IAttack> CreateElectricAttack()
     {
-        return GenerateAttackList("Thunder Shock", "Spark", "Thunderbolt");
+        return GenerateAttackList("Thunder Shock", "Spark", "Thunderbolt", "Electric");
     }
 
-    private static List<IAttack> CreateGhostAttack(int randomNumber)
+    private static List<IAttack> CreateGhostAttack()
     {
-        return GenerateAttackList("Shadow Ball", "Night Shade", "Hex");
+        return GenerateAttackList("Shadow Ball", "Night Shade", "Hex", "Ghost");
     }
 
-    private static List<IAttack> CreateFireAttack(int randomNumber)
+    private static List<IAttack> CreateFireAttack()
     {
-        return GenerateAttackList("Ember", "Flamethrower", "Fire Blast");
+        return GenerateAttackList("Ember", "Flamethrower", "Fire Blast", "Fire");
     }
 
-    private static List<IAttack> CreateIceAttack(int randomNumber)
+    private static List<IAttack> CreateIceAttack()
     {
-        return GenerateAttackList("Ice Shard", "Blizzard", "Frost Breath");
+        return GenerateAttackList("Ice Shard", "Blizzard", "Frost Breath", "Ice");
     }
 
-    private static List<IAttack> CreateFightAttack(int randomNumber)
+    private static List<IAttack> CreateFightAttack()
     {
-        return GenerateAttackList("Karate Chop", "Dynamic Punch", "Close Combat");
+        return GenerateAttackList("Karate Chop", "Dynamic Punch", "Close Combat", "Fight");
     }
 
-    private static List<IAttack> CreateNormalAttack(int randomNumber)
+    private static List<IAttack> CreateNormalAttack()
     {
-        return GenerateAttackList("Tackle", "Body Slam", "Hyper Beam");
+        return GenerateAttackList("Tackle", "Body Slam", "Hyper Beam", "Normal");
     }
 
-    private static List<IAttack> CreatePsychicAttack(int randomNumber)
+    private static List<IAttack> CreatePsychicAttack()
     {
-        return GenerateAttackList("Psybeam", "Psychic", "Future Sight");
+        return GenerateAttackList("Psybeam", "Psychic", "Future Sight", "Psychic");
     }
 
-    private static List<IAttack> CreateRockAttack(int randomNumber)
+    private static List<IAttack> CreateRockAttack()
     {
-        return GenerateAttackList("Rock Throw", "Rock Slide", "Stone Edge");
+        return GenerateAttackList("Rock Throw", "Rock Slide", "Stone Edge", "Rock");
     }
 
-    private static List<IAttack> CreateEarthAttack(int randomNumber)
+    private static List<IAttack> CreateEarthAttack()
     {
-        return GenerateAttackList("Mud-Slap", "Earthquake", "Bulldoze");
+        return GenerateAttackList("Mud-Slap", "Earthquake", "Bulldoze", "Earth");
     }
 
-    private static List<IAttack> CreateVenomAttack(int randomNumber)
+    private static List<IAttack> CreateVenomAttack()
     {
-        return GenerateAttackList("Poison Sting", "Sludge Bomb", "Venom Shock");
+        return GenerateAttackList("Poison Sting", "Sludge Bomb", "Venom Shock", "Venom");
     }
 
-    private static List<IAttack> CreateFlyingAttack(int randomNumber)
+    private static List<IAttack> CreateFlyingAttack()
     {
-        return GenerateAttackList( "Wing Attack", "Aerial Ace", "Sky Attack");
+        return GenerateAttackList("Wing Attack", "Aerial Ace", "Sky Attack", "Flying");
     }
 
     /// <summary>
-    /// Helper method to create an attack list based on the type and a random number.
+    /// Helper method to create an attack list based on the type and attack names.
     /// </summary>
-    private static List<IAttack> GenerateAttackList(string attack1, string attack2, string attack3)
+    private static List<IAttack> GenerateAttackList(string attack1, string attack2, string attack3, string type)
     {
         return new List<IAttack>
         {
-            new Attack(attack1, Rnd.Next(10, 35), Rnd.Next(0, 4)),
-            new Attack(attack2, Rnd.Next(10, 35), Rnd.Next(0, 4)),
-            new Attack(attack3, Rnd.Next(10, 35), Rnd.Next(0, 4))
+            new Attack(attack1, Rnd.Next(10, 35), Rnd.Next(0, 2), type),
+            new Attack(attack2, Rnd.Next(35, 60), Rnd.Next(0, 2), type),
+            new Attack(attack3, Rnd.Next(60, 100), Rnd.Next(1, 3), type)
         };
     }
 }

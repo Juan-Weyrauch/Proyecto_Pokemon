@@ -83,7 +83,7 @@ public class Player : IPlayer
     ///     - If the user selects a special attack, it starts a counter that increments the 'Turn' variable
     ///     - After that, we always check this variable, whenever it's 0 the user can 
     /// </summary>
-    public int Turn { get; private set; }
+    public int Turn { get; private set; } //private set beacause we use 'SetTurn' method. (Which is public)
 
     // Private constructor
     private Player(string name, List<IPokemon> pokemons, IPokemon selectedPokemon)
@@ -138,4 +138,14 @@ public class Player : IPlayer
             throw new System.InvalidOperationException("Player2 has already been initialized.");
         }
     }
+
+    /// <summary>
+    /// Lets the PLAYER change ITS Pokémon.
+    /// </summary>
+    /// <param name="selectedPokemon"></param>
+    public void SwitchPokemon(IPokemon selectedPokemon)
+    {
+        SelectedPokemon = selectedPokemon;
+    }
+    
 }

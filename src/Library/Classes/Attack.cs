@@ -4,7 +4,7 @@ using Library.StaticClasses;
 namespace Library.Classes;
 
 /// <summary>
-/// This are the attacks.
+/// These are the attacks.
 /// </summary>
 public class Attack : IAttack
 {
@@ -44,9 +44,14 @@ public class Attack : IAttack
         Type = type;
     }
 
-    public static int IsEffective(IAttack attack, IPokemon enemy)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="attack"></param>
+    /// <param name="enemy"></param>
+    /// <returns></returns>
+    public static double IsEffective(IAttack attack, IPokemon enemy)
     {
-        Calculator.CheckEffectiveness(attack, enemy);
-        return 0; // if attack is not 
+        return Calculator.CheckEffectiveness(attack, enemy);
     }
 }

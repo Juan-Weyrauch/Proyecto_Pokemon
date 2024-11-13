@@ -41,7 +41,8 @@ public static class Calculator
     public static double GetEffectivenessMultiplier(string attackType, string pokemonType)
     {
         if (!EffectivenessTable.ContainsKey(attackType)) return 1.0;
-
+        
+        //using var because: (yes, thanks).
         var (weaknesses, resistances, immunities) = EffectivenessTable[attackType];
 
         if (immunities.Contains(pokemonType)) return 0.0;
@@ -80,4 +81,11 @@ public static class Calculator
         return number;
     }
 
+    public static int FirstTurnSelection()
+    {
+        //Always starts the player 1? Should it be random?
+        Random random = new Random();
+        return random.Next(1, 2);
+        //Returns a random number to set a starter player.
+    }
 }

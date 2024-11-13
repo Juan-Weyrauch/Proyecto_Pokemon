@@ -217,6 +217,7 @@ public static class Printer
         Console.WriteLine($"║     Attacks of {attacker.Name}\t║");
         Console.WriteLine("╚═══════════════════════════════════════╝");
 
+        int i = 1;
         // Iterate through each attack in the Pokémon's attack list
         foreach (IAttack attack in attacker.AtackList)
         {
@@ -224,14 +225,31 @@ public static class Printer
             
             // Display each attack's details in a box format.
             Console.WriteLine("╔═════════════════════════════════╗");
-            Console.WriteLine($"║  {i} Attack ║");
-            Console.WriteLine($"║  Name: {attack.Name,-25}║");
-            Console.WriteLine($"║  Damage: {attack.Damage,-23}║");
-            Console.WriteLine($"║  Type: {specialStatus,-24}║");
-            Console.WriteLine($"║  Effectiveness: {effectiveness,-17}║");
+            Console.WriteLine($"║  Attack {i, -30} ║");
+            Console.WriteLine($"║  Name: {attack.Name,-30}║");
+            Console.WriteLine($"║  Damage: {attack.Damage,-30}║");
+            Console.WriteLine($"║  Type: {attack.Type,-30}║");
+            Console.WriteLine($"║  Effectiveness (against opponent): {special,-10}║");
             Console.WriteLine("╚═════════════════════════════════╝");
+            i++;
         }
 
         Console.WriteLine(); // Extra line for spacing
+    }
+    
+    
+    /// <summary>
+    /// Displays whose turn it is and prompts the player to choose an action.
+    /// </summary>
+    public static void ShowTurnInfo(IPlayer player)
+    {
+        
+        Console.WriteLine("╔═════════════════════════════════╗");
+        Console.WriteLine($"║  {player.Name, -18}'s turn!║");
+        Console.WriteLine($"║  What would you like to do?     ║");
+        Console.WriteLine($"║  1. Attack                      ║");
+        Console.WriteLine($"║  2. Use Item                    ║");
+        Console.WriteLine($"║  3. Switch Pokémon              ║");
+        Console.WriteLine("╚═════════════════════════════════╝");
     }
 }
