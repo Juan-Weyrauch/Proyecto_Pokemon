@@ -11,7 +11,7 @@ namespace Library.StaticClasses;
 /// </summary>
 public static class Calculator
 {
-// Completa tabla de efectividades
+// Table of attacks.
     private static readonly Dictionary<string, (List<string> Weaknesses, List<string> Resistances, List<string> Immunities)> EffectivenessTable = 
         new Dictionary<string, (List<string>, List<string>, List<string>)>
         {
@@ -33,7 +33,7 @@ public static class Calculator
         };
 
     /// <summary>
-    /// Método para obtener el multiplicador de efectividad de daño según el tipo
+    /// Method that returns the numeric percentage of boost (or not) that the attack has on the opponent. 
     /// </summary>
     /// <param name="attackType"></param>
     /// <param name="pokemonType"></param>
