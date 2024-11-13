@@ -1,8 +1,10 @@
 using Library.Interfaces;
-using Library.StaticClasses;
 
-namespace Library;
+namespace Library.Classes;
 
+/// <summary>
+/// Pokemon class.
+/// </summary>
 public class Pokemon : IPokemon
 {
     /// <summary>
@@ -51,6 +53,16 @@ public class Pokemon : IPokemon
         Defense = defense;
         Type = type;
         AtackList = atacks;
+    }
+
+    /// <summary>
+    /// Returns the attack selected by the player
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public IAttack GetAttack(int index)
+    {
+        return AtackList[index];
     }
     
     

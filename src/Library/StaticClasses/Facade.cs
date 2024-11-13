@@ -20,9 +20,9 @@ public static class Facade
     {
         //We print the options to the player
         Printer.StartPrint();
-        int startSelection =Convert.ToInt16(Console.ReadLine(), CultureInfo.InvariantCulture);
+        int startSelection = Calculator.ValidateSelectionInGivenRange(1, 2); //uses > and <
+
         //We check the value inputted is within the desired ones
-        Calculator.ValidateSelectionInGivenRange(startSelection, 1, 2); //uses > and <
         
         if (startSelection == 2)
         {
@@ -70,10 +70,8 @@ public static class Facade
             for (int j = 0; j < 6; j++)
             {
                 Printer.AskForPokemon(j, playerName);
-                //let the user pick one
-                playerSelection = Convert.ToInt32(Console.ReadLine(), CultureInfo.InvariantCulture);
-                //Validate it is within range 
-                playerSelection = Calculator.ValidateSelectionInGivenRange(playerSelection, 1, 20);
+                //let the user pick one and Validate it is within range 
+                playerSelection = Calculator.ValidateSelectionInGivenRange(1, 20);
 
                 //add it to the list of Pokémon
                 playerPokemons.Add(Catalogue.GetPokemon(playerSelection));
@@ -82,8 +80,7 @@ public static class Facade
             //let the user pick it's first Pokémon
             Printer.ShowInventory(playerPokemons);
             Console.Write("\nPick your starting Pokemon: \n> ");
-            playerSelection = Convert.ToInt32(Console.ReadLine(), CultureInfo.InvariantCulture);
-            playerSelection = Calculator.ValidateSelectionInGivenRange(playerSelection, 1, 6);
+            playerSelection = Calculator.ValidateSelectionInGivenRange(1, 6);
             selectedPokemon = playerPokemons[playerSelection - 1];
 
             //Cretion of the two players:

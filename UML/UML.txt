@@ -1,0 +1,257 @@
+%% Quedó precioso, ya sé
+classDiagram
+    accTitle: Diagrama de Clases Proyecto Final
+
+    class Pokemon {
+      -int health
+      -List~Attack~ attacks
+
+      +IEffect? ActiveEffect
+      +string Name
+      +Type: PokemonType
+      +int MaxHealth
+      +int Health
+      +bool CanAttack
+      +ReadOnlyCollection~Attack~ Attacks
+
+      +Pokemon(string name, PokemonType type, int maxHealth, List~Attack~ attacks)
+      +Pokemon(Pokemon pokemon)
+      +Attack(Pokemon target, int attackIdx) void
+      +Attack(Pokemon target, string attackName) void
+      +Heal(int health) void
+      +Damage(int health) void
+      +ApplyEffect(IEffect effect) void
+      +UpdateEffect(IEffect effect) void
+      +RemoveEffect(IEffect effect) void
+      -Attack(Pokemon target, Attack attack) bool
+      -GetAttack(string attackName) Attack
+      -GetAttack(int attackIdx) Attack
+    }
+
+    Pokemon "1" -- "0.." PokemonType
+    Pokemon "1" *-- "1" IEffect
+    Pokemon "1..4" o-- "1" Attack
+
+    <<enumeration>> PokemonType
+    class PokemonType {
+      Normal
+      Fire
+      Water
+      Electric
+      Grass
+      Ice
+      Fighting
+      Poison
+      Ground
+      Flying
+      Psychic
+      Bug
+      Rock
+      Ghost
+      Dragon
+
+      +Advantage(Element other) double
+    }
+
+    <<interface>> IEffect
+    class IEffect {
+      +bool IsExpired
+
+      +UpdateEffect(Pokemon target) void
+      +RemoveEffect(Pokemon target) void
+    }
+
+    class Burn {
+      +bool IsExpired
+
+      +Burn()
+      +UpdateEffect(Pokemon target) void
+      +RemoveEffect(Pokemon target) void
+    }
+    Burn ..|> IEffect
+
+    class Poison {
+      +bool IsExpired
+
+      +Poison()
+      +UpdateEffect(Pokemon target) void
+      +RemoveEffect(Pokemon target) void
+    }
+    Poison ..|> IEffect
+
+    class Sleep {
+      -int turnsRemaining
+      +bool IsExpired
+
+      +Sleep()
+      +UpdateEffect(Pokemon target) void
+      +RemoveEffect(Pokemon target) void
+    }
+    Sleep ..|> IEffect
+
+    class Paralysis {
+      +bool IsExpired
+
+      +Paralysis()
+      +UpdateEffect(Pokemon target) void
+      +RemoveEffect(Pokemon target) void
+    }
+    Paralysis ..|> IEffect
+
+    <<abstract>> Attack
+    class Attack {
+      +string Name
+      +int Damage
+      +PokemonType Type
+      +int Precision
+
+      #Attack(string name, int damage, PokemonType type, int precision)
+      #Attack(Attack attack)
+      +Use(Pokemon target)* void
+    }
+    Attack "1" -- "0.." PokemonType
+
+    class NormalAttack {
+      +string Name
+      +int Damage
+      +PokemonType Type
+      +int Precision
+
+      #NormalAttack(string name, int damage, PokemonType type, int precision)
+      #NormalAttack(NormalAttack normalAttack)
+      +Use(Pokemon target)* void
+    }
+    NormalAttack "1" -- "0.." PokemonType
+    NormalAttack ..|> Attack
+
+    class SpecialAttack {
+      -IEffect effect
+      +string Name
+      +int Damage
+      +PokemonType Type
+      +int Precision
+
+      #NormalAttack(string name, int damage, PokemonType type, int precision)
+      #NormalAttack(NormalAttack normalAttack)
+      +Use(Pokemon target)* void
+    }
+    SpecialAttack "1" -- "0.." PokemonType
+    SpecialAttack "1" *-- "1" IEffect
+    SpecialAttack ..|> Attack
+
+
+    class Player {
+      +string Name
+      +List~Pokemon~ Pokemon
+      +List~IItem~ Pokemon
+      +Pokemon ActivePokemon
+
+      +Player(string name, List~Pokemon~ pokemon)
+      +Attack(Player other, string attackName) void
+      +ChangePokemon(string newPokemon) bool
+      +Attack(Player other, string attackName) bool
+      +AllAreDead() bool
+      +ApplyItem(Pokemon target, string name) void
+    }
+    Player "6" o-- "0..1" Pokemon
+    Player "0..*" o-- "0..1" IItem
+
+    <<interface>> IItem
+    class IItem {
+      +string Name$
+
+      +Use(Pokemon pokemon) void
+    }
+
+    class TotalCure {
+      +string Name$
+
+      +TotalCure()
+      +Use(Pokemon pokemon) void
+    }
+    TotalCure ..|> IItem
+
+    class SuperPotion {
+      +string Name$
+
+      +SuperPotion()
+      +Use(Pokemon pokemon) void
+    }
+    SuperPotion ..|> IItem
+
+    class Revive {
+      +string Name$
+
+      +Revive()
+      +Use(Pokemon pokemon) void
+    }
+    Revive ..|> IItem
+
+    class PokemonRegistry {
+      -Dictionary~string, Pokemon~ PokemonTemplates
+
+      +GetPokemon(string name) Pokemon$
+      +GetPokemonNamesAndTypes() List~string, PokemonType~$
+    }
+    Pokemon "0..*" --o "1" PokemonRegistry
+
+    class NormalAttackRegistry {
+      -Dictionary~string, NormalAttack~ NormalAttacks
+
+      +GetNormalAttack(string name) NormalAttack$
+      +GetAttackNamesAndTypes() List~string, PokemonType~$
+    }
+    Pokemon "0..*" --o "1" NormalAttackRegistry
+
+    class SpecialAttackRegistry {
+      -Dictionary~string, SpecialAttack~ SpecialAttacks
+
+      +GetPokemon(string name) SpecialAttack$
+      +GetAttackNamesAndTypes() List~string, PokemonType~$
+    }
+    Pokemon "0..*" --o "1" SpecialAttackRegistry
+
+    class Game {
+      -IExternalConnection externalConnection
+      -Player playerOne
+      -Player playerTwo
+
+      -Game(Player p1, Player p2, IExternalConnection externalConnection)
+      +CreateGame(List~Pokemon~, IExternalConnection externalConnection) Game$
+      +Play() void
+      +PlayGameTurn() void
+      -AttackPlayer(Player active, Player other) bool
+      -UseItem(Player active) bool
+      -PlayTurn(Player active, Player other) void
+      -PlayTurnP1() void
+      -PlayTurnP2() void
+      -ChngePokemon(Player p) bool
+      -CheckDead(Player p) bool
+    }
+
+    Game "1" *-- "1" IExternalConnection
+    Game "2" *-- "1" Player
+
+    <<interface>> IExternalConnection
+    class IExternalConnection {
+      +PrintString(string str) void
+      +PrintWelcome(Player p1, Player p2) void
+      +PrintPlayerWon(Player p1, Player p2) void
+      +PrintTurnHeading(Player player) void
+      +ShowMenuAndReceiveInput(string selectionText, ReadOnlyCollection~string` options) int
+      +ShowAttacksAndRecieveInput(Pokemon pokemon) string?
+      +ShowChangePokemonMenu(Player player) int
+      +ReportAttackResult(int oldHP, Player attacker, Player defender) void
+    }
+
+    class ConsoleConnection {
+      +PrintString(string str) void
+      +PrintWelcome(Player p1, Player p2) void
+      +PrintPlayerWon(Player p1, Player p2) void
+      +PrintTurnHeading(Player player) void
+      +ShowMenuAndReceiveInput(string selectionText, ReadOnlyCollection~string` options) int
+      +ShowAttacksAndRecieveInput(Pokemon pokemon) string?
+      +ShowChangePokemonMenu(Player player) int
+      +ReportAttackResult(int oldHP, Player attacker, Player defender) void
+    }
+    ConsoleConnection ..|> IExternalConnection

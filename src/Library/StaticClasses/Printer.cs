@@ -1,3 +1,6 @@
+using Library.Classes;
+using Library.Interfaces;
+
 namespace Library.StaticClasses;
 
 /// <summary>
@@ -200,5 +203,62 @@ public static class Printer
         Console.WriteLine($"║    Name: {pokemon.Name}\t\t║");
         Console.WriteLine($"║    Life: {pokemon.Health}/100\t\t    ║");
         Console.WriteLine("╚══════════════════════════════════╝");
+    }
+
+    /// <summary>
+    /// Show the attacks of each Pokémon, displaying if they are special, the damage they deal, and their effectiveness.
+    /// </summary>
+    /// <param name="attacker">The Pokémon whose attacks will be displayed.</param>
+    /// <param name="receiver">The Pokémon that will receive the attack.</param>
+    public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
+    {
+        // Display header box for the Pokémon's attacks
+        Console.WriteLine("╔═══════════════════════════════════════╗");
+        Console.WriteLine($"║     Attacks of {attacker.Name}\t║");
+        Console.WriteLine("╚═══════════════════════════════════════╝");
+
+        int i = 1;
+        // Iterate through each attack in the Pokémon's attack list
+        foreach (IAttack attack in attacker.AtackList)
+        {
+            double special = Calculator.CheckEffectiveness(attack, receiver);
+            
+            // Display each attack's details in a box format.
+            Console.WriteLine("╔═════════════════════════════════╗");
+            Console.WriteLine($"║  Attack {i, -30} ║");
+            Console.WriteLine($"║  Name: {attack.Name,-30}║");
+            Console.WriteLine($"║  Damage: {attack.Damage,-30}║");
+            Console.WriteLine($"║  Type: {attack.Type,-30}║");
+            Console.WriteLine($"║  Effectiveness (against opponent): {special,-10}║");
+            Console.WriteLine("╚═════════════════════════════════╝");
+            i++;
+        }
+
+        Console.WriteLine(); // Extra line for spacing
+    }
+    
+    
+    /// <summary>
+    /// Displays whose turn it is and prompts the player to choose an action.
+    /// </summary>
+    public static void ShowTurnInfo(IPlayer player)
+    {
+        
+        Console.WriteLine("╔═════════════════════════════════╗");
+        Console.WriteLine($"║  {player.Name, -18}'s turn!║");
+        Console.WriteLine($"║  What would you like to do?     ║");
+        Console.WriteLine($"║  1. Attack                      ║");
+        Console.WriteLine($"║  2. Use Item                    ║");
+        Console.WriteLine($"║  3. Switch Pokémon              ║");
+        Console.WriteLine("╚═════════════════════════════════╝");
+    }
+
+    public static void Efectiveness(int value)
+    {
+        // possible values = 0.0, 0.5, 2.0
+        if (value == 0)
+        {
+            Console.WriteLine();
+        }
     }
 }

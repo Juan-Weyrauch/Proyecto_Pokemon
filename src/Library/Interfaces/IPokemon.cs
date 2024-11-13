@@ -38,7 +38,10 @@ public interface IPokemon
     /// A list of all the attacks that the pokemon has 
     /// </summary>
     List<IAttack> AtackList { get; }
-    
-    
-    
+
+
+    public IAttack GetAttack(int index);
+
+
+
 }
