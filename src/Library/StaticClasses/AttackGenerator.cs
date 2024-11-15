@@ -3,128 +3,92 @@ using Library.Interfaces;
 using System;
 using System.Collections.Generic;
 
-namespace Library.StaticClasses;
+using Library.Classes;
+using Library.Interfaces;
+using System;
+using System.Collections.Generic;
 
-/// <summary>
-/// This static class is responsible for creating a list of attacks depending on the Pokémon type.
-/// </summary>
-public static class AttackGenerator
+namespace Library.StaticClasses
 {
-    private static readonly Random Rnd = new Random();
-
     /// <summary>
-    /// Generates a random list of attacks for the specified Pokémon type.
+    /// This static class is responsible for creating a list of attacks depending on the Pokémon type.
     /// </summary>
-    /// <param name="type">The type of Pokémon.</param>
-    /// <returns>A list of attacks specific to the type.</returns>
-    public static List<IAttack> GenerateRandomAttack(string type)
+    public static class AttackGenerator
     {
-        return type switch
+        private static readonly Random Rnd = new Random();
+
+        /// <summary>
+        /// Generates a random list of attacks for the specified Pokémon type.
+        /// </summary>
+        /// <param name="type">The type of Pokémon.</param>
+        /// <returns>A list of attacks: three of the Pokémon's type and one random attack from another type.</returns>
+        public static List<IAttack> GenerateRandomAttack(string type)
         {
-            "Plant" => CreatePlantAttack(),
-            "Water" => CreateWaterAttack(),
-            "Bug" => CreateBugAttack(),
-            "Dragon" => CreateDragonAttack(),
-            "Electric" => CreateElectricAttack(),
-            "Ghost" => CreateGhostAttack(),
-            "Fire" => CreateFireAttack(),
-            "Ice" => CreateIceAttack(),
-            "Fight" => CreateFightAttack(),
-            "Normal" => CreateNormalAttack(),
-            "Psychic" => CreatePsychicAttack(),
-            "Rock" => CreateRockAttack(),
-            "Earth" => CreateEarthAttack(),
-            "Venom" => CreateVenomAttack(),
-            "Flying" => CreateFlyingAttack(),
-            _ => new List<IAttack>() // Return empty list if type is unrecognized
-        };
-    }
+            // Genera los tres ataques del tipo del Pokémon
+            List<IAttack> attacks = GetAttacksByType(type);
 
-    private static List<IAttack> CreatePlantAttack()
-    {
-        return GenerateAttackList("Vine Whip", "Solar Beam", "Leaf Storm", "Plant");
-    }
+            // Asegura que la lista tenga exactamente 3 ataques
+            attacks = attacks.GetRange(0, 3);
 
-    private static List<IAttack> CreateWaterAttack()
-    {
-        return GenerateAttackList("Water Gun", "Hydro Pump", "Aqua Tail", "Water");
-    }
+            // Generar un ataque aleatorio de otro tipo y agregarlo a la lista
+            IAttack randomAttack = GetRandomAttackOfOtherType(type);
+            attacks.Add(randomAttack);
 
-    private static List<IAttack> CreateBugAttack()
-    {
-        return GenerateAttackList("Bug Bite", "Signal Beam", "X-Scissor", "Bug");
-    }
+            // Devuelve la lista completa con 4 ataques
+            return attacks;
+        }
 
-    private static List<IAttack> CreateDragonAttack()
-    {
-        return GenerateAttackList("Dragon Claw", "Dragon Tail", "Draco Meteor", "Dragon");
-    }
-
-    private static List<IAttack> CreateElectricAttack()
-    {
-        return GenerateAttackList("Thunder Shock", "Spark", "Thunderbolt", "Electric");
-    }
-
-    private static List<IAttack> CreateGhostAttack()
-    {
-        return GenerateAttackList("Shadow Ball", "Night Shade", "Hex", "Ghost");
-    }
-
-    private static List<IAttack> CreateFireAttack()
-    {
-        return GenerateAttackList("Ember", "Flamethrower", "Fire Blast", "Fire");
-    }
-
-    private static List<IAttack> CreateIceAttack()
-    {
-        return GenerateAttackList("Ice Shard", "Blizzard", "Frost Breath", "Ice");
-    }
-
-    private static List<IAttack> CreateFightAttack()
-    {
-        return GenerateAttackList("Karate Chop", "Dynamic Punch", "Close Combat", "Fight");
-    }
-
-    private static List<IAttack> CreateNormalAttack()
-    {
-        return GenerateAttackList("Tackle", "Body Slam", "Hyper Beam", "Normal");
-    }
-
-    private static List<IAttack> CreatePsychicAttack()
-    {
-        return GenerateAttackList("Psybeam", "Psychic", "Future Sight", "Psychic");
-    }
-
-    private static List<IAttack> CreateRockAttack()
-    {
-        return GenerateAttackList("Rock Throw", "Rock Slide", "Stone Edge", "Rock");
-    }
-
-    private static List<IAttack> CreateEarthAttack()
-    {
-        return GenerateAttackList("Mud-Slap", "Earthquake", "Bulldoze", "Earth");
-    }
-
-    private static List<IAttack> CreateVenomAttack()
-    {
-        return GenerateAttackList("Poison Sting", "Sludge Bomb", "Venom Shock", "Venom");
-    }
-
-    private static List<IAttack> CreateFlyingAttack()
-    {
-        return GenerateAttackList("Wing Attack", "Aerial Ace", "Sky Attack", "Flying");
-    }
-
-    /// <summary>
-    /// Helper method to create an attack list based on the type and attack names.
-    /// </summary>
-    private static List<IAttack> GenerateAttackList(string attack1, string attack2, string attack3, string type)
-    {
-        return new List<IAttack>
+        // Método para obtener un ataque aleatorio de otro tipo distinto al tipo del Pokémon
+        private static IAttack GetRandomAttackOfOtherType(string type)
         {
-            new Attack(attack1, Rnd.Next(10, 35), Rnd.Next(0, 2), type),
-            new Attack(attack2, Rnd.Next(35, 60), Rnd.Next(0, 2), type),
-            new Attack(attack3, Rnd.Next(60, 100), Rnd.Next(1, 3), type)
-        };
+            string randomType;
+            do
+            {
+                randomType = GenerateRandomType();
+            } while (randomType == type);  // Asegura que el tipo no sea el mismo que el del Pokémon
+
+            List<IAttack> randomTypeAttacks = GetAttacksByType(randomType);
+            return randomTypeAttacks[Rnd.Next(randomTypeAttacks.Count)];  // Selecciona un ataque aleatorio del tipo aleatorio
+        }
+
+        // Método para obtener ataques por tipo
+        private static List<IAttack> GetAttacksByType(string type)
+        {
+            var attacksByType = new Dictionary<string, List<IAttack>>()
+            {
+                { "Plant", new List<IAttack> { new Attack("Vine Whip", 10, 35, "Plant"), new Attack("Solar Beam", 35, 60, "Plant"), new Attack("Leaf Storm", 60, 100, "Plant") }},
+                { "Water", new List<IAttack> { new Attack("Water Gun", 10, 35, "Water"), new Attack("Hydro Pump", 35, 60, "Water"), new Attack("Aqua Tail", 60, 100, "Water") }},
+                { "Bug", new List<IAttack> { new Attack("Bug Bite", 10, 35, "Bug"), new Attack("Signal Beam", 35, 60, "Bug"), new Attack("X-Scissor", 60, 100, "Bug") }},
+                { "Dragon", new List<IAttack> { new Attack("Dragon Claw", 10, 35, "Dragon"), new Attack("Dragon Tail", 35, 60, "Dragon"), new Attack("Draco Meteor", 60, 100, "Dragon") }},
+                { "Electric", new List<IAttack> { new Attack("Thunder Shock", 10, 35, "Electric"), new Attack("Spark", 35, 60, "Electric"), new Attack("Thunderbolt", 60, 100, "Electric") }},
+                { "Ghost", new List<IAttack> { new Attack("Shadow Ball", 10, 35, "Ghost"), new Attack("Night Shade", 35, 60, "Ghost"), new Attack("Hex", 60, 100, "Ghost") }},
+                { "Fire", new List<IAttack> { new Attack("Ember", 10, 35, "Fire"), new Attack("Flamethrower", 35, 60, "Fire"), new Attack("Fire Blast", 60, 100, "Fire") }},
+                { "Ice", new List<IAttack> { new Attack("Ice Shard", 10, 35, "Ice"), new Attack("Blizzard", 35, 60, "Ice"), new Attack("Frost Breath", 60, 100, "Ice") }},
+                { "Fight", new List<IAttack> { new Attack("Karate Chop", 10, 35, "Fight"), new Attack("Dynamic Punch", 35, 60, "Fight"), new Attack("Close Combat", 60, 100, "Fight") }},
+                { "Normal", new List<IAttack> { new Attack("Tackle", 10, 35, "Normal"), new Attack("Body Slam", 35, 60, "Normal"), new Attack("Hyper Beam", 60, 100, "Normal") }},
+                { "Psychic", new List<IAttack> { new Attack("Psybeam", 10, 35, "Psychic"), new Attack("Psychic", 35, 60, "Psychic"), new Attack("Future Sight", 60, 100, "Psychic") }},
+                { "Rock", new List<IAttack> { new Attack("Rock Throw", 10, 35, "Rock"), new Attack("Rock Slide", 35, 60, "Rock"), new Attack("Stone Edge", 60, 100, "Rock") }},
+                { "Earth", new List<IAttack> { new Attack("Mud-Slap", 10, 35, "Earth"), new Attack("Earthquake", 35, 60, "Earth"), new Attack("Bulldoze", 60, 100, "Earth") }},
+                { "Venom", new List<IAttack> { new Attack("Poison Sting", 10, 35, "Venom"), new Attack("Sludge Bomb", 35, 60, "Venom"), new Attack("Venom Shock", 60, 100, "Venom") }},
+                { "Flying", new List<IAttack> { new Attack("Wing Attack", 10, 35, "Flying"), new Attack("Aerial Ace", 35, 60, "Flying"), new Attack("Sky Attack", 60, 100, "Flying") }}
+            };
+
+            if (!attacksByType.ContainsKey(type))
+                throw new ArgumentException("Tipo de Pokémon no reconocido.");
+                
+            return attacksByType[type];
+        }
+
+        // Método para generar un tipo aleatorio
+        private static string GenerateRandomType()
+        {
+            var types = new List<string>
+            {
+                "Plant", "Water", "Bug", "Dragon", "Electric", "Ghost",
+                "Fire", "Ice", "Fight", "Normal", "Psychic", "Rock",
+                "Earth", "Venom", "Flying"
+            };
+            return types[Rnd.Next(types.Count)];
+        }
     }
 }

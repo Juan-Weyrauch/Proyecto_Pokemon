@@ -236,12 +236,13 @@ public static class Printer
             double special = Calculator.CheckEffectiveness(attack, receiver);
             
             // Display each attack's details in a box format.
+            // Manuel elminated the bars because they were bugged and they and I didn't know to fix them.
             Console.WriteLine("╔═════════════════════════════════╗");
-            Console.WriteLine($"║  Attack {i, -30} ║");
-            Console.WriteLine($"║  Name: {attack.Name,-30}║");
-            Console.WriteLine($"║  Damage: {attack.Damage,-30}║");
-            Console.WriteLine($"║  Type: {attack.Type,-30}║");
-            Console.WriteLine($"║  Effectiveness (against opponent): {special,-10}║");
+            Console.WriteLine($"║  Attack {i, -30} ");
+            Console.WriteLine($"║  Name: {attack.Name,-30}");
+            Console.WriteLine($"║  Damage: {attack.Damage,-30}");
+            Console.WriteLine($"║  Type: {attack.Type,-30}");
+            Console.WriteLine($"║  Effectiveness (against opponent): {special,-10}");
             Console.WriteLine("╚═════════════════════════════════╝");
             i++;
         }
