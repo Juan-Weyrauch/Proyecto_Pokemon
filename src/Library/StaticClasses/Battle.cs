@@ -88,7 +88,7 @@ public static class Battle
         Printer.ShowAttacks(attacker, receiver);
         
         // Let the player pick one.
-        int attackInput = Calculator.ValidateSelectionInGivenRange(1, 3);
+        int attackInput = Calculator.ValidateSelectionInGivenRange(1, 4);
         
         // We get the attack of the Pokémon
         IAttack attack = attacker.GetAttack(attackInput - 1); 
