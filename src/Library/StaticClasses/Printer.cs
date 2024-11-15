@@ -40,6 +40,18 @@ public static class Printer
     }
 
     /// <summary>
+    /// Recieves the winners name a displays a box indicating the winner.
+    /// </summary>
+    /// <param name="winner"></param>
+    public static void DisplayWinner(string winner)
+    {
+        Console.Clear();
+        Console.WriteLine( "╔══════════════════════════════════╗");
+        Console.WriteLine($"║    The winner is {winner}!!\t║");
+        Console.WriteLine( "╚══════════════════════════════════╝");
+    }
+
+    /// <summary>
     /// Sends a sign if the index is out of range.
     /// </summary>
     /// <param name="min"></param>
@@ -70,7 +82,7 @@ public static class Printer
     {
         Console.Clear();
         Console.WriteLine( "╔═══════════════════════════════════╗");
-        Console.WriteLine($"║        Your turn Player {name}         ║");
+        Console.WriteLine($"║        Your turn Player {name}\t║");
         Console.Write(     "╚═══════════════════════════════════╝ \n");
     }
 
@@ -253,12 +265,30 @@ public static class Printer
         Console.WriteLine("╚═════════════════════════════════╝");
     }
 
-    public static void Efectiveness(int value)
+    /// <summary>
+    /// This method prints to the usser the effectiveness after each attack.
+    /// Gets called in: Calculator.InfringeDamage()
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="attack"></param>
+    public static void Effectiveness(int value, IAttack attack)
     {
         // possible values = 0.0, 0.5, 2.0
         if (value == 0)
         {
-            Console.WriteLine();
+            Console.WriteLine($"Attack {attack} was ineffective! X0 Damage!");
+        }        
+        else if (value == 1)
+        {
+            Console.WriteLine($"Attack {attack} was used! x1 Damage!");
+        }        
+        else if (value == 2)
+        {
+            Console.WriteLine($"Attack {attack} was effective! X2 Damage!");
+        }
+        else if (value == 3)
+        {
+            Console.WriteLine($"Attack {attack} was slightly ineffective! X0.5 Damage!");
         }
     }
 }

@@ -74,6 +74,8 @@ public static class Calculator
     /// <returns></returns>
     public static int ValidateSelectionInGivenRange(int min, int max)
     {
+        
+        
         int number = 0;
         bool isValid = false;
 
@@ -105,8 +107,7 @@ public static class Calculator
         return number;
     }
 
-
-
+    
     public static int FirstTurnSelection()
     {
         //Always starts the player 1? Should it be random?
@@ -116,28 +117,49 @@ public static class Calculator
     }
 
     /// <summary>
+    /// This method checks if the player has any active Pokémon.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns>True if the player has Pokémon, False if not</returns>
+    public static bool HasActivePokemon(IPlayer player)
+    {
+        if (player.Pokemons.Count == 0) {
+            return false;
+        }
+        else return true;
+        
+    }
+    
+    // ================================== DO DAMAGE / INFRENGE DAMAGE SECTION ==================================
+
+    /// <summary>
     /// This class is responsible for:
-    ///     1) Accessing the players Pokémon,
-    ///     2) Determining the effectiveness of the attack used,
-    ///     3) Calling the 'InfringeDamage' method to effectuate the damage.
+    ///     1) Determining the effectiveness of the attack used,
     /// </summary>
     /// <param name="attack"></param>
     /// <param name="rival"></param>
-    public static int CalculateAttack(IAttack attack, IPokemon rival)
+    public static void InfringeDamage(IAttack attack, IPokemon rival)
     {
         //We've got the attack and the rival Pokémon, now we check for effectiveness (yes, again, the first one was for display of the Attacks)
-        double efectiveness = CheckEffectiveness(attack, rival);
-        if (efectiveness == 0.0)
-        {
-            Printer.Efectiveness(0);
-        }
-        else if (efectiveness == 0.5)
-        {
-            Printer.Efectiveness(1);
-        }
-        else if (efectiveness == 2.0)
-        {
-            Printer.Efectiveness(2);
-        }
+        double effectiveness = CheckEffectiveness(attack, rival);
+        int damage = (int)(attack.Damage * effectiveness); // By Typecasting the variable,
+                                                           // we ensure we don't get a double.
+    
+        DoDamage(damage, rival);
+
+        // Display the effectiveness to the user
+        Printer.Effectiveness((int)effectiveness, attack);
     }
+
+    /// <summary>
+    /// This method calculates the damage an infringes it on the rivals Pokémon
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="pokemon"></param>
+    private static void DoDamage(int damage, IPokemon pokemon)
+    {
+        int actualDamage = Math.Max(damage - pokemon.Defense, 0); // Ensures no negative damage
+        pokemon.Health -= actualDamage;
+    }
+    
 }
