@@ -1,7 +1,6 @@
+using System.Security.Cryptography;
 using Library.Classes;
 using Library.Interfaces;
-using Library.StaticClasses;
-
 namespace Library.StaticClasses;
 
 /// <summary>
@@ -9,11 +8,11 @@ namespace Library.StaticClasses;
 /// It includes turn selection, displaying the current player's options, 
 /// and delegating actions to the appropriate methods.
 ///
-/// You’re not actually re-creating the values; you’re simply
+/// You’re not re-creating the values; you’re simply
 /// accessing them as part of Battle.StartBattle. When you pass
 /// player1 and player2 to Battle, you’re passing the references to
 /// these Player objects. This means that Battle is using the same player
-/// instances created in Selections—it’s not making new copies of them.
+/// instances created in Facade—it’s not making new copies of them.
 /// </summary>
 public static class Battle
 {
@@ -22,29 +21,33 @@ public static class Battle
     /// </summary>
     public static void StartBattle()
     {
-
         Player currentPlayer = Player.Player1;
         Player opposingPlayer = Player.Player2;
 
-
-        // Continue looping while both players have at least one active Pokémon
-        
         while (Calculator.HasActivePokemon(currentPlayer) && Calculator.HasActivePokemon(opposingPlayer))
         {
-            // Perform the player's action
+            // Check if the current player's selected Pokémon is defeated
+            if (currentPlayer.SelectedPokemon.Health <= 0)
+            {
+                Printer.ForceSwitchMessage(currentPlayer.Name);
+                ForceSwitchPokemon(currentPlayer);
+            }
+
+            // Execute the player's turn
             PlayerAction(currentPlayer, opposingPlayer);
 
-            // Check if the battle should end (if any player's Pokémon died)
+            // Check if the opposing player has lost all Pokémon
             if (!Calculator.HasActivePokemon(opposingPlayer))
             {
-                Printer.DisplayWinner(currentPlayer.Name); // Announce the winner
+                Printer.DisplayWinner(currentPlayer.Name);
                 break;
             }
 
-            // Swap players for the next turn
+            // Swap turns
             (currentPlayer, opposingPlayer) = (opposingPlayer, currentPlayer);
         }
     }
+
     
 
     /// <summary>
@@ -52,18 +55,19 @@ public static class Battle
     /// </summary>
     private static void PlayerAction(IPlayer player, IPlayer rival)
     {
+        if (player.SelectedPokemon.Health <= 0)
+        {
+            // Safety check to ensure a defeated Pokémon is not used
+            Printer.ForceSwitchMessage(player.Name);
+            ForceSwitchPokemon(player);
+            return;
+        }
 
-        // Informar de quién es el turno y mostrar el Pokémon seleccionado
         Printer.YourTurn(player.Name);
-
-        // Mostrar las opciones disponibles para el jugador y la información del turno
         Printer.ShowTurnInfo(player, player.SelectedPokemon);
-
-        // Validar la elección del jugador
 
         int choice = Calculator.ValidateSelectionInGivenRange(1, 3);
 
-        // Ejecutar la acción basada en la elección del jugador
         switch (choice)
         {
             case 1:
@@ -73,10 +77,11 @@ public static class Battle
                 UseItem(player);
                 break;
             case 3:
-                SwitchPokemon(player);
+                VoluntarySwitchPokemon(player);
                 break;
         }
     }
+
 
 
 
@@ -114,15 +119,66 @@ public static class Battle
         //End: Returns to StartBattle
     }
 
+    /// <summary>
+    /// Method that allows the player to use an item.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="rival"></param>
+    /// <exception cref="NotImplementedException"></exception>
     private static void UseItem(IPlayer player)
     {
         // Logic for using an item from player's inventory
         throw new NotImplementedException();
     }
     
-    private static void SwitchPokemon(IPlayer player)
+    
+    /// <summary>
+    /// Method that allows to change the selected Pokémon. (Voluntarily)
+    /// </summary>
+    /// <param name="player"></param>
+    private static void VoluntarySwitchPokemon(IPlayer player)
     {
-        // Logic for switching Pokémon
-        throw new NotImplementedException();
+        List<IPokemon> pokemons = player.Pokemons;
+        // We show the inventory so that the player chooses a Pokémon
+        Printer.ShowInventory(player.Pokemons);
+        
+        // We ask the player for its input
+        int selectedPokemon;
+        do
+        {
+            selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
+        } while (player.Pokemons[selectedPokemon - 1].Health <= 0); // Ensure a usable Pokémon is chosen
+
+        player.SwitchPokemon(selectedPokemon);
+
+        Printer.ShowSelectedPokemon(player.SelectedPokemon, player.Name);
+        
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadLine();
     }
+
+    
+    /// <summary>
+    /// Method that allows to change the selected Pokémon. (Foreced by defeat of current pokeon)
+    /// </summary>
+    /// <param name="player"></param>
+    private static void ForceSwitchPokemon(IPlayer player)
+    {
+        List<IPokemon> pokemons = player.Pokemons;
+        Printer.ShowForceSwitchMessage(player.Name);
+        Printer.ShowInventory(player.Pokemons);
+
+        int selectedPokemon;
+        do
+        {
+            selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
+        } while (player.Pokemons[selectedPokemon - 1].Health <= 0); // Ensure a healthy Pokémon is chosen
+
+        player.SwitchPokemon(selectedPokemon);
+
+        Printer.ShowSelectedPokemon(player.SelectedPokemon, player.Name);
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadLine();
+    }
+
 }

@@ -107,7 +107,7 @@
             <param name="selectedPokemon"></param>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
-        <member name="M:Library.Classes.Player.SwitchPokemon(Library.IPokemon)">
+        <member name="M:Library.Classes.Player.SwitchPokemon(System.Int32)">
             <summary>
             Lets the PLAYER change ITS Pokémon.
             </summary>
@@ -166,7 +166,6 @@
             Initial health of the pokemon.
             </summary>
         </member>
-
         <member name="P:Library.Interfaces.IAttack.Name">
             <summary>
             Name of the attack
@@ -220,7 +219,7 @@
             </summary>
             <param name="itemChoice"></param>
         </member>
-        <member name="M:Library.Interfaces.IPlayer.SwitchPokemon(Library.IPokemon)">
+        <member name="M:Library.Interfaces.IPlayer.SwitchPokemon(System.Int32)">
             <summary>
             Changes the Selected Pokemon for a new IPokemon recieved 
             </summary>
@@ -303,15 +302,14 @@
              It includes turn selection, displaying the current player's options, 
              and delegating actions to the appropriate methods.
             
-             You’re not actually re-creating the values; you’re simply
+             You’re not re-creating the values; you’re simply
              accessing them as part of Battle.StartBattle. When you pass
              player1 and player2 to Battle, you’re passing the references to
              these Player objects. This means that Battle is using the same player
-             instances created in Selections—it’s not making new copies of them.
+             instances created in Facade—it’s not making new copies of them.
              </summary>
         </member>
         <member name="M:Library.StaticClasses.Battle.StartBattle">
-
             <summary>
             Starts the battle by selecting the turn order and guiding each player's actions.
             </summary>
@@ -327,6 +325,21 @@
                 1) Showing the available attacks to the player.
                 2) Calling the damage Calculator and storing that int.
                 3) Actually 'doing' the damage to the opponents selected Pokémon.
+            </summary>
+            <param name="player"></param>
+            <param name="rival"></param>
+        </member>
+        <member name="M:Library.StaticClasses.Battle.UseItem(Library.Interfaces.IPlayer,Library.Interfaces.IPlayer)">
+            <summary>
+            Method that allows the player to use an item.
+            </summary>
+            <param name="player"></param>
+            <param name="rival"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Library.StaticClasses.Battle.SwitchPokemon(Library.Interfaces.IPlayer,Library.Interfaces.IPlayer)">
+            <summary>
+            Method that allows to change the selected Pokémon.
             </summary>
             <param name="player"></param>
             <param name="rival"></param>
@@ -381,7 +394,6 @@
             <param name="attack"></param>
             <param name="rival"></param>
         </member>
-
         <member name="M:Library.StaticClasses.Calculator.DoDamage(System.Int32,Library.IPokemon)">
             <summary>
             This method calculates the damage and applies it to the rival's Pokémon.
@@ -389,7 +401,6 @@
             <param name="damage">The amount of damage inflicted.</param>
             <param name="pokemon">The Pokémon receiving the damage.</param>
         </member>
-
         <member name="T:Library.StaticClasses.Catalogue">
             <summary>
             This class receives a created Pokémon and adds it to its catalog.
@@ -545,7 +556,6 @@
             Prints the current and initial health of the Pokémon.
             </summary>
             <param name="pokemon">The Pokémon whose health will be shown.</param>
-
         </member>
         <member name="M:Library.StaticClasses.Printer.Effectiveness(System.Int32,Library.Interfaces.IAttack)">
             <summary>

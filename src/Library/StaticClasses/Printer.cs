@@ -369,4 +369,20 @@ public static class Printer
             Console.WriteLine($"Attack {attack} was slightly ineffective! X0.5 Damage!");
         }
     }
+    
+    public static void ForceSwitchMessage(string playerName)
+    {
+        Console.WriteLine($"{playerName}, your Pokémon has been defeated! You must switch to another Pokémon.");
+    }
+
+    public static void LoseTurnMessage(string playerName)
+    {
+        Console.WriteLine($"{playerName}, you have switched Pokémon and lost your turn!");
+    }
+
+    public static void ShowForceSwitchMessage(string playerName)
+    {
+        Console.WriteLine($"{playerName}, please select a new Pokémon to continue the battle.");
+    }
+
 }

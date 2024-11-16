@@ -143,9 +143,9 @@ public class Player : IPlayer
     /// Lets the PLAYER change ITS Pokémon.
     /// </summary>
     /// <param name="selectedPokemon"></param>
-    public void SwitchPokemon(IPokemon selectedPokemon)
+    public void SwitchPokemon(int pokemonChoice)
     {
-        SelectedPokemon = selectedPokemon;
+        SelectedPokemon = Pokemons[pokemonChoice];
     }
 
     public void UseItem(int itemChoice)
