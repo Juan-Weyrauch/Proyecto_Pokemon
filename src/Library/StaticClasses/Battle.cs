@@ -50,12 +50,16 @@ public static class Battle
     /// </summary>
     private static void PlayerAction(IPlayer player, IPlayer rival)
     {
+        // Informar de quién es el turno y mostrar el Pokémon seleccionado
         Printer.YourTurn(player.Name);
-        Printer.ShowTurnInfo(player);
-        // we ask and check if the value inputed is correct.
+
+        // Mostrar las opciones disponibles para el jugador y la información del turno
+        Printer.ShowTurnInfo(player, player.SelectedPokemon);
+
+        // Validar la elección del jugador
         int choice = Calculator.ValidateSelectionInGivenRange(1, 3);
-        
-        // depending on the user input, the route we take. 
+
+        // Ejecutar la acción basada en la elección del jugador
         switch (choice)
         {
             case 1:
@@ -67,9 +71,9 @@ public static class Battle
             case 3:
                 SwitchPokemon(player);
                 break;
-            // no need for default:, we use ValidateSelectionInGivenRange
         }
     }
+
 
     /// <summary>
     /// This method is responsible for:

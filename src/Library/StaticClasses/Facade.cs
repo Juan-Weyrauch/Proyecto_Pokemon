@@ -36,66 +36,60 @@ public static class Facade
 
     private static void Selections()
     {
-        //We create all the Pokémon here
+        // Crear el catálogo de Pokémon
         Catalogue.CreateCatalogue();
 
-        //We shall iterate for the two players
+        // Iterar por los dos jugadores
         for (int i = 0; i < 2; i++)
         {
             Console.Clear();
-            if (i == 0)
-            {
-                Printer.YourTurn("1");
-            }
-            else if (i == 1)
-            {
-                Printer.YourTurn("2");
-            }
+        
+            // Informar de quién es el turno
+            Printer.YourTurn((i + 1).ToString());  // Pasamos el número del jugador, pero no necesitamos el Pokémon para esta parte.
 
-            // The three things that the player has to input: Name, Pokémon, and a selected one
-            /*Name of the player*/
+            // Variables del jugador
             string playerName;
-            /*Player's Pokémon */
             List<IPokemon> playerPokemons = new List<IPokemon>();
-            /*Selected pokemon  */
             IPokemon selectedPokemon;
 
-            //ask for the name
+            // Solicitar nombre del jugador
             Printer.NameSelection();
             playerName = Console.ReadLine();
 
-            //show all Pokémon
+            // Mostrar todos los Pokémon disponibles
             Printer.ShowCatalogue(Catalogue.GetPokedex());
-            int playerSelection;
+
+            // Selección de los Pokémon del jugador
             for (int j = 0; j < 6; j++)
             {
-                Printer.AskForPokemon(j, playerName);
-                //let the user pick one and Validate it is within range 
-                playerSelection = Calculator.ValidateSelectionInGivenRange(1, 20);
-
-                //add it to the list of Pokémon
-                playerPokemons.Add(Catalogue.GetPokemon(playerSelection));
+                Printer.AskForPokemon(j + 1, playerName); // Mostrar mensaje para seleccionar Pokémon
+                int playerSelection = Calculator.ValidateSelectionInGivenRange(1, 20);
+                playerPokemons.Add(Catalogue.GetPokemon(playerSelection)); // Agregar Pokémon a la lista
             }
 
-            //let the user pick it's first Pokémon
+            // Selección del Pokémon inicial
             Printer.ShowInventory(playerPokemons);
             Console.Write("\nPick your starting Pokemon: \n> ");
-            playerSelection = Calculator.ValidateSelectionInGivenRange(1, 6);
-            selectedPokemon = playerPokemons[playerSelection - 1];
+            int starterSelection = Calculator.ValidateSelectionInGivenRange(1, 6);
+            selectedPokemon = playerPokemons[starterSelection - 1];
 
-            //Cretion of the two players:
+            // Crear jugadores en el sistema
             Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, i);
-            
         }
-        
-        // Access the singleton instances (if needed)
+
+        // Obtener las instancias de los jugadores
         Player player1 = Player.Player1;
         Player player2 = Player.Player2;
+
+        // Mostrar los Pokémon iniciales de ambos jugadores
         Printer.ShowSelectedPokemon(player1.SelectedPokemon, player1.Name);
         Printer.ShowSelectedPokemon(player2.SelectedPokemon, player2.Name);
-        
+
+        // Iniciar la batalla
         Battle.StartBattle(player1, player2);
     }
+
+
 
     private static void CreatePlayers(string playerName, List<IPokemon> playerPokemons, IPokemon selectedPokemon, int playerIndex)
     {

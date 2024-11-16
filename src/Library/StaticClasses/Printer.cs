@@ -253,11 +253,16 @@ public static class Printer
     /// <summary>
     /// Displays whose turn it is and prompts the player to choose an action.
     /// </summary>
-    public static void ShowTurnInfo(IPlayer player)
+    /// /// <summary>
+    /// Prints the current and initial health of the Pokémon.
+    /// </summary>
+    /// <param name="pokemon">The Pokémon whose health will be shown.</param>
+    public static void ShowTurnInfo(IPlayer player,IPokemon pokemon)
     {
         
         Console.WriteLine("╔═════════════════════════════════╗");
         Console.WriteLine($"║  {player.Name}'s turn!{"",-22}║");
+        Console.WriteLine($"║ {pokemon.Name,-25} Health: {pokemon.Health}/{pokemon.InitialHealth} ║");
         Console.WriteLine($"║  What would you like to do?     ║");
         Console.WriteLine($"║  1. Attack                      ║");
         Console.WriteLine($"║  2. Use Item                    ║");

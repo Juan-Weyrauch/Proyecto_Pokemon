@@ -12,25 +12,80 @@ namespace Library.StaticClasses;
 public static class Calculator
 {
 // Table of attacks.
-    private static readonly Dictionary<string, (List<string> Weaknesses, List<string> Resistances, List<string> Immunities)> EffectivenessTable = 
-        new Dictionary<string, (List<string>, List<string>, List<string>)>
-        {
-            { "Agua",(      new List<string> { "Eléctrico", "Planta" },                          new List<string> { "Agua", "Fuego", "Hielo" },                                    new List<string>()) },
-            { "Bicho",(     new List<string> { "Fuego", "Roca", "Volador", "Veneno" },           new List<string> { "Lucha", "Planta", "Tierra" },                                 new List<string>()) },
-            { "Dragón",(    new List<string> { "Dragón", "Hielo" },                              new List<string> { "Agua", "Eléctrico", "Fuego", "Planta" },                      new List<string>()) },
-            { "Eléctrico",( new List<string> { "Tierra" },                                       new List<string> { "Volador" },                                                   new List<string> { "Eléctrico" }) },
-            { "Fantasma",(  new List<string> { "Fantasma" },                                     new List<string> { "Veneno", "Lucha" },                                           new List<string> { "Normal" }) },
-            { "Fuego",(     new List<string> { "Agua", "Roca", "Tierra" },                       new List<string> { "Bicho", "Fuego", "Planta" },                                  new List<string>()) },
-            { "Hielo",(     new List<string> { "Fuego", "Lucha", "Roca" },                       new List<string> { "Hielo" },                                                     new List<string>()) },
-            { "Lucha",(     new List<string> { "Psíquico", "Volador", "Bicho", "Roca" },         new List<string>(),                                                               new List<string>()) },
-            { "Normal",(    new List<string> { "Lucha" },                                        new List<string>(),                                                               new List<string> { "Fantasma" }) },
-            { "Planta",(    new List<string> { "Bicho", "Fuego", "Hielo", "Veneno", "Volador" }, new List<string> { "Agua", "Eléctrico", "Planta", "Tierra" },                     new List<string>()) },
-            { "Psíquico",(  new List<string> { "Bicho", "Lucha", "Fantasma" },                   new List<string>(),                                                               new List<string>()) },
-            { "Roca",(      new List<string> { "Agua", "Lucha", "Planta", "Tierra" },            new List<string> { "Fuego", "Normal", "Veneno", "Volador" },                      new List<string>()) },
-            { "Tierra",(    new List<string> { "Agua", "Hielo", "Planta" },                      new List<string> { "Eléctrico" },                                                 new List<string>()) },
-            { "Veneno",(    new List<string> { "Psíquico", "Tierra" },                           new List<string> { "Bicho", "Planta", "Veneno" },                                 new List<string>()) },
-            { "Volador",(   new List<string> { "Eléctrico", "Hielo", "Roca" },                   new List<string> { "Bicho", "Lucha", "Planta" },                                  new List<string>()) }
-        };
+    private static readonly
+        Dictionary<string, (List<string> Weaknesses, List<string> Resistances, List<string> Immunities)>
+        EffectivenessTable =
+            new Dictionary<string, (List<string>, List<string>, List<string>)>
+            {
+                {
+                    "Agua",
+                    (new List<string> { "Eléctrico", "Planta" }, new List<string> { "Agua", "Fuego", "Hielo" },
+                        new List<string>())
+                },
+                {
+                    "Bicho",
+                    (new List<string> { "Fuego", "Roca", "Volador", "Veneno" },
+                        new List<string> { "Lucha", "Planta", "Tierra" }, new List<string>())
+                },
+                {
+                    "Dragón",
+                    (new List<string> { "Dragón", "Hielo" },
+                        new List<string> { "Agua", "Eléctrico", "Fuego", "Planta" }, new List<string>())
+                },
+                {
+                    "Eléctrico",
+                    (new List<string> { "Tierra" }, new List<string> { "Volador" }, new List<string> { "Eléctrico" })
+                },
+                {
+                    "Fantasma",
+                    (new List<string> { "Fantasma" }, new List<string> { "Veneno", "Lucha" },
+                        new List<string> { "Normal" })
+                },
+                {
+                    "Fuego",
+                    (new List<string> { "Agua", "Roca", "Tierra" }, new List<string> { "Bicho", "Fuego", "Planta" },
+                        new List<string>())
+                },
+                {
+                    "Hielo",
+                    (new List<string> { "Fuego", "Lucha", "Roca" }, new List<string> { "Hielo" }, new List<string>())
+                },
+                {
+                    "Lucha",
+                    (new List<string> { "Psíquico", "Volador", "Bicho", "Roca" }, new List<string>(),
+                        new List<string>())
+                },
+                { "Normal", (new List<string> { "Lucha" }, new List<string>(), new List<string> { "Fantasma" }) },
+                {
+                    "Planta",
+                    (new List<string> { "Bicho", "Fuego", "Hielo", "Veneno", "Volador" },
+                        new List<string> { "Agua", "Eléctrico", "Planta", "Tierra" }, new List<string>())
+                },
+                {
+                    "Psíquico",
+                    (new List<string> { "Bicho", "Lucha", "Fantasma" }, new List<string>(), new List<string>())
+                },
+                {
+                    "Roca",
+                    (new List<string> { "Agua", "Lucha", "Planta", "Tierra" },
+                        new List<string> { "Fuego", "Normal", "Veneno", "Volador" }, new List<string>())
+                },
+                {
+                    "Tierra",
+                    (new List<string> { "Agua", "Hielo", "Planta" }, new List<string> { "Eléctrico" },
+                        new List<string>())
+                },
+                {
+                    "Veneno",
+                    (new List<string> { "Psíquico", "Tierra" }, new List<string> { "Bicho", "Planta", "Veneno" },
+                        new List<string>())
+                },
+                {
+                    "Volador",
+                    (new List<string> { "Eléctrico", "Hielo", "Roca" }, new List<string> { "Bicho", "Lucha", "Planta" },
+                        new List<string>())
+                }
+            };
 
     /// <summary>
     /// Method that returns the numeric percentage of boost (or not) that the attack has on the opponent. 
@@ -41,7 +96,7 @@ public static class Calculator
     public static double GetEffectivenessMultiplier(string attackType, string pokemonType)
     {
         if (!EffectivenessTable.ContainsKey(attackType)) return 1.0;
-        
+
         //using var because: (yes, thanks).
         var (weaknesses, resistances, immunities) = EffectivenessTable[attackType];
 
@@ -51,7 +106,7 @@ public static class Calculator
 
         return 1.0; // Daño normal si no hay modificaciones
     }
-    
+
     /// <summary>
     /// Checks for effectiness in the attack recieved.
     /// It compares the attack type to the Pokémon type and returns a double value for the effectiveness.
@@ -63,7 +118,7 @@ public static class Calculator
     {
         return GetEffectivenessMultiplier(attack.Type, pokemon.Type);
     }
-    
+
     /// <summary>
     /// Function to validate that a number is in between two given values and checks if the input is an integer.
     /// This function also reads the number inputted, this is so that the 'asking'
@@ -74,8 +129,8 @@ public static class Calculator
     /// <returns></returns>
     public static int ValidateSelectionInGivenRange(int min, int max)
     {
-        
-        
+
+
         int number = 0;
         bool isValid = false;
 
@@ -107,7 +162,7 @@ public static class Calculator
         return number;
     }
 
-    
+
     public static int FirstTurnSelection()
     {
         //Always starts the player 1? Should it be random?
@@ -123,13 +178,14 @@ public static class Calculator
     /// <returns>True if the player has Pokémon, False if not</returns>
     public static bool HasActivePokemon(IPlayer player)
     {
-        if (player.Pokemons.Count == 0) {
+        if (player.Pokemons.Count == 0)
+        {
             return false;
         }
         else return true;
-        
+
     }
-    
+
     // ================================== DO DAMAGE / INFRENGE DAMAGE SECTION ==================================
 
     /// <summary>
@@ -143,8 +199,8 @@ public static class Calculator
         //We've got the attack and the rival Pokémon, now we check for effectiveness (yes, again, the first one was for display of the Attacks)
         double effectiveness = CheckEffectiveness(attack, rival);
         int damage = (int)(attack.Damage * effectiveness); // By Typecasting the variable,
-                                                           // we ensure we don't get a double.
-    
+        // we ensure we don't get a double.
+
         DoDamage(damage, rival);
 
         // Display the effectiveness to the user
@@ -152,14 +208,14 @@ public static class Calculator
     }
 
     /// <summary>
-    /// This method calculates the damage an infringes it on the rivals Pokémon
+    /// This method calculates the damage and applies it to the rival's Pokémon.
     /// </summary>
-    /// <param name="damage"></param>
-    /// <param name="pokemon"></param>
+    /// <param name="damage">The amount of damage inflicted.</param>
+    /// <param name="pokemon">The Pokémon receiving the damage.</param>
     private static void DoDamage(int damage, IPokemon pokemon)
     {
-        int actualDamage = Math.Max(damage - pokemon.Defense, 0); // Ensures no negative damage
-        pokemon.Health -= actualDamage;
+        int actualDamage = Math.Max(damage - pokemon.Defense, 0); // Ensure no negative damage
+        pokemon.Health = Math.Max(pokemon.Health - actualDamage, 0); // Ensure health doesn't go below 0
+        
     }
-    
 }

@@ -18,6 +18,11 @@ public interface IPokemon
     int Health { get; set; }
     
     /// <summary>
+    /// Initialhealth of the pokemon
+    /// </summary>
+    int InitialHealth { get; set; }
+    
+    /// <summary>
     /// The pokemon must have a defense status
     /// </summary>
     int Defense { get; set; }

@@ -43,11 +43,13 @@ public class Pokemon : IPokemon
     /// </summary>
     /// <param name="name"></param>
     /// <param name="health"></param>
+    /// <param name="initialhealth"></param>
     /// <param name="defense"></param>
     /// <param name="type"></param>
     /// <param name="atacks"></param>
     public Pokemon(string name, int defense, string type, List<IAttack> atacks)
     {
+        InitialHealth = 100;
         Name = name;
         Health = 100;
         Defense = defense;
@@ -64,7 +66,12 @@ public class Pokemon : IPokemon
     {
         return AtackList[index];
     }
-    
-    
-    
+
+    /// <summary>
+    /// Initial health of the pokemon.
+    /// </summary>
+    public int InitialHealth { get; set; }
+
+
+
 }
