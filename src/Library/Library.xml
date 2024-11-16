@@ -166,7 +166,6 @@
             Initial health of the pokemon.
             </summary>
         </member>
-
         <member name="P:Library.Interfaces.IAttack.Name">
             <summary>
             Name of the attack
@@ -298,20 +297,13 @@
             <returns>A list of attacks: three of the Pokémon's type and one random attack from another type.</returns>
         </member>
         <member name="T:Library.StaticClasses.Battle">
-             <summary>
-             Static class responsible for managing the battle between two players.
-             It includes turn selection, displaying the current player's options, 
-             and delegating actions to the appropriate methods.
-            
-             You’re not actually re-creating the values; you’re simply
-             accessing them as part of Battle.StartBattle. When you pass
-             player1 and player2 to Battle, you’re passing the references to
-             these Player objects. This means that Battle is using the same player
-             instances created in Selections—it’s not making new copies of them.
-             </summary>
+            <summary>
+            Static class responsible for managing the battle between two players.
+            It includes turn selection, displaying the current player's options, 
+            and delegating actions to the appropriate methods.
+            </summary>
         </member>
         <member name="M:Library.StaticClasses.Battle.StartBattle">
-
             <summary>
             Starts the battle by selecting the turn order and guiding each player's actions.
             </summary>
@@ -323,13 +315,8 @@
         </member>
         <member name="M:Library.StaticClasses.Battle.Attack(Library.Interfaces.IPlayer,Library.Interfaces.IPlayer)">
             <summary>
-            This method is responsible for:
-                1) Showing the available attacks to the player.
-                2) Calling the damage Calculator and storing that int.
-                3) Actually 'doing' the damage to the opponents selected Pokémon.
+            Handles the attack action, allowing the player to choose an attack and inflict damage.
             </summary>
-            <param name="player"></param>
-            <param name="rival"></param>
         </member>
         <member name="T:Library.StaticClasses.Calculator">
             <summary>
@@ -381,7 +368,6 @@
             <param name="attack"></param>
             <param name="rival"></param>
         </member>
-
         <member name="M:Library.StaticClasses.Calculator.DoDamage(System.Int32,Library.IPokemon)">
             <summary>
             This method calculates the damage and applies it to the rival's Pokémon.
@@ -389,7 +375,6 @@
             <param name="damage">The amount of damage inflicted.</param>
             <param name="pokemon">The Pokémon receiving the damage.</param>
         </member>
-
         <member name="T:Library.StaticClasses.Catalogue">
             <summary>
             This class receives a created Pokémon and adds it to its catalog.
@@ -545,7 +530,6 @@
             Prints the current and initial health of the Pokémon.
             </summary>
             <param name="pokemon">The Pokémon whose health will be shown.</param>
-
         </member>
         <member name="M:Library.StaticClasses.Printer.Effectiveness(System.Int32,Library.Interfaces.IAttack)">
             <summary>
