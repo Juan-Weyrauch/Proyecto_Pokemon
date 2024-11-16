@@ -77,14 +77,29 @@ public static class Printer
     /// <summary>
     /// Shows a box specifying who has to play
     /// </summary>
-    /// <param name="name"></param>
+    /// <param name="name">Name of the player whose turn it is.</param>
     public static void YourTurn(string name)
     {
         Console.Clear();
-        Console.WriteLine( "╔═══════════════════════════════════╗");
-        Console.WriteLine($"║        Your turn Player {name, -10}║");
-        Console.Write(     "╚═══════════════════════════════════╝ \n");
+    
+        // Calculate the box width based on the length of the player's name
+        int playerMessageLength = $"Your turn Player {name}".Length;
+        int boxWidth = playerMessageLength + 4; // Add space for borders and padding
+
+        // Construction of the top and bottom borders for the box
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Create the message with the player's name, ensuring it's centered
+        string playerMessage = $"Your turn Player {name}";
+        string centeredMessage = $"║ {playerMessage.PadRight(boxWidth - 4)} ║"; // Adjust padding based on box width
+
+        // Print the box
+        Console.WriteLine(topBorder);
+        Console.WriteLine(centeredMessage);
+        Console.WriteLine(bottomBorder);
     }
+
 
     /// <summary>
     /// This method has to show the player all the Pokémon available for selection in a fashion manner.
@@ -113,7 +128,24 @@ public static class Printer
         {
             PrintRow(boxes);
         }
+
+        // Ensure that each box is properly closed (this will print the bottom border)
+        CloseBoxes(boxes);
     }
+
+    /// <summary>
+    /// Closes each Pokémon box with the bottom border.
+    /// </summary>
+    /// <param name="boxes">The list of Pokémon box strings to be closed.</param>
+    private static void CloseBoxes(List<string[]> boxes)
+    {
+        foreach (var box in boxes)
+        {
+            // Print the bottom border for each box
+            Console.WriteLine(box[box.Length - 1]); // The last line in each box is the bottom border
+        }
+    }
+
 
     /// <summary>
     /// Formats a Pokémon entry as an array of strings representing each line of the box.
@@ -137,20 +169,24 @@ public static class Printer
     /// </summary>
     /// <param name="boxes">List of box lines for the row.</param>
     private static void PrintRow(List<string[]> boxes)
+{
+    // Imprime cada línea de las cajas en secuencia para todas las cajas en la fila
+    for (int i = 0; i < boxes[0].Length; i++)
     {
-        // Print each line of the boxes in sequence for all boxes in the row
-        for (int i = 0; i < boxes[0].Length; i++)
+        foreach (var box in boxes)
         {
-            foreach (var box in boxes)
-            {
-                Console.Write(box[i] + "  "); // Print each line of the box directly, without added spaces
-            }
-
-            Console.WriteLine(); // Move to the next line for the row
+            // Imprime cada línea de la caja directamente, sin espacios adicionales
+            Console.Write(box[i]);
         }
 
-        Console.WriteLine(); // Extra space between rows
+        // Mueve a la siguiente línea después de imprimir una fila de cajas
+        Console.WriteLine();
     }
+
+    // Imprime una línea adicional solo si es necesario (esto se podría eliminar si no es deseado)
+    Console.WriteLine();
+}
+
 
 
     /// <summary>
@@ -198,7 +234,7 @@ public static class Printer
     private static void PrintInventoryHeader()
     {
         string top = "╔════════════════════════════════════════════════════════════════════════════════════════════╗";
-        string title = "║                                      Your Inventory                                        ║";
+        string title = "║                                      Your Team                                             ║";
         string bottom = "╚════════════════════════════════════════════════════════════════════════════════════════════╝";
     
         Console.WriteLine(top);
@@ -208,14 +244,26 @@ public static class Printer
 
     public static void ShowSelectedPokemon(IPokemon pokemon, string name)
     {
-        Console.WriteLine("╔═══════════════════════════════════╗");
-        Console.WriteLine($"║  This is your pokemon {name}!\t║");
-        Console.WriteLine("╚══════════════════════════════════╝");
-        Console.WriteLine("╔═══════════════════════════════════╗");
-        Console.WriteLine($"║    Name: {pokemon.Name}\t\t║");
-        Console.WriteLine($"║    Life: {pokemon.Health}/100\t\t    ║");
-        Console.WriteLine("╚══════════════════════════════════╝");
+        // Calculate the width based on the longest line
+        string line1 = $"This is your pokemon {name}!";
+        string line2 = $"Name: {pokemon.Name}";
+        string line3 = $"Life: {pokemon.Health}/100";
+
+        // Find the longest line
+        int boxWidth = Math.Max(Math.Max(line1.Length, line2.Length), line3.Length) + 4; // Adding 4 for padding/borders
+
+        // Create the top and bottom borders based on the calculated box width
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Print the box
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
     }
+
 
     /// <summary>
     /// Show the attacks of each Pokémon, displaying if they are special, the damage they deal, and their effectiveness.
@@ -257,18 +305,39 @@ public static class Printer
     /// Prints the current and initial health of the Pokémon.
     /// </summary>
     /// <param name="pokemon">The Pokémon whose health will be shown.</param>
-    public static void ShowTurnInfo(IPlayer player,IPokemon pokemon)
+    public static void ShowTurnInfo(IPlayer player, IPokemon pokemon)
     {
-        
-        Console.WriteLine("╔═════════════════════════════════╗");
-        Console.WriteLine($"║  {player.Name}'s turn!{"",-22}║");
-        Console.WriteLine($"║ {pokemon.Name,-25} Health: {pokemon.Health}/{pokemon.InitialHealth} ║");
-        Console.WriteLine($"║  What would you like to do?     ║");
-        Console.WriteLine($"║  1. Attack                      ║");
-        Console.WriteLine($"║  2. Use Item                    ║");
-        Console.WriteLine($"║  3. Switch Pokémon              ║");
-        Console.WriteLine("╚═════════════════════════════════╝");
+        // Determina el texto más largo
+        string line1 = $"{player.Name}'s turn!";
+        string line2 = $"{pokemon.Name} Health: {pokemon.Health}/{pokemon.InitialHealth}";
+        string line3 = "What would you like to do?";
+        string line4 = "1. Attack";
+        string line5 = "2. Use Item";
+        string line6 = "3. Switch Pokémon";
+
+        // Calcula el ancho del cuadro basado en el texto más largo
+        int maxLength = Math.Max(Math.Max(line1.Length, line2.Length), Math.Max(line3.Length, Math.Max(line4.Length, Math.Max(line5.Length, line6.Length))));
+        int boxWidth = maxLength + 4; // Añade espacio para los bordes y una separación adicional.
+
+        // Construcción del cuadro
+        string topBorder = $"╔{new string('═', boxWidth)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth)}╝";
+
+        // Imprime el cuadro con las líneas centradas
+        Console.WriteLine(topBorder);
+
+        // Asegurando que el nombre del jugador esté correctamente alineado
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 2)} ║");  // Restamos 2 para los bordes
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 2)} ║");
+        Console.WriteLine($"║ {line3.PadRight(boxWidth - 2)} ║");
+        Console.WriteLine($"║ {line4.PadRight(boxWidth - 2)} ║");
+        Console.WriteLine($"║ {line5.PadRight(boxWidth - 2)} ║");
+        Console.WriteLine($"║ {line6.PadRight(boxWidth - 2)} ║");
+
+        Console.WriteLine(bottomBorder);
     }
+
+
 
     /// <summary>
     /// This method prints to the usser the effectiveness after each attack.

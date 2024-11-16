@@ -481,12 +481,18 @@
             <summary>
             Shows a box specifying who has to play
             </summary>
-            <param name="name"></param>
+            <param name="name">Name of the player whose turn it is.</param>
         </member>
         <member name="M:Library.StaticClasses.Printer.ShowCatalogue(System.Collections.Generic.Dictionary{System.Int32,Library.IPokemon})">
             <summary>
             This method has to show the player all the Pokémon available for selection in a fashion manner.
             </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.CloseBoxes(System.Collections.Generic.List{System.String[]})">
+            <summary>
+            Closes each Pokémon box with the bottom border.
+            </summary>
+            <param name="boxes">The list of Pokémon box strings to be closed.</param>
         </member>
         <member name="M:Library.StaticClasses.Printer.FormatPokemonBox(System.Int32,System.String,System.Int32)">
             <summary>
