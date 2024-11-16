@@ -166,7 +166,6 @@
             Initial health of the pokemon.
             </summary>
         </member>
-
         <member name="P:Library.Interfaces.IAttack.Name">
             <summary>
             Name of the attack
@@ -311,7 +310,6 @@
              </summary>
         </member>
         <member name="M:Library.StaticClasses.Battle.StartBattle">
-
             <summary>
             Starts the battle by selecting the turn order and guiding each player's actions.
             </summary>
@@ -381,7 +379,6 @@
             <param name="attack"></param>
             <param name="rival"></param>
         </member>
-
         <member name="M:Library.StaticClasses.Calculator.DoDamage(System.Int32,Library.IPokemon)">
             <summary>
             This method calculates the damage and applies it to the rival's Pokémon.
@@ -389,7 +386,6 @@
             <param name="damage">The amount of damage inflicted.</param>
             <param name="pokemon">The Pokémon receiving the damage.</param>
         </member>
-
         <member name="T:Library.StaticClasses.Catalogue">
             <summary>
             This class receives a created Pokémon and adds it to its catalog.
@@ -545,7 +541,6 @@
             Prints the current and initial health of the Pokémon.
             </summary>
             <param name="pokemon">The Pokémon whose health will be shown.</param>
-
         </member>
         <member name="M:Library.StaticClasses.Printer.Effectiveness(System.Int32,Library.Interfaces.IAttack)">
             <summary>
