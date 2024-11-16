@@ -309,7 +309,7 @@
              instances created in Selections—it’s not making new copies of them.
              </summary>
         </member>
-        <member name="M:Library.StaticClasses.Battle.StartBattle(Library.Classes.Player,Library.Classes.Player)">
+        <member name="M:Library.StaticClasses.Battle.StartBattle">
             <summary>
             Starts the battle by selecting the turn order and guiding each player's actions.
             </summary>

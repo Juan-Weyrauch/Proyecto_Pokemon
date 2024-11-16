@@ -20,10 +20,10 @@ public static class Battle
     /// <summary>
     /// Starts the battle by selecting the turn order and guiding each player's actions.
     /// </summary>
-    public static void StartBattle(Player player1, Player player2)
+    public static void StartBattle()
     {
-        Player currentPlayer = player1;
-        Player opposingPlayer = player2;
+        Player currentPlayer = Player.Player1;
+        Player opposingPlayer = Player.Player2;
 
         // Continue looping while both players have at least one active Pokémon
         
