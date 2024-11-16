@@ -93,6 +93,8 @@ public static class Facade
         Player player2 = Player.Player2;
         Printer.ShowSelectedPokemon(player1.SelectedPokemon, player1.Name);
         Printer.ShowSelectedPokemon(player2.SelectedPokemon, player2.Name);
+        
+        Battle.StartBattle(player1, player2);
     }
 
     private static void CreatePlayers(string playerName, List<IPokemon> playerPokemons, IPokemon selectedPokemon, int playerIndex)

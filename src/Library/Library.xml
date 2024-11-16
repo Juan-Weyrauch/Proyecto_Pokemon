@@ -6,7 +6,7 @@
     <members>
         <member name="T:Library.Classes.Attack">
             <summary>
-            This are the attacks.
+            These are the attacks.
             </summary>
         </member>
         <member name="P:Library.Classes.Attack.Name">
@@ -107,32 +107,43 @@
             <param name="selectedPokemon"></param>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
-        <member name="P:Library.Pokemon.Name">
+        <member name="M:Library.Classes.Player.SwitchPokemon(Library.IPokemon)">
+            <summary>
+            Lets the PLAYER change ITS Pokémon.
+            </summary>
+            <param name="selectedPokemon"></param>
+        </member>
+        <member name="T:Library.Classes.Pokemon">
+            <summary>
+            Pokemon class.
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Pokemon.Name">
             <summary>
             Name for pokemons
             </summary>
         </member>
-        <member name="P:Library.Pokemon.Health">
+        <member name="P:Library.Classes.Pokemon.Health">
             <summary>
             Health of the pokemon
             </summary>
         </member>
-        <member name="P:Library.Pokemon.Defense">
+        <member name="P:Library.Classes.Pokemon.Defense">
             <summary>
             The pokemon must have a defense status
             </summary>
         </member>
-        <member name="P:Library.Pokemon.Type">
+        <member name="P:Library.Classes.Pokemon.Type">
             <summary>
             Sets the type of the pokemon
             </summary>
         </member>
-        <member name="P:Library.Pokemon.AtackList">
+        <member name="P:Library.Classes.Pokemon.AtackList">
             <summary>
             A list of all the attacks that the pokemon has 
             </summary>
         </member>
-        <member name="M:Library.Pokemon.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.List{Library.Interfaces.IAttack})">
+        <member name="M:Library.Classes.Pokemon.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.List{Library.Interfaces.IAttack})">
             <summary>
             Constructor for the class Pokemon
             </summary>
@@ -141,6 +152,13 @@
             <param name="defense"></param>
             <param name="type"></param>
             <param name="atacks"></param>
+        </member>
+        <member name="M:Library.Classes.Pokemon.GetAttack(System.Int32)">
+            <summary>
+            Returns the attack selected by the player
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
         </member>
         <member name="P:Library.Interfaces.IAttack.Name">
             <summary>
@@ -162,6 +180,44 @@
             Sets the type of the attack.
             We use this to check for effectiveness against other Pokémon types.
             </summary>
+        </member>
+        <member name="P:Library.Interfaces.IPlayer.Name">
+            <summary>
+            Sets the name of the player
+            </summary>
+        </member>
+        <member name="P:Library.Interfaces.IPlayer.Pokemons">
+            <summary>
+            A list containing all the players Pokémon.
+            </summary>
+        </member>
+        <member name="P:Library.Interfaces.IPlayer.Potions">
+            <summary>
+            A list containing all the players potions.
+            This list gets updated along the Battle to remove Items that have already been used.
+            </summary>
+        </member>
+        <member name="P:Library.Interfaces.IPlayer.SelectedPokemon">
+            <summary>
+            IPokemon type to determine the Selected Pokémon of the player.
+            </summary>
+        </member>
+        <member name="P:Library.Interfaces.IPlayer.Turn">
+            <summary>
+            Integer used for cooldown in the attacks of the Pokémon.
+            </summary>
+        </member>
+        <member name="M:Library.Interfaces.IPlayer.UseItem(System.Int32)">
+            <summary>
+            Methid that lets the user use an Item on the selected Pokémon (or on any, we'll see.) 
+            </summary>
+            <param name="itemChoice"></param>
+        </member>
+        <member name="M:Library.Interfaces.IPlayer.SwitchPokemon(Library.IPokemon)">
+            <summary>
+            Changes the Selected Pokemon for a new IPokemon recieved 
+            </summary>
+            <param name="newPokemonIndex"></param>
         </member>
         <member name="T:Library.Interfaces.IPotions">
             <summary>
@@ -227,12 +283,40 @@
             Generates a random list of attacks for the specified Pokémon type.
             </summary>
             <param name="type">The type of Pokémon.</param>
-            <returns>A list of attacks specific to the type.</returns>
+            <returns>A list of attacks: three of the Pokémon's type and one random attack from another type.</returns>
         </member>
-        <member name="M:Library.StaticClasses.AttackGenerator.GenerateAttackList(System.String,System.String,System.String,System.String)">
+        <member name="T:Library.StaticClasses.Battle">
+             <summary>
+             Static class responsible for managing the battle between two players.
+             It includes turn selection, displaying the current player's options, 
+             and delegating actions to the appropriate methods.
+            
+             You’re not actually re-creating the values; you’re simply
+             accessing them as part of Battle.StartBattle. When you pass
+             player1 and player2 to Battle, you’re passing the references to
+             these Player objects. This means that Battle is using the same player
+             instances created in Selections—it’s not making new copies of them.
+             </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Battle.StartBattle(Library.Classes.Player,Library.Classes.Player)">
             <summary>
-            Helper method to create an attack list based on the type and attack names.
+            Starts the battle by selecting the turn order and guiding each player's actions.
             </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Battle.PlayerAction(Library.Interfaces.IPlayer,Library.Interfaces.IPlayer)">
+            <summary>
+            Handles the selected action for the current player's turn.
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Battle.Attack(Library.Interfaces.IPlayer,Library.Interfaces.IPlayer)">
+            <summary>
+            This method is responsible for:
+                1) Showing the available attacks to the player.
+                2) Calling the damage Calculator and storing that int.
+                3) Actually 'doing' the damage to the opponents selected Pokémon.
+            </summary>
+            <param name="player"></param>
+            <param name="rival"></param>
         </member>
         <member name="T:Library.StaticClasses.Calculator">
             <summary>
@@ -259,14 +343,30 @@
             <param name="pokemon"></param>
             <returns></returns>
         </member>
-        <member name="M:Library.StaticClasses.Calculator.ValidateSelectionInGivenRange(System.Int32,System.Int32,System.Int32)">
+        <member name="M:Library.StaticClasses.Calculator.ValidateSelectionInGivenRange(System.Int32,System.Int32)">
             <summary>
-            Function to validate that a number is in between two given values
+            Function to validate that a number is in between two given values and checks if the input is an integer.
+            This function also reads the number inputted, this is so that the 'asking'
+            and the 'validation' can happen in the same line.
             </summary>
-            <param name="number"></param>
             <param name="min"></param>
             <param name="max"></param>
             <returns></returns>
+        </member>
+        <member name="M:Library.StaticClasses.Calculator.HasActivePokemon(Library.Interfaces.IPlayer)">
+            <summary>
+            This method checks if the player has any active Pokémon.
+            </summary>
+            <param name="player"></param>
+            <returns>True if the player has Pokémon, False if not</returns>
+        </member>
+        <member name="M:Library.StaticClasses.Calculator.InfringeDamage(Library.Interfaces.IAttack,Library.IPokemon)">
+            <summary>
+            This class is responsible for:
+                1) Determining the effectiveness of the attack used,
+            </summary>
+            <param name="attack"></param>
+            <param name="rival"></param>
         </member>
         <member name="T:Library.StaticClasses.Catalogue">
             <summary>
@@ -341,6 +441,12 @@
             Prints the end of the game when you select to leave at the beginning 
             </summary>
         </member>
+        <member name="M:Library.StaticClasses.Printer.DisplayWinner(System.String)">
+            <summary>
+            Recieves the winners name a displays a box indicating the winner.
+            </summary>
+            <param name="winner"></param>
+        </member>
         <member name="M:Library.StaticClasses.Printer.IndexOutOfRange(System.Int32,System.Int32)">
             <summary>
             Sends a sign if the index is out of range.
@@ -402,6 +508,19 @@
             </summary>
             <param name="attacker">The Pokémon whose attacks will be displayed.</param>
             <param name="receiver">The Pokémon that will receive the attack.</param>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.ShowTurnInfo(Library.Interfaces.IPlayer)">
+            <summary>
+            Displays whose turn it is and prompts the player to choose an action.
+            </summary>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.Effectiveness(System.Int32,Library.Interfaces.IAttack)">
+            <summary>
+            This method prints to the usser the effectiveness after each attack.
+            Gets called in: Calculator.InfringeDamage()
+            </summary>
+            <param name="value"></param>
+            <param name="attack"></param>
         </member>
         <member name="T:Library.Train">
             <summary>

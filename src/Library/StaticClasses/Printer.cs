@@ -40,6 +40,18 @@ public static class Printer
     }
 
     /// <summary>
+    /// Recieves the winners name a displays a box indicating the winner.
+    /// </summary>
+    /// <param name="winner"></param>
+    public static void DisplayWinner(string winner)
+    {
+        Console.Clear();
+        Console.WriteLine( "╔══════════════════════════════════╗");
+        Console.WriteLine($"║    The winner is {winner}!!\t║");
+        Console.WriteLine( "╚══════════════════════════════════╝");
+    }
+
+    /// <summary>
     /// Sends a sign if the index is out of range.
     /// </summary>
     /// <param name="min"></param>
@@ -70,7 +82,7 @@ public static class Printer
     {
         Console.Clear();
         Console.WriteLine( "╔═══════════════════════════════════╗");
-        Console.WriteLine($"║        Your turn Player {name}         ║");
+        Console.WriteLine($"║        Your turn Player {name, -10}║");
         Console.Write(     "╚═══════════════════════════════════╝ \n");
     }
 
@@ -214,7 +226,7 @@ public static class Printer
     {
         // Display header box for the Pokémon's attacks
         Console.WriteLine("╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║     Attacks of {attacker.Name}\t║");
+        Console.WriteLine($"║     Attacks of {attacker.Name,-20}\t║");
         Console.WriteLine("╚═══════════════════════════════════════╝");
 
         int i = 1;
@@ -224,13 +236,13 @@ public static class Printer
             double special = Calculator.CheckEffectiveness(attack, receiver);
             
             // Display each attack's details in a box format.
-            Console.WriteLine("╔═════════════════════════════════╗");
-            Console.WriteLine($"║  Attack {i, -30} ║");
-            Console.WriteLine($"║  Name: {attack.Name,-30}║");
-            Console.WriteLine($"║  Damage: {attack.Damage,-30}║");
-            Console.WriteLine($"║  Type: {attack.Type,-30}║");
-            Console.WriteLine($"║  Effectiveness (against opponent): {special,-10}║");
-            Console.WriteLine("╚═════════════════════════════════╝");
+            Console.WriteLine("╔═══════════════════════════════════════╗");
+            Console.WriteLine($"║  Attack {i, -29} ║");
+            Console.WriteLine($"║  Name: {attack.Name,-31}║");
+            Console.WriteLine($"║  Damage: {attack.Damage,-29}║");
+            Console.WriteLine($"║  Type: {attack.Type,-31}║");
+            Console.WriteLine($"║  Effectiveness (against opponent): {special,-3}║");
+            Console.WriteLine("╚═══════════════════════════════════════╝");
             i++;
         }
 
@@ -245,7 +257,7 @@ public static class Printer
     {
         
         Console.WriteLine("╔═════════════════════════════════╗");
-        Console.WriteLine($"║  {player.Name, -18}'s turn!║");
+        Console.WriteLine($"║  {player.Name}'s turn!{"",-22}║");
         Console.WriteLine($"║  What would you like to do?     ║");
         Console.WriteLine($"║  1. Attack                      ║");
         Console.WriteLine($"║  2. Use Item                    ║");
@@ -253,12 +265,30 @@ public static class Printer
         Console.WriteLine("╚═════════════════════════════════╝");
     }
 
-    public static void Efectiveness(int value)
+    /// <summary>
+    /// This method prints to the usser the effectiveness after each attack.
+    /// Gets called in: Calculator.InfringeDamage()
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="attack"></param>
+    public static void Effectiveness(int value, IAttack attack)
     {
         // possible values = 0.0, 0.5, 2.0
         if (value == 0)
         {
-            Console.WriteLine();
+            Console.WriteLine($"Attack {attack} was ineffective! X0 Damage!");
+        }        
+        else if (value == 1)
+        {
+            Console.WriteLine($"Attack {attack} was used! x1 Damage!");
+        }        
+        else if (value == 2)
+        {
+            Console.WriteLine($"Attack {attack} was effective! X2 Damage!");
+        }
+        else if (value == 3)
+        {
+            Console.WriteLine($"Attack {attack} was slightly ineffective! X0.5 Damage!");
         }
     }
 }

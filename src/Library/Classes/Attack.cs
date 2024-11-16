@@ -43,15 +43,4 @@ public class Attack : IAttack
         Special = special;
         Type = type;
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="attack"></param>
-    /// <param name="enemy"></param>
-    /// <returns></returns>
-    public static double IsEffective(IAttack attack, IPokemon enemy)
-    {
-        return Calculator.CheckEffectiveness(attack, enemy);
-    }
 }
