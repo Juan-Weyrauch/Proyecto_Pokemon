@@ -20,7 +20,7 @@ public static class Battle
     /// <summary>
     /// Starts the battle by selecting the turn order and guiding each player's actions.
     /// </summary>
-    public static void StartBattle(Player player1, Player player2)
+    public static void StartBattle()
     {
 
         Player currentPlayer = Player.Player1;
