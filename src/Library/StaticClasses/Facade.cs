@@ -85,8 +85,10 @@ public static class Facade
         Printer.ShowSelectedPokemon(player1.SelectedPokemon, player1.Name);
         Printer.ShowSelectedPokemon(player2.SelectedPokemon, player2.Name);
 
+
         // Iniciar la batalla
         Battle.StartBattle();
+
     }
 
 

@@ -20,10 +20,12 @@ public static class Battle
     /// <summary>
     /// Starts the battle by selecting the turn order and guiding each player's actions.
     /// </summary>
-    public static void StartBattle()
+    public static void StartBattle(Player player1, Player player2)
     {
+
         Player currentPlayer = Player.Player1;
         Player opposingPlayer = Player.Player2;
+
 
         // Continue looping while both players have at least one active Pokémon
         
@@ -50,6 +52,7 @@ public static class Battle
     /// </summary>
     private static void PlayerAction(IPlayer player, IPlayer rival)
     {
+
         // Informar de quién es el turno y mostrar el Pokémon seleccionado
         Printer.YourTurn(player.Name);
 
@@ -57,6 +60,7 @@ public static class Battle
         Printer.ShowTurnInfo(player, player.SelectedPokemon);
 
         // Validar la elección del jugador
+
         int choice = Calculator.ValidateSelectionInGivenRange(1, 3);
 
         // Ejecutar la acción basada en la elección del jugador
@@ -73,6 +77,7 @@ public static class Battle
                 break;
         }
     }
+
 
 
     /// <summary>
@@ -93,6 +98,7 @@ public static class Battle
         
         // Let the player pick one.
         int attackInput = Calculator.ValidateSelectionInGivenRange(1, 4);
+
         
         // We get the attack of the Pokémon
         IAttack attack = attacker.GetAttack(attackInput - 1); 
@@ -104,6 +110,7 @@ public static class Battle
         Printer.ShowSelectedPokemon(attacker, player.Name);
         Printer.ShowSelectedPokemon(receiver, rival.Name);
         
+
         //End: Returns to StartBattle
     }
 

@@ -81,6 +81,7 @@ public static class Printer
     public static void YourTurn(string name)
     {
         Console.Clear();
+
     
         // Calculate the box width based on the length of the player's name
         int playerMessageLength = $"Your turn Player {name}".Length;
@@ -98,6 +99,7 @@ public static class Printer
         Console.WriteLine(topBorder);
         Console.WriteLine(centeredMessage);
         Console.WriteLine(bottomBorder);
+
     }
 
 
@@ -307,6 +309,7 @@ public static class Printer
     /// <param name="pokemon">The Pokémon whose health will be shown.</param>
     public static void ShowTurnInfo(IPlayer player, IPokemon pokemon)
     {
+
         // Determina el texto más largo
         string line1 = $"{player.Name}'s turn!";
         string line2 = $"{pokemon.Name} Health: {pokemon.Health}/{pokemon.InitialHealth}";
@@ -336,6 +339,7 @@ public static class Printer
 
         Console.WriteLine(bottomBorder);
     }
+
 
 
 

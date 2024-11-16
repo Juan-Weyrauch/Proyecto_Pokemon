@@ -130,7 +130,6 @@ public static class Calculator
     public static int ValidateSelectionInGivenRange(int min, int max)
     {
 
-
         int number = 0;
         bool isValid = false;
 
@@ -162,7 +161,6 @@ public static class Calculator
         return number;
     }
 
-
     public static int FirstTurnSelection()
     {
         //Always starts the player 1? Should it be random?
@@ -178,6 +176,7 @@ public static class Calculator
     /// <returns>True if the player has Pokémon, False if not</returns>
     public static bool HasActivePokemon(IPlayer player)
     {
+
         if (player.Pokemons.Count == 0)
         {
             return false;
@@ -185,6 +184,7 @@ public static class Calculator
         else return true;
 
     }
+
 
     // ================================== DO DAMAGE / INFRENGE DAMAGE SECTION ==================================
 
@@ -199,12 +199,15 @@ public static class Calculator
         //We've got the attack and the rival Pokémon, now we check for effectiveness (yes, again, the first one was for display of the Attacks)
         double effectiveness = CheckEffectiveness(attack, rival);
         int damage = (int)(attack.Damage * effectiveness); // By Typecasting the variable,
+
         // we ensure we don't get a double.
+
 
         DoDamage(damage, rival);
 
         // Display the effectiveness to the user
         Printer.Effectiveness((int)effectiveness, attack);
+
     }
 
     /// <summary>
