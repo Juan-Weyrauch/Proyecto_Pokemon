@@ -368,13 +368,6 @@
             <param name="attack"></param>
             <param name="rival"></param>
         </member>
-        <member name="M:Library.StaticClasses.Calculator.DoDamage(System.Int32,Library.IPokemon)">
-            <summary>
-            This method calculates the damage an infringes it on the rivals Pokémon
-            </summary>
-            <param name="damage"></param>
-            <param name="pokemon"></param>
-        </member>
         <member name="T:Library.StaticClasses.Catalogue">
             <summary>
             This class receives a created Pokémon and adds it to its catalog.
