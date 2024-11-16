@@ -160,7 +160,7 @@ public static class Printer
     /// <param name="name"></param>
     public static void AskForPokemon(int index, string name)
     {
-        Console.Write($"{name}! Pick your Pokemon N°{index + 1}: ");
+        Console.Write($"{name}! Pick your Pokemon N°{index }: ");
         Console.WriteLine("");
     }
 
