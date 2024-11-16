@@ -86,7 +86,7 @@ public static class Battle
     private static void Attack(IPlayer player, IPlayer rival)
     {
         IPokemon attacker = player.SelectedPokemon;
-        IPokemon receiver = player.SelectedPokemon;
+        IPokemon receiver = rival.SelectedPokemon;
         
         //1) Display the available attacks:
         Printer.ShowAttacks(attacker, receiver);
