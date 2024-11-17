@@ -7,14 +7,12 @@ namespace Library.StaticClasses;
 /// Static class responsible for managing the battle between two players.
 /// It includes turn selection, displaying the current player's options, 
 /// and delegating actions to the appropriate methods.
-
 ///
 /// You’re not re-creating the values; you’re simply
 /// accessing them as part of Battle.StartBattle. When you pass
 /// player1 and player2 to Battle, you’re passing the references to
 /// these Player objects. This means that Battle is using the same player
 /// instances created in Facade—it’s not making new copies of them.
-
 /// </summary>
 public static class Battle
 {
@@ -26,7 +24,6 @@ public static class Battle
         Player currentPlayer = Player.Player1;
         Player opposingPlayer = Player.Player2;
 
- 
         while (Calculator.HasActivePokemon(currentPlayer) && Calculator.HasActivePokemon(opposingPlayer))
         {
             if (currentPlayer.SelectedPokemon.Health <= 0)
@@ -45,20 +42,10 @@ public static class Battle
             // Ejecutar acción del jugador si no cambió Pokémon
             PlayerAction(currentPlayer, opposingPlayer);
 
-
-            // Check if the opposing player has no Pokémon left
             if (!Calculator.HasActivePokemon(opposingPlayer))
             {
-                Printer.DisplayWinner(currentPlayer.Name); // Announce the winner
-                return; // Exit the battle loop
-            }
-
-            // Check if the current player has no Pokémon left (redundant for symmetry, unlikely to occur here)
-            if (!Calculator.HasActivePokemon(currentPlayer))
-            {
-                Printer.DisplayWinner(opposingPlayer.Name); // Announce the winner
-                return; // Exit the battle loop
-
+                Printer.DisplayWinner(currentPlayer.Name);
+                break;
             }
 
             // Cambiar turnos
@@ -66,12 +53,14 @@ public static class Battle
         }
     }
 
+
+    
+
     /// <summary>
     /// Handles the selected action for the current player's turn.
     /// </summary>
     private static void PlayerAction(IPlayer player, IPlayer rival)
     {
-
         if (player.SelectedPokemon.Health <= 0)
         {
             // Safety check to ensure a defeated Pokémon is not used
@@ -86,7 +75,6 @@ public static class Battle
         bool repeatTurn = true;
 
         while (repeatTurn) // Repetir mientras el turno no termine
-
         {
             int choice = Calculator.ValidateSelectionInGivenRange(1, 3);
 
@@ -119,29 +107,41 @@ public static class Battle
     }
 
 
+
+
+
     /// <summary>
-    /// Handles the attack action, allowing the player to choose an attack and inflict damage.
+    /// This method is responsible for:
+    ///     1) Showing the available attacks to the player.
+    ///     2) Calling the damage Calculator and storing that int.
+    ///     3) Actually 'doing' the damage to the opponents selected Pokémon.
     /// </summary>
+    /// <param name="player"></param>
+    /// <param name="rival"></param>
     private static void Attack(IPlayer player, IPlayer rival)
     {
         IPokemon attacker = player.SelectedPokemon;
         IPokemon receiver = rival.SelectedPokemon;
-
-        // Display available attacks
+        
+        //1) Display the available attacks:
         Printer.ShowAttacks(attacker, receiver);
-
-        // Let the player pick one
+        
+        // Let the player pick one.
         int attackInput = Calculator.ValidateSelectionInGivenRange(1, 4);
 
-        // Get the selected attack
-        IAttack attack = attacker.GetAttack(attackInput - 1);
-
-        // Inflict damage using the Calculator
+        
+        // We get the attack of the Pokémon
+        IAttack attack = attacker.GetAttack(attackInput - 1); 
+        
+        //2) now we call for a function that uses the attack on the rivals Pokémon.
         Calculator.InfringeDamage(attack, receiver);
-
-        // Show both Pokémon's status after the attack
+        
+        //3) We print (both) Pokémon life
         Printer.ShowSelectedPokemon(attacker, player.Name);
         Printer.ShowSelectedPokemon(receiver, rival.Name);
+        
+
+        //End: Returns to StartBattle
     }
 
     /// <summary>
@@ -154,7 +154,6 @@ public static class Battle
         // Logic for using an item from player's inventory
         throw new NotImplementedException();
     }
-
 
 
     /// <summary>
@@ -210,7 +209,6 @@ public static class Battle
     /// </summary>
     /// <param name="player"></param>
     private static void ForceSwitchPokemon(IPlayer player)
-
     {
         List<IPokemon> pokemons = player.Pokemons;
         // We let know the user that it's Pokémon has been defeated, and it needs to change the actual one.
