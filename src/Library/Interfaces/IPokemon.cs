@@ -45,7 +45,8 @@ public interface IPokemon
     /// </summary>
     List<IAttack> AtackList { get; }
 
-
+    void DecreaseHealth(int valueAfterCalculation);
+    
     public IAttack GetAttack(int index);
 
     int TurnosDormido { get; set; }

@@ -166,7 +166,42 @@ public static class Battle
                 break;
             
             case Estado.Quemado:
-                
+                Console.WriteLine($"{pokemon.Name} está quemado y recibe daño residual.");
+                pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.10)); // Daño residual por quemadura
+
+                // Verificación de muerte por quemadura
+                if (pokemon.Health <= 0)
+                {
+                    Console.WriteLine($"{pokemon.Name} ha muerto por quemaduras.");
+                    // Lógica para eliminar al Pokémon y elegir otro
+                    // Aquí puedes llamar a la función que maneja el cambio de Pokémon
+                }
+                else
+                {
+                    Console.WriteLine($"{pokemon.Name} sufre daño por quemaduras.");
+                }
+                break;
+
+            case Estado.Envenenado:
+                Console.WriteLine($"{pokemon.Name} está envenenado y recibe daño residual.");
+                pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.05)); // Daño residual por veneno
+
+                // Verificación de muerte por veneno
+                if (pokemon.Health <= 0)
+                {
+                    Console.WriteLine($"{pokemon.Name} ha muerto por envenenamiento.");
+                    // Lógica para eliminar al Pokémon y elegir otro
+                    // Aquí puedes llamar a la función que maneja el cambio de Pokémon
+                        
+                }
+                else
+                {
+                    Console.WriteLine($"{pokemon.Name} sufre daño por veneno.");
+                }
+                break;
+
+            default:
+                break;
         }
     }
 }

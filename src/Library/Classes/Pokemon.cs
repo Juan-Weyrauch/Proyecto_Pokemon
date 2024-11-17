@@ -4,10 +4,29 @@ namespace Library.Classes;
 
 public enum Estado
 {
+    /// <summary>
+    /// The Pokémon is in a normal state.
+    /// </summary>
     Normal = 0,
+    
+    /// <summary>
+    /// The Pokémon is burned.
+    /// </summary>
     Quemado = 1,
+    
+    /// <summary>
+    /// The Pokémon is poisoned.
+    /// </summary>
     Envenenado = 2,
-    Paralizado= 3,
+    
+    /// <summary>
+    /// The Pokémon is paralyzed.
+    /// </summary>
+    Paralizado = 3,
+    
+    /// <summary>
+    /// The Pokémon is asleep.
+    /// </summary>
     Dormido = 4
 }
 
@@ -35,9 +54,14 @@ public class Pokemon : IPokemon
     /// Sets the type of the pokemon
     /// </summary>
     public string Type { get; set; }
-    
+    /// <summary>
+    /// Gets or sets the current state of the Pokémon (e.g., Normal, Burned).
+    /// </summary>
     public Estado State { get; set; }
     
+    /// <summary>
+    /// Gets or sets the number of turns the Pokémon remains asleep.
+    /// </summary>
     public int TurnosDormido { get; set; }
     
     /// <summary>
@@ -83,6 +107,10 @@ public class Pokemon : IPokemon
     /// </summary>
     public int InitialHealth { get; set; }
 
-
+    public void DecreaseHealth(int valueAfterCalculation)
+    {
+        Health -= valueAfterCalculation;
+        if (Health < 0) Health = 0;
+    }
 
 }
