@@ -190,7 +190,7 @@ public static class Calculator
 
     /// <summary>
     /// This class is responsible for:
-    ///     1) Determining the effectiveness of the attack used,
+    ///     1) Determining the effectiveness of the attack used.
     /// </summary>
     /// <param name="attack"></param>
     /// <param name="rival"></param>

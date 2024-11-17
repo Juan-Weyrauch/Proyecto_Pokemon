@@ -2,7 +2,6 @@ using System.Security.Cryptography;
 using Library.Classes;
 using Library.Interfaces;
 namespace Library.StaticClasses;
-
 /// <summary>
 /// Static class responsible for managing the battle between two players.
 /// It includes turn selection, displaying the current player's options, 
@@ -16,62 +15,73 @@ namespace Library.StaticClasses;
 /// </summary>
 public static class Battle
 {
-    /// <summary>
-    /// Starts the battle by selecting the turn order and guiding each player's actions.
-    /// </summary>
     public static void StartBattle()
     {
-        Player currentPlayer = Player.Player1;
-        Player opposingPlayer = Player.Player2;
+        // Determina el jugador inicial aleatoriamente
+        Player currentPlayer = Calculator.FirstTurnSelection() == 1 ? Player.Player1 : Player.Player2;
+        Player opposingPlayer = currentPlayer == Player.Player1 ? Player.Player2 : Player.Player1;
 
         while (Calculator.HasActivePokemon(currentPlayer) && Calculator.HasActivePokemon(opposingPlayer))
         {
-            // Check if the current player's selected Pokémon is defeated
-            if (currentPlayer.SelectedPokemon.Health <= 0)
+            // Chequeo inicial del estado del jugador
+            if (!HandlePlayerStatus(currentPlayer))
             {
-                Printer.ForceSwitchMessage(currentPlayer);
-                ForceSwitchPokemon(currentPlayer);
-            }
-
-            // Execute the player's turn
-            PlayerAction(currentPlayer, opposingPlayer);
-
-            // Check if the opposing player has lost all Pokémon
-            if (!Calculator.HasActivePokemon(opposingPlayer))
-            {
-                Printer.DisplayWinner(currentPlayer.Name);
+                Printer.DisplayWinner(opposingPlayer.Name);
                 break;
             }
 
-            // Swap turns
+            // Ejecutar la acción del jugador actual
+            PlayerAction(currentPlayer, opposingPlayer);
+
+            // Cambiar turnos
             (currentPlayer, opposingPlayer) = (opposingPlayer, currentPlayer);
         }
     }
 
-    
-
-    /// <summary>
-    /// Handles the selected action for the current player's turn.
-    /// </summary>
-    private static void PlayerAction(IPlayer player, IPlayer rival)
+    private static bool HandlePlayerStatus(Player player)
     {
-        if (player.SelectedPokemon.Health <= 0)
+        if (!Calculator.HasActivePokemon(player))
         {
-            // Safety check to ensure a defeated Pokémon is not used
-            Printer.ForceSwitchMessage(player);
-            ForceSwitchPokemon(player);
-            return;
+            if (!player.Potions.OfType<RevivePotion>().Any())
+            {
+                Printer.DisplayNoPokemonsMessage(player.Name);
+                return false;
+            }
+
+            // Forzar uso de Revive Potion si tiene disponible
+            UseRevivePotion(player);
         }
 
+        return true;
+    }
+
+    private static void UseRevivePotion(Player player)
+    {
+        var revivePotion = player.Potions.OfType<RevivePotion>().FirstOrDefault();
+        if (revivePotion != null)
+        {
+            Printer.DisplayUsingRevivePotion(player.Name);
+            player.Potions.Remove(revivePotion);
+
+            // Revive el Pokémon con la salud más baja
+            var faintedPokemon = player.Pokemons.FirstOrDefault(p => p.Health <= 0);
+            if (faintedPokemon != null)
+            {
+                faintedPokemon.Health = faintedPokemon.InitialHealth / 2; // Revivir con 50% de salud
+            }
+        }
+    }
+
+    private static void PlayerAction(Player player, Player opponent)
+    {
         Printer.YourTurn(player.Name);
         Printer.ShowTurnInfo(player, player.SelectedPokemon);
 
         int choice = Calculator.ValidateSelectionInGivenRange(1, 3);
-
         switch (choice)
         {
             case 1:
-                Attack(player, rival);
+                Attack(player, opponent);
                 break;
             case 2:
                 UseItem(player);
@@ -82,121 +92,42 @@ public static class Battle
         }
     }
 
-
-
-
-    /// <summary>
-    /// This method is responsible for:
-    ///     1) Showing the available attacks to the player.
-    ///     2) Calling the damage Calculator and storing that int.
-    ///     3) Actually 'doing' the damage to the opponents selected Pokémon.
-    /// </summary>
-    /// <param name="player"></param>
-    /// <param name="rival"></param>
-    private static void Attack(IPlayer player, IPlayer rival)
+    private static void UseItem(Player player)
     {
-        IPokemon attacker = player.SelectedPokemon;
-        IPokemon receiver = rival.SelectedPokemon;
-        
-        //1) Display the available attacks:
-        Printer.ShowAttacks(attacker, receiver);
-        
-        // Let the player pick one.
-        int attackInput = Calculator.ValidateSelectionInGivenRange(1, 4);
-
-        
-        // We get the attack of the Pokémon
-        IAttack attack = attacker.GetAttack(attackInput - 1); 
-        
-        //2) now we call for a function that uses the attack on the rivals Pokémon.
-        Calculator.InfringeDamage(attack, receiver);
-        
-        //3) We print (both) Pokémon life
-        Printer.ShowSelectedPokemon(attacker, player.Name);
-        Printer.ShowSelectedPokemon(receiver, rival.Name);
-        
-
-        //End: Returns to StartBattle
-    }
-
-    /// <summary>
-    /// Method that allows the player to use an item.
-    /// </summary>
-    /// <param name="player"></param>
-    /// <exception cref="NotImplementedException"></exception>
-    private static void UseItem(IPlayer player)
-    {
-        // Logic for using an item from player's inventory
-        throw new NotImplementedException();
-    }
-
-
-    /// <summary>
-    /// Method that allows to change the selected Pokémon. (Voluntarily)
-    /// </summary>
-    /// <param name="player"></param>
-    private static void VoluntarySwitchPokemon(IPlayer player)
-    {
-        List<IPokemon> pokemons = player.Pokemons;
-        // We show a message so that the player knows that it's changing its Pokémon
-        Printer.SwitchQuestion(player);
-        
-        int option = Calculator.ValidateSelectionInGivenRange(1, 2);
-        if (option == 2) // Try to fix this to that player can cancel the action of change and still play.
+        if (!player.Potions.Any())
         {
-            // Falta encontrar una manera de que no pierda el turno.
+            Printer.DisplayNoItemsMessage(player.Name);
             return;
         }
-        Console.Clear();
 
-    // We show the inventory so that the player chooses a Pokémon
-    
-        Printer.ShowInventory(pokemons);
-        
-        // We ask the player for its input
-        int selectedPokemon;
-        do
-        {
-            selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
-        } while (player.Pokemons[selectedPokemon - 1].Health <= 0); // Ensure a usable Pokémon is chosen
+        Printer.ShowItems(player.Potions);
+        int choice = Calculator.ValidateSelectionInGivenRange(1, player.Potions.Count);
 
-        player.SwitchPokemon(selectedPokemon);
-        
-        //this method will show the player that it has changed its Pokémon when the value is 0
-        Printer.SwitchConfirmation(player, 0);
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadLine();
-        Console.Clear();
-
-        Printer.ShowSelectedPokemon(player.SelectedPokemon, player.Name);
-        
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadLine();
+        var selectedItem = player.Potions[choice - 1];
+        selectedItem.ApplyEffect(player.SelectedPokemon);
+        player.Potions.RemoveAt(choice - 1);
     }
 
-    
-    /// <summary>
-    /// Method that allows to change the selected Pokémon. (Foreced by defeat of current pokeon)
-    /// </summary>
-    /// <param name="player"></param>
-    private static void ForceSwitchPokemon(IPlayer player)
+    private static void Attack(Player player, Player opponent)
     {
-        List<IPokemon> pokemons = player.Pokemons;
-        // We let know the user that it's Pokémon has been defeated, and it needs to change the actual one.
-        Printer.ForceSwitchMessage(player);
-        Printer.ShowInventory(player.Pokemons);
+        IPokemon attacker = player.SelectedPokemon;
+        IPokemon receiver = opponent.SelectedPokemon;
 
-        int selectedPokemon;
-        do
+        Printer.ShowAttacks(attacker, receiver);
+        int attackInput = Calculator.ValidateSelectionInGivenRange(1, 4);
+        IAttack attack = attacker.GetAttack(attackInput - 1);
+
+        if (attack.IsSpecial && player.Turn < 2)
         {
-            selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
-        } while (player.Pokemons[selectedPokemon - 1].Health <= 0); // Ensure a healthy Pokémon is chosen
+            Printer.SpecialAttackNotReadyMessage();
+            return;
+        }
 
-        player.SwitchPokemon(selectedPokemon);
+        if (attack.IsSpecial) player.Turn = 0;
+        else player.Turn++;
 
-        Printer.ShowSelectedPokemon(player.SelectedPokemon, player.Name);
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadLine();
+        Calculator.InfringeDamage(attack, receiver);
+        Printer.ShowSelectedPokemon(attacker, player.Name);
+        Printer.ShowSelectedPokemon(receiver, opponent.Name);
     }
-
 }
