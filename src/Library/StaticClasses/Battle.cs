@@ -28,7 +28,9 @@ public static class Battle
         {
             if (currentPlayer.SelectedPokemon.Health <= 0)
             {
+                
                 Printer.ForceSwitchMessage(currentPlayer);
+                currentPlayer.CarryToCementerio();
                 ForceSwitchPokemon(currentPlayer);
             }
 
@@ -204,21 +206,30 @@ public static class Battle
     private static void ForceSwitchPokemon(IPlayer player)
     {
         List<IPokemon> pokemons = player.Pokemons;
-        // We let know the user that it's Pokémon has been defeated, and it needs to change the actual one.
+    
+        // Notificar que el Pokémon ha sido derrotado y el jugador debe cambiarlo
         Printer.ForceSwitchMessage(player);
+    
+        // Mover el Pokémon derrotado al cementerio antes de cambiar
+        player.CarryToCementerio();  // Elimina el Pokémon del equipo y lo agrega al cementerio
+
         Printer.ShowInventory(player.Pokemons);
 
         int selectedPokemon;
         do
         {
+            // Validar que el jugador elija un Pokémon disponible (y que esté en buen estado)
             selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
-        } while (player.Pokemons[selectedPokemon - 1].Health <= 0); // Ensure a healthy Pokémon is chosen
+        } while (player.Pokemons[selectedPokemon - 1].Health <= 0); // Asegurar que el Pokémon esté en estado saludable
 
+        // Cambiar el Pokémon seleccionado
         player.SwitchPokemon(selectedPokemon);
 
-        Printer.ShowSelectedPokemon(player.SelectedPokemon, player.Name);
-        Console.WriteLine("Press any key to continue...");
+        // Confirmar el cambio de Pokémon
+        Printer.SwitchConfirmation(player, 0);
+        Console.WriteLine("Presiona cualquier tecla para continuar...");
         Console.ReadLine();
     }
+
 
 }
