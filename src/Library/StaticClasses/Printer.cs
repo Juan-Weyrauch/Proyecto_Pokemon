@@ -400,8 +400,8 @@ public static class Printer
             IPokemon pokemon = player.SelectedPokemon;
             // Display message that shows that you are about to change the :
             Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine($"║     {player.Name} your selected pokemon  Has been defeated!\t║");
-            Console.WriteLine($"║     now is {pokemon.Name,-10} \t║");
+            Console.WriteLine($"║     {player.Name} your selected pokemon  Has been changed!\t║");
+            Console.WriteLine($"║     now is {pokemon.Name,-10} \t                            ║");
             Console.WriteLine("╚═══════════════════════════════════════╝");
         }
     }
