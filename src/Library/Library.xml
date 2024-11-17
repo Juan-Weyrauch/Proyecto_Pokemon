@@ -329,7 +329,7 @@
             <param name="player"></param>
             <param name="rival"></param>
         </member>
-        <member name="M:Library.StaticClasses.Battle.UseItem(Library.Interfaces.IPlayer,Library.Interfaces.IPlayer)">
+        <member name="M:Library.StaticClasses.Battle.UseItem(Library.Interfaces.IPlayer)">
             <summary>
             Method that allows the player to use an item.
             </summary>
@@ -337,12 +337,17 @@
             <param name="rival"></param>
             <exception cref="T:System.NotImplementedException"></exception>
         </member>
-        <member name="M:Library.StaticClasses.Battle.SwitchPokemon(Library.Interfaces.IPlayer,Library.Interfaces.IPlayer)">
+        <member name="M:Library.StaticClasses.Battle.VoluntarySwitchPokemon(Library.Interfaces.IPlayer)">
             <summary>
-            Method that allows to change the selected Pokémon.
+            Method that allows to change the selected Pokémon. (Voluntarily)
             </summary>
             <param name="player"></param>
-            <param name="rival"></param>
+        </member>
+        <member name="M:Library.StaticClasses.Battle.ForceSwitchPokemon(Library.Interfaces.IPlayer)">
+            <summary>
+            Method that allows to change the selected Pokémon. (Foreced by defeat of current pokeon)
+            </summary>
+            <param name="player"></param>
         </member>
         <member name="T:Library.StaticClasses.Calculator">
             <summary>

@@ -370,19 +370,31 @@ public static class Printer
         }
     }
     
-    public static void ForceSwitchMessage(string playerName)
+    /// <summary>
+    /// Shows the player that it's Pokémon has been defeated and that it needs to change the current one.
+    /// </summary>
+    /// <param name="player"></param>
+    public static void ForceSwitchMessage(IPlayer player)
     {
-        Console.WriteLine($"{playerName}, your Pokémon has been defeated! You must switch to another Pokémon.");
+        IPokemon pokemon = player.SelectedPokemon;
+        // Display message that current pokemon has been defeated:
+        Console.WriteLine("╔═══════════════════════════════════════╗");
+        Console.WriteLine($"║     {player.Name} your pokemon {pokemon.Name, -10} Has been defeated!\t║");
+        Console.WriteLine($"║     Please pick another one from your list! \t║");
+        Console.WriteLine("╚═══════════════════════════════════════╝");
     }
 
-    public static void LoseTurnMessage(string playerName)
+    public static void SwitchConfirmation(IPlayer player, int option)
     {
-        Console.WriteLine($"{playerName}, you have switched Pokémon and lost your turn!");
+        if (option == 0)
+        {
+            // Display message that shows that you are about to change the :
+            Console.WriteLine("╔═══════════════════════════════════════╗");
+            Console.WriteLine($"║     {player.Name} your pokemon {pokemon.Name, -10} Has been defeated!\t║");
+            Console.WriteLine($"║     Please pick another one from your list! \t║");
+            Console.WriteLine("╚═══════════════════════════════════════╝");
+        }
     }
-
-    public static void ShowForceSwitchMessage(string playerName)
-    {
-        Console.WriteLine($"{playerName}, please select a new Pokémon to continue the battle.");
-    }
+    
 
 }

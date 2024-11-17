@@ -29,7 +29,7 @@ public static class Battle
             // Check if the current player's selected Pokémon is defeated
             if (currentPlayer.SelectedPokemon.Health <= 0)
             {
-                Printer.ForceSwitchMessage(currentPlayer.Name);
+                Printer.ForceSwitchMessage(currentPlayer);
                 ForceSwitchPokemon(currentPlayer);
             }
 
@@ -58,7 +58,7 @@ public static class Battle
         if (player.SelectedPokemon.Health <= 0)
         {
             // Safety check to ensure a defeated Pokémon is not used
-            Printer.ForceSwitchMessage(player.Name);
+            Printer.ForceSwitchMessage(player);
             ForceSwitchPokemon(player);
             return;
         }
@@ -123,7 +123,6 @@ public static class Battle
     /// Method that allows the player to use an item.
     /// </summary>
     /// <param name="player"></param>
-    /// <param name="rival"></param>
     /// <exception cref="NotImplementedException"></exception>
     private static void UseItem(IPlayer player)
     {
@@ -139,8 +138,10 @@ public static class Battle
     private static void VoluntarySwitchPokemon(IPlayer player)
     {
         List<IPokemon> pokemons = player.Pokemons;
+        // We show a message so that the player knows that it's changing its Pokémon
+        Printer.SwitchConfirmation(player, 0);
         // We show the inventory so that the player chooses a Pokémon
-        Printer.ShowInventory(player.Pokemons);
+        Printer.ShowInventory(pokemons);
         
         // We ask the player for its input
         int selectedPokemon;
@@ -150,6 +151,9 @@ public static class Battle
         } while (player.Pokemons[selectedPokemon - 1].Health <= 0); // Ensure a usable Pokémon is chosen
 
         player.SwitchPokemon(selectedPokemon);
+        
+        //this method will show the player that it has changed its Pokémon when the value is 0
+        Printer.SwitchConfirmation(player, 1);
 
         Printer.ShowSelectedPokemon(player.SelectedPokemon, player.Name);
         
@@ -165,7 +169,8 @@ public static class Battle
     private static void ForceSwitchPokemon(IPlayer player)
     {
         List<IPokemon> pokemons = player.Pokemons;
-        Printer.ShowForceSwitchMessage(player.Name);
+        // We let know the user that it's Pokémon has been defeated, and it needs to change the actual one.
+        Printer.ForceSwitchMessage(player);
         Printer.ShowInventory(player.Pokemons);
 
         int selectedPokemon;
