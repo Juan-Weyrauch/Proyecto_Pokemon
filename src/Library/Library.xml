@@ -334,7 +334,6 @@
             Method that allows the player to use an item.
             </summary>
             <param name="player"></param>
-            <param name="rival"></param>
             <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="M:Library.StaticClasses.Battle.VoluntarySwitchPokemon(Library.Interfaces.IPlayer)">
@@ -569,6 +568,12 @@
             </summary>
             <param name="value"></param>
             <param name="attack"></param>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.ForceSwitchMessage(Library.Interfaces.IPlayer)">
+            <summary>
+            Shows the player that it's Pokémon has been defeated and that it needs to change the current one.
+            </summary>
+            <param name="player"></param>
         </member>
         <member name="T:Library.Train">
             <summary>

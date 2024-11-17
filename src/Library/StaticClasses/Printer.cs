@@ -384,14 +384,24 @@ public static class Printer
         Console.WriteLine("╚═══════════════════════════════════════╝");
     }
 
+
+    public static void SwitchQuestion(IPlayer player)
+    { //Let us ask to player if it want to change the pokemon or cancel the action.
+        IPokemon pokemon = player.SelectedPokemon;
+        Console.WriteLine("╔═══════════════════════════════════════╗");
+        Console.WriteLine($"║     {player.Name} want to change your pokemon {pokemon.Name}\t║");
+        Console.WriteLine($"║     1) Yes 2) No \t║");
+        Console.WriteLine("╚═══════════════════════════════════════╝");
+    }
     public static void SwitchConfirmation(IPlayer player, int option)
     {
         if (option == 0)
         {
+            IPokemon pokemon = player.SelectedPokemon;
             // Display message that shows that you are about to change the :
             Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine($"║     {player.Name} your pokemon {pokemon.Name, -10} Has been defeated!\t║");
-            Console.WriteLine($"║     Please pick another one from your list! \t║");
+            Console.WriteLine($"║     {player.Name} your selected pokemon  Has been defeated!\t║");
+            Console.WriteLine($"║     now is {pokemon.Name,-10} \t║");
             Console.WriteLine("╚═══════════════════════════════════════╝");
         }
     }
