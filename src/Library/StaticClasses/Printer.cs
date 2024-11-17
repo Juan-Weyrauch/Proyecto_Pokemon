@@ -369,4 +369,35 @@ public static class Printer
             Console.WriteLine($"Attack {attack} was slightly ineffective! X0.5 Damage!");
         }
     }
+    /// <summary>
+    /// Prints the result of an attack, showing the attacker, the attack used, the target, and the damage dealt.
+    /// </summary>
+    /// <param name="attacker">The Pokémon performing the attack.</param>
+    /// <param name="attack">The attack being used.</param>
+    /// <param name="target">The Pokémon receiving the attack.</param>
+    /// <param name="damage">The amount of damage dealt.</param>
+    public static void PrintAttackResult(IPokemon attacker, IAttack attack, IPokemon target, int damage)
+    {
+        Console.Clear();
+
+        // Calculate the width of the box dynamically based on the longest line
+        string line1 = $"{attacker.Name} used {attack.Name}!";
+        string line2 = $"{target.Name} took {damage} damage!";
+        string line3 = $"{target.Name}'s remaining health: {target.Health}";
+
+        int boxWidth = Math.Max(Math.Max(line1.Length, line2.Length), line3.Length) + 4;
+
+        // Top and bottom borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Print the attack information
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+
+    }
+
 }

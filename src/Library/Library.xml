@@ -539,6 +539,15 @@
             <param name="value"></param>
             <param name="attack"></param>
         </member>
+        <member name="M:Library.StaticClasses.Printer.PrintAttackResult(Library.IPokemon,Library.Interfaces.IAttack,Library.IPokemon,System.Int32)">
+            <summary>
+            Prints the result of an attack, showing the attacker, the attack used, the target, and the damage dealt.
+            </summary>
+            <param name="attacker">The Pokémon performing the attack.</param>
+            <param name="attack">The attack being used.</param>
+            <param name="target">The Pokémon receiving the attack.</param>
+            <param name="damage">The amount of damage dealt.</param>
+        </member>
         <member name="T:Library.Train">
             <summary>
             Esta clase representa un tren muy básico.

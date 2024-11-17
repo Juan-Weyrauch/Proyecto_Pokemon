@@ -93,10 +93,14 @@ public static class Battle
         // Inflict damage using the Calculator
         Calculator.InfringeDamage(attack, receiver);
 
+        // Print the attack result (corrected)
+        Printer.PrintAttackResult(attacker, attack, receiver, attack.Damage);
+
         // Show both Pokémon's status after the attack
         Printer.ShowSelectedPokemon(attacker, player.Name);
         Printer.ShowSelectedPokemon(receiver, rival.Name);
     }
+
 
     private static void UseItem(IPlayer player)
     {
