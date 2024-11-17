@@ -31,14 +31,16 @@ public static class Battle
                 Printer.ForceSwitchMessage(currentPlayer);
                 ForceSwitchPokemon(currentPlayer);
             }
-
+            
+            /*
             bool changedPokemon = VoluntarySwitchPokemon(currentPlayer);
             if (changedPokemon)
             {
                 (currentPlayer, opposingPlayer) = (opposingPlayer, currentPlayer);
                 continue;
             }
-
+            */
+            
             // Ejecutar acción del jugador si no cambió Pokémon
             PlayerAction(currentPlayer, opposingPlayer);
 
