@@ -27,6 +27,7 @@ public static class Facade
         if (startSelection == 2)
         {
             Printer.EndPrint();
+            Environment.Exit(0);
         }
         //else continue
         //we need the user to insert their names and pick their Pokémon, so we create a second method that does this. 

@@ -50,5 +50,5 @@ public interface IPlayer
     /// Changes the Selected Pokemon for a new IPokemon recieved 
     /// </summary>
     /// <param name="newPokemonIndex"></param>
-    void SwitchPokemon(IPokemon selectedPokemon);
+    void SwitchPokemon(int pokemonChoice);
 }
