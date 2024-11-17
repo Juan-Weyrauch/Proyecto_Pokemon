@@ -140,14 +140,17 @@ public static class Battle
         List<IPokemon> pokemons = player.Pokemons;
         // We show a message so that the player knows that it's changing its Pokémon
         Printer.SwitchQuestion(player);
+        
         int option = Calculator.ValidateSelectionInGivenRange(1, 2);
         if (option == 2) // Try to fix this to that player can cancel the action of change and still play.
         {
             // Falta encontrar una manera de que no pierda el turno.
             return;
         }
+        Console.Clear();
 
     // We show the inventory so that the player chooses a Pokémon
+    
         Printer.ShowInventory(pokemons);
         
         // We ask the player for its input
@@ -161,6 +164,9 @@ public static class Battle
         
         //this method will show the player that it has changed its Pokémon when the value is 0
         Printer.SwitchConfirmation(player, 0);
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadLine();
+        Console.Clear();
 
         Printer.ShowSelectedPokemon(player.SelectedPokemon, player.Name);
         
