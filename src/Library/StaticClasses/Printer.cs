@@ -405,6 +405,13 @@ public static class Printer
             Console.WriteLine("╚═══════════════════════════════════════╝");
         }
     }
-    
+    public static void CancelSwitchMessage()
+    {
+        Console.WriteLine("Has decidido no cambiar de Pokémon. Continúa con tu turno.");
+        Console.WriteLine("Presiona cualquier tecla para continuar...");
+        Console.ReadKey();
+        Console.Clear();
+    }
+
 
 }

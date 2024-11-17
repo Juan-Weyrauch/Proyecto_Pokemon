@@ -26,27 +26,33 @@ public static class Battle
 
         while (Calculator.HasActivePokemon(currentPlayer) && Calculator.HasActivePokemon(opposingPlayer))
         {
-            // Check if the current player's selected Pokémon is defeated
             if (currentPlayer.SelectedPokemon.Health <= 0)
             {
                 Printer.ForceSwitchMessage(currentPlayer);
                 ForceSwitchPokemon(currentPlayer);
             }
 
-            // Execute the player's turn
+            bool changedPokemon = VoluntarySwitchPokemon(currentPlayer);
+            if (changedPokemon)
+            {
+                (currentPlayer, opposingPlayer) = (opposingPlayer, currentPlayer);
+                continue;
+            }
+
+            // Ejecutar acción del jugador si no cambió Pokémon
             PlayerAction(currentPlayer, opposingPlayer);
 
-            // Check if the opposing player has lost all Pokémon
             if (!Calculator.HasActivePokemon(opposingPlayer))
             {
                 Printer.DisplayWinner(currentPlayer.Name);
                 break;
             }
 
-            // Swap turns
+            // Cambiar turnos
             (currentPlayer, opposingPlayer) = (opposingPlayer, currentPlayer);
         }
     }
+
 
     
 
@@ -66,21 +72,40 @@ public static class Battle
         Printer.YourTurn(player.Name);
         Printer.ShowTurnInfo(player, player.SelectedPokemon);
 
-        int choice = Calculator.ValidateSelectionInGivenRange(1, 3);
+        bool repeatTurn = true;
 
-        switch (choice)
+        while (repeatTurn) // Repetir mientras el turno no termine
         {
-            case 1:
-                Attack(player, rival);
-                break;
-            case 2:
-                UseItem(player);
-                break;
-            case 3:
-                VoluntarySwitchPokemon(player);
-                break;
+            int choice = Calculator.ValidateSelectionInGivenRange(1, 3);
+
+            switch (choice)
+            {
+                case 1: // Atacar
+                    Attack(player, rival);
+                    repeatTurn = false; // Finaliza el turno
+                    break;
+
+                case 2: // Usar objeto
+                    UseItem(player);
+                    repeatTurn = false; // Finaliza el turno
+                    break;
+
+                case 3: // Cambiar Pokémon
+                    bool changed = VoluntarySwitchPokemon(player);
+                    if (changed)
+                    {
+                        repeatTurn = false; // Finaliza el turno si se realiza el cambio
+                    }
+                    else
+                    {
+                        // Si no cambió Pokémon, vuelve a mostrar las opciones
+                        Printer.ShowTurnInfo(player, player.SelectedPokemon);
+                    }
+                    break;
+            }
         }
     }
+
 
 
 
@@ -135,44 +160,48 @@ public static class Battle
     /// Method that allows to change the selected Pokémon. (Voluntarily)
     /// </summary>
     /// <param name="player"></param>
-    private static void VoluntarySwitchPokemon(IPlayer player)
+    private static bool VoluntarySwitchPokemon(IPlayer player)
     {
         List<IPokemon> pokemons = player.Pokemons;
-        // We show a message so that the player knows that it's changing its Pokémon
+
+        // Mostrar la opción de cambiar Pokémon
         Printer.SwitchQuestion(player);
-        
+
         int option = Calculator.ValidateSelectionInGivenRange(1, 2);
-        if (option == 2) // Try to fix this to that player can cancel the action of change and still play.
+        if (option == 2) // El jugador cancela el cambio
         {
-            // Falta encontrar una manera de que no pierda el turno.
-            return;
+            Printer.CancelSwitchMessage();
+            return false; // No cambiará el Pokémon
         }
+
         Console.Clear();
 
-    // We show the inventory so that the player chooses a Pokémon
-    
+        // Mostrar inventario para elegir Pokémon
         Printer.ShowInventory(pokemons);
-        
-        // We ask the player for its input
+
+        // Validar que el Pokémon elegido no esté debilitado
         int selectedPokemon;
         do
         {
             selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
-        } while (player.Pokemons[selectedPokemon - 1].Health <= 0); // Ensure a usable Pokémon is chosen
+        } while (player.Pokemons[selectedPokemon - 1].Health <= 0);
 
+        // Cambiar el Pokémon
         player.SwitchPokemon(selectedPokemon);
-        
-        //this method will show the player that it has changed its Pokémon when the value is 0
+
+        // Confirmar el cambio
         Printer.SwitchConfirmation(player, 0);
-        Console.WriteLine("Press any key to continue...");
+        Console.WriteLine("Presiona cualquier tecla para continuar...");
         Console.ReadLine();
         Console.Clear();
 
         Printer.ShowSelectedPokemon(player.SelectedPokemon, player.Name);
-        
-        Console.WriteLine("Press any key to continue...");
+
+        Console.WriteLine("Presiona cualquier tecla para continuar...");
         Console.ReadLine();
+        return true; // Pokémon cambiado exitosamente
     }
+
 
     
     /// <summary>
