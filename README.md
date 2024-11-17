@@ -56,5 +56,6 @@ Comentar la línea `<PackageReference Include="StyleCop.Analyzers" Version="1.1.
 - [ ] 10: View waitlist. (Displays the list of players waiting for opponents.)
 - [ ] 11: Start battle from waitlist. (Both players are notified of the battle start; first turn is determined randomly.)
 # No son historias como tal pero son importantes(Additions) 
-- [ ] 1: States of pokemon, posion, burned, sleep, paralyzed. 
+- [ ] 1: States of pokemon, posion, burned, sleep, paralyzed.
+- [ ] 2: Cementerio Pokemon
 
