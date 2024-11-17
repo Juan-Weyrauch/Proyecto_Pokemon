@@ -125,4 +125,48 @@ public static class Battle
         // Logic for switching Pokémon
         throw new NotImplementedException();
     }
+
+    private static void AplicarEfectos(IPokemon pokemon)
+    {
+        Random random = new Random();
+
+        switch (pokemon.State)
+        {
+            case Estado.Paralizado:
+                if (random.NextDouble() < 0.5)  // 50% de probabilidad de no poder atacar
+                {
+                    Console.WriteLine($"{pokemon.Name} está paralizado y no puede atacar.");
+                }
+                else
+                {
+                    Console.WriteLine($"{pokemon.Name} está paralizado pero puede atacar.");
+                }
+                break;
+            
+            case Estado.Dormido:
+                if (pokemon.TurnosDormido > 0)
+                {
+                    Console.WriteLine($"{pokemon.Name} está dormido y pierde el turno.");
+                    pokemon.TurnosDormido--; // Reduce los turnos de sueño
+                    return; // Sale si el Pokémon pierde el turno
+                }
+                else
+                {
+                    // Verifica si el Pokémon se despierta antes de terminar los 4 turnos
+                    if (random.NextDouble() < 0.25) // 25% de probabilidad de despertar antes
+                    {
+                        Console.WriteLine($"{pokemon.Name} se ha despertado antes de tiempo.");
+                        pokemon.State = Estado.Normal; // Cambia el estado a normal
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{pokemon.Name} sigue dormido.");
+                    }
+                }
+                break;
+            
+            case Estado.Quemado:
+                
+        }
+    }
 }

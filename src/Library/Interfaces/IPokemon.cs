@@ -1,3 +1,4 @@
+using Library.Classes;
 using Library.Interfaces;
 
 namespace Library;
@@ -35,7 +36,7 @@ public interface IPokemon
     /// <summary>
     /// Sets the state of the pokemon
     /// </summary>
-    public int State { get; set; }
+    public Estado State { get; set; }
 
     
     
@@ -47,6 +48,6 @@ public interface IPokemon
 
     public IAttack GetAttack(int index);
 
-
+    int TurnosDormido { get; set; }
 
 }

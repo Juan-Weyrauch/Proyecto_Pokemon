@@ -2,6 +2,15 @@ using Library.Interfaces;
 
 namespace Library.Classes;
 
+public enum Estado
+{
+    Normal = 0,
+    Quemado = 1,
+    Envenenado = 2,
+    Paralizado= 3,
+    Dormido = 4
+}
+
 /// <summary>
 /// Pokemon class.
 /// </summary>
@@ -27,8 +36,9 @@ public class Pokemon : IPokemon
     /// </summary>
     public string Type { get; set; }
     
-    public int State { get; set; }
+    public Estado State { get; set; }
     
+    public int TurnosDormido { get; set; }
     
     /// <summary>
     /// A list of all the attacks that the pokemon has 
@@ -55,6 +65,7 @@ public class Pokemon : IPokemon
         Defense = defense;
         Type = type;
         AtackList = atacks;
+        TurnosDormido = 0;
     }
 
     /// <summary>
