@@ -72,6 +72,11 @@ public class Pokemon : IPokemon
     /// </summary>
     public int InitialHealth { get; set; }
 
+    public IPokemon Clone()
+    {
+        return new Pokemon(this.Name, this.Defense, this.Type, this.AtackList);
+    }
+
 
 
 }
