@@ -47,6 +47,8 @@ public interface IPokemon
 
     public IAttack GetAttack(int index);
 
+    public IPokemon Clone();
+
 
 
 }
