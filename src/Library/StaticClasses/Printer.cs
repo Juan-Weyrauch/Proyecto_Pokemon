@@ -313,14 +313,13 @@ public static class Printer
         // Determina el texto más largo
         string line1 = $"{player.Name}'s turn!";
         string line2 = $"{pokemon.Name} Health: {pokemon.Health}/{pokemon.InitialHealth}";
-        string linex = $"{pokemon.State}";
         string line3 = "What would you like to do?";
         string line4 = "1. Attack";
         string line5 = "2. Use Item";
         string line6 = "3. Switch Pokémon";
 
         // Calcula el ancho del cuadro basado en el texto más largo
-        int maxLength = Math.Max(Math.Max(line1.Length, Math.Max(line2.Length, linex.Length)), Math.Max(line3.Length, Math.Max(line4.Length, Math.Max(line5.Length, line6.Length))));
+        int maxLength = Math.Max(Math.Max(line1.Length, line2.Length), Math.Max(line3.Length, Math.Max(line4.Length, Math.Max(line5.Length, line6.Length))));
         int boxWidth = maxLength + 4; // Añade espacio para los bordes y una separación adicional.
 
         // Construcción del cuadro
@@ -334,7 +333,6 @@ public static class Printer
         Console.WriteLine($"║ {line1.PadRight(boxWidth - 2)} ║");  // Restamos 2 para los bordes
         Console.WriteLine($"║ {line2.PadRight(boxWidth - 2)} ║");
         Console.WriteLine($"║ {line3.PadRight(boxWidth - 2)} ║");
-        Console.WriteLine($"║ {linex.PadRight(boxWidth - 2)} ║");
         Console.WriteLine($"║ {line4.PadRight(boxWidth - 2)} ║");
         Console.WriteLine($"║ {line5.PadRight(boxWidth - 2)} ║");
         Console.WriteLine($"║ {line6.PadRight(boxWidth - 2)} ║");
@@ -415,5 +413,29 @@ public static class Printer
         Console.Clear();
     }
 
+    public static void ImprimirCambioEstado(string nombrePokemon, int estado)
+    {
+        switch (estado)
+        {
+            case 0:
+                Console.WriteLine($"{nombrePokemon} ha cambiado su estado a normal.");
+                break;
+            case 1:
+                Console.WriteLine($"{nombrePokemon} está quemado y recibe daño residual.");
+                break;
 
+            case 2:
+                Console.WriteLine($"{nombrePokemon} está envenenado y recibe daño residual.");
+                break;
+
+            case 3:
+                Console.WriteLine($"{nombrePokemon} está paralizado y no puede atacar.");
+                break;
+
+            case 4:
+                Console.WriteLine($"{nombrePokemon} está dormido y pierde el turno.");
+                break;
+        }
+
+    }
 }

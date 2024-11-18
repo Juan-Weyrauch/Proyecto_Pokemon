@@ -289,7 +289,7 @@ public static class Battle
             case Estado.Paralizado:
                 if (random.NextDouble() < 0.5) // 50% de probabilidad de no poder atacar
                 {
-                    Console.WriteLine($"{pokemon.Name} está paralizado y no puede atacar.");
+                    Printer.ImprimirCambioEstado(pokemon.Name,3);
                 }
                 else
                 {
@@ -301,7 +301,7 @@ public static class Battle
             case Estado.Dormido:
                 if (pokemon.TurnosDormido > 0)
                 {
-                    Console.WriteLine($"{pokemon.Name} está dormido y pierde el turno.");
+                    Printer.ImprimirCambioEstado(pokemon.Name,4);
                     pokemon.TurnosDormido--; // Reduce los turnos de sueño
                     return; // Sale si el Pokémon pierde el turno
                 }
@@ -322,7 +322,7 @@ public static class Battle
                 break;
 
             case Estado.Quemado:
-                Console.WriteLine($"{pokemon.Name} está quemado y recibe daño residual.");
+                Printer.ImprimirCambioEstado(pokemon.Name,1);
                 pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.10)); // Daño residual por quemadura
                 // Verificación de muerte por quemadura
                 if (pokemon.Health <= 0)
@@ -339,7 +339,7 @@ public static class Battle
                 break;
 
             case Estado.Envenenado:
-                Console.WriteLine($"{pokemon.Name} está envenenado y recibe daño residual.");
+                Printer.ImprimirCambioEstado(pokemon.Name,2);
                 pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.05)); // Daño residual por veneno
                 // Verificación de muerte por veneno
                 if (pokemon.Health <= 0)
@@ -351,7 +351,7 @@ public static class Battle
                 }
                 else
                 {
-                    Console.WriteLine($"{pokemon.Name} sufre daño por veneno.");
+                    Printer.ImprimirCambioEstado(pokemon.Name,2);
                 }
 
                 break;
