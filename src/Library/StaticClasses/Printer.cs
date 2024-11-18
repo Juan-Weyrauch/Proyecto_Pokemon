@@ -374,37 +374,75 @@ public static class Printer
     /// Shows the player that it's Pokémon has been defeated and that it needs to change the current one.
     /// </summary>
     /// <param name="player"></param>
-    public static void ForceSwitchMessage(IPlayer player)
+   public static void ForceSwitchMessage(IPlayer player)
+{
+    IPokemon pokemon = player.SelectedPokemon;
+    
+    // Crear las líneas de texto
+    string line1 = $"     {player.Name} your pokemon {pokemon.Name,-10} Has been defeated!  ";
+    string line2 = "     Please pick another one from your list!                         ";
+    
+    // Encontrar la longitud de la línea más larga
+    int boxWidth = Math.Max(line1.Length, line2.Length) + 4; // Añadir 4 para los bordes
+
+    // Crear los bordes superior e inferior basados en el ancho calculado
+    string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+    string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+    // Imprimir el cuadro
+    Console.WriteLine(topBorder);
+    Console.WriteLine($" {line1.PadRight(boxWidth - 4)} ");
+    Console.WriteLine($" {line2.PadRight(boxWidth - 4)} ");
+    Console.WriteLine(bottomBorder);
+}
+
+public static void SwitchQuestion(IPlayer player)
+{
+    IPokemon pokemon = player.SelectedPokemon;
+    
+    // Crear las líneas de texto
+    string line1 = $"     {player.Name} want to change your pokemon {pokemon.Name}        ";
+    string line2 = "     1) Yes 2) No                                                  ";
+    
+    // Encontrar la longitud de la línea más larga
+    int boxWidth = Math.Max(line1.Length, line2.Length) + 4; // Añadir 4 para los bordes
+
+    // Crear los bordes superior e inferior basados en el ancho calculado
+    string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+    string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+    // Imprimir el cuadro
+    Console.WriteLine(topBorder);
+    Console.WriteLine($" {line1.PadRight(boxWidth - 4)} ");
+    Console.WriteLine($" {line2.PadRight(boxWidth - 4)} ");
+    Console.WriteLine(bottomBorder);
+}
+
+public static void SwitchConfirmation(IPlayer player, int option)
+{
+    if (option == 0)
     {
         IPokemon pokemon = player.SelectedPokemon;
-        // Display message that current pokemon has been defeated:
-        Console.WriteLine("╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║     {player.Name} your pokemon {pokemon.Name, -10} Has been defeated!\t║");
-        Console.WriteLine($"║     Please pick another one from your list! \t║");
-        Console.WriteLine("╚═══════════════════════════════════════╝");
-    }
+        
+        // Crear las líneas de texto
+        string line1 = $"     {player.Name} your selected pokemon Has been changed!        ";
+        string line2 = $"     now is {pokemon.Name,-10}                                    ";
+        
+        // Encontrar la longitud de la línea más larga
+        int boxWidth = Math.Max(line1.Length, line2.Length) + 4; // Añadir 4 para los bordes
 
+        // Crear los bordes superior e inferior basados en el ancho calculado
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
 
-    public static void SwitchQuestion(IPlayer player)
-    { //Let us ask to player if it want to change the pokemon or cancel the action.
-        IPokemon pokemon = player.SelectedPokemon;
-        Console.WriteLine("╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║     {player.Name} want to change your pokemon {pokemon.Name}\t║");
-        Console.WriteLine($"║     1) Yes 2) No \t║");
-        Console.WriteLine("╚═══════════════════════════════════════╝");
+        // Imprimir el cuadro
+        Console.WriteLine(topBorder);
+        Console.WriteLine($" {line1.PadRight(boxWidth - 4)} ");
+        Console.WriteLine($" {line2.PadRight(boxWidth - 4)} ");
+        Console.WriteLine(bottomBorder);
     }
-    public static void SwitchConfirmation(IPlayer player, int option)
-    {
-        if (option == 0)
-        {
-            IPokemon pokemon = player.SelectedPokemon;
-            // Display message that shows that you are about to change the :
-            Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine($"║     {player.Name} your selected pokemon  Has been changed!\t║");
-            Console.WriteLine($"║     now is {pokemon.Name,-10} \t                            ║");
-            Console.WriteLine("╚═══════════════════════════════════════╝");
-        }
-    }
+}
+
     public static void CancelSwitchMessage()
     {
         Console.WriteLine("Has decidido no cambiar de Pokémon. Continúa con tu turno.");
