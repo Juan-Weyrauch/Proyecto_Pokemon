@@ -28,9 +28,10 @@ public static class Battle
         {
             if (currentPlayer.SelectedPokemon.Health <= 0)
             {
+
                 Printer.ForceSwitchMessage(currentPlayer);
                 currentPlayer.CarryToCementerio();
-                ForceSwitchPokemon(currentPlayer, opposingPlayer);
+                ForceSwitchPokemon(currentPlayer);
             }
 
             // Ejecutar acción del jugador si no cambió Pokémon
@@ -48,7 +49,7 @@ public static class Battle
     }
 
 
-    
+
 
     /// <summary>
     /// Handles the selected action for the current player's turn.
@@ -59,7 +60,7 @@ public static class Battle
         {
             // Safety check to ensure a defeated Pokémon is not used
             Printer.ForceSwitchMessage(player);
-            ForceSwitchPokemon(player, rival);
+            ForceSwitchPokemon(player);
             return;
         }
 
@@ -95,6 +96,7 @@ public static class Battle
                         // Si no cambió Pokémon, vuelve a mostrar las opciones
                         Printer.ShowTurnInfo(player, player.SelectedPokemon);
                     }
+
                     break;
             }
         }
@@ -116,25 +118,25 @@ public static class Battle
     {
         IPokemon attacker = player.SelectedPokemon;
         IPokemon receiver = rival.SelectedPokemon;
-        
+
         int EstadoDelPokemon = ChequearEstado(attacker);
-        
+
         AplicarEfectos(attacker);
-        
+
         //1) Display the available attacks:
         Printer.ShowAttacks(attacker, receiver);
-        
+
         // Let the player pick one.
         int attackInput = Calculator.ValidateSelectionInGivenRange(1, 4);
 
-        
+
         // We get the attack of the Pokémon
         IAttack attack = attacker.GetAttack(attackInput - 1).Clone();
         if (attack.Special == 0)
         {
             //2) now we call for a function that uses the attack on the rivals Pokémon.
             Calculator.InfringeDamage(attack, receiver);
-        
+
             //3) We print (both) Pokémon life
             Printer.ShowSelectedPokemon(attacker, player.Name);
             Printer.ShowSelectedPokemon(receiver, rival.Name);
@@ -144,7 +146,7 @@ public static class Battle
             ChequearAtaqueEspecial(attack, player, rival);
             Calculator.InfringeDamage(attack, receiver);
         }
-        
+
 
         //End: Returns to StartBattle
     }
@@ -168,7 +170,7 @@ public static class Battle
         int tipo = ataqueActual.Special;
         IPokemon attacker = jugadorActual.SelectedPokemon;
         IPokemon receiver = jugadorRival.SelectedPokemon;
-        
+
         if (tipo == 1) // Quemar
         {
             //ImpresoraDeTexto.ImprimirCambioEstado(nombrePoke, nombreAtaque, 1);
@@ -190,7 +192,7 @@ public static class Battle
             receiver.CambiarEstado(4);
         }
     }
-    
+
     /// <summary>
     /// Method that allows the player to use an item.
     /// </summary>
@@ -209,7 +211,7 @@ public static class Battle
     /// <param name="player"></param>
     private static bool VoluntarySwitchPokemon(IPlayer player)
     {
-        List<IPokemon> pokemons = player.Pokemons.Where(p => p.Health > 0 && p != player.SelectedPokemon).ToList();
+        List<IPokemon> pokemons = player.Pokemons;
 
         // Mostrar la opción de cambiar Pokémon
         Printer.SwitchQuestion(player);
@@ -228,13 +230,8 @@ public static class Battle
 
         // Validar que el Pokémon elegido no esté debilitado
         int selectedPokemon;
-        do
-        {
-            selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
-        } while (player.Pokemons[selectedPokemon - 1].Health <= 0);
-
-        // Cambiar el Pokémon
-        player.SwitchPokemon(selectedPokemon);
+        selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
+        player.SwitchPokemon(selectedPokemon - 1);
 
         // Confirmar el cambio
         Printer.SwitchConfirmation(player, 0);
@@ -251,34 +248,33 @@ public static class Battle
 
 
 
-    
     /// <summary>
     /// Method that allows to change the selected Pokémon. (Foreced by defeat of current pokeon)
     /// </summary>
     /// <param name="player"></param>
-    private static void ForceSwitchPokemon(IPlayer player, IPlayer opponent)
+    private static void ForceSwitchPokemon(IPlayer player)
     {
-        // Filtra los Pokémon disponibles para cambiar (no excluye al que está en batalla)
-        List<IPokemon> availablePokemons = player.Pokemons.ToList();
+        // Notificar que el Pokémon ha sido derrotado y el jugador debe cambiarlo
+        Printer.ForceSwitchMessage(player);
 
-        if (availablePokemons.Count == 0)
-        {
-            Console.WriteLine("No tienes Pokémon disponibles para continuar la batalla.");
-            return;
-        }
+        // Mover el Pokémon derrotado al cementerio antes de cambiar
+        player.CarryToCementerio(); // Elimina el Pokémon del equipo y lo agrega al cementerio
 
-        Printer.ShowInventory(availablePokemons);
+        List<IPokemon> pokemons = player.Pokemons;
 
-        // Asegúrate de que el índice de selección esté dentro del rango de los Pokémon disponibles
+        Printer.ShowInventory(player.Pokemons);
+
+        // we ask for pokemon input
         int selectedPokemon;
-        do
-        {
-            selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, availablePokemons.Count);
-        } while (selectedPokemon < 1 || selectedPokemon > availablePokemons.Count);
+        selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
+        // Cambiar el Pokémon seleccionado
+        player.SwitchPokemon(selectedPokemon - 1);
 
-        // Realiza el cambio de Pokémon
-        player.SwitchPokemon(selectedPokemon);
+
+        // Confirmar el cambio de Pokémon
         Printer.SwitchConfirmation(player, 0);
+        Console.WriteLine("Presiona cualquier tecla para continuar...");
+        Console.ReadLine();
     }
 
 
@@ -291,7 +287,7 @@ public static class Battle
         switch (pokemon.State)
         {
             case Estado.Paralizado:
-                if (random.NextDouble() < 0.5)  // 50% de probabilidad de no poder atacar
+                if (random.NextDouble() < 0.5) // 50% de probabilidad de no poder atacar
                 {
                     Console.WriteLine($"{pokemon.Name} está paralizado y no puede atacar.");
                 }
@@ -299,8 +295,9 @@ public static class Battle
                 {
                     Console.WriteLine($"{pokemon.Name} está paralizado pero puede atacar.");
                 }
+
                 break;
-            
+
             case Estado.Dormido:
                 if (pokemon.TurnosDormido > 0)
                 {
@@ -321,8 +318,9 @@ public static class Battle
                         Console.WriteLine($"{pokemon.Name} sigue dormido.");
                     }
                 }
+
                 break;
-            
+
             case Estado.Quemado:
                 Console.WriteLine($"{pokemon.Name} está quemado y recibe daño residual.");
                 pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.10)); // Daño residual por quemadura
@@ -337,6 +335,7 @@ public static class Battle
                 {
                     Console.WriteLine($"{pokemon.Name} sufre daño por quemaduras.");
                 }
+
                 break;
 
             case Estado.Envenenado:
@@ -348,16 +347,15 @@ public static class Battle
                     Console.WriteLine($"{pokemon.Name} ha muerto por envenenamiento.");
                     /*player.CarryToCementerio();
                     ForceSwitchPokemon(player);*/
-                        
+
                 }
                 else
                 {
                     Console.WriteLine($"{pokemon.Name} sufre daño por veneno.");
                 }
-                break;
 
-            default:
                 break;
         }
     }
 }
+    

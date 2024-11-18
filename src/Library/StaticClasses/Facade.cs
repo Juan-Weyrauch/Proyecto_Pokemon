@@ -44,7 +44,7 @@ public static class Facade
         for (int i = 0; i < 2; i++)
         {
             Console.Clear();
-    
+        
             // Informar de quién es el turno
             Printer.YourTurn((i + 1).ToString());  // Pasamos el número del jugador, pero no necesitamos el Pokémon para esta parte.
 
@@ -65,8 +65,7 @@ public static class Facade
             {
                 Printer.AskForPokemon(j + 1, playerName); // Mostrar mensaje para seleccionar Pokémon
                 int playerSelection = Calculator.ValidateSelectionInGivenRange(1, 20);
-                // Clonar el Pokémon seleccionado
-                playerPokemons.Add(Catalogue.GetPokemon(playerSelection).Clone());
+                playerPokemons.Add(Catalogue.GetPokemon(playerSelection).Clone()); // Agregar Pokémon a la lista
             }
 
             // Selección del Pokémon inicial
@@ -87,8 +86,10 @@ public static class Facade
         Printer.ShowSelectedPokemon(player1.SelectedPokemon, player1.Name);
         Printer.ShowSelectedPokemon(player2.SelectedPokemon, player2.Name);
 
+
         // Iniciar la batalla
         Battle.StartBattle();
+
     }
 
 

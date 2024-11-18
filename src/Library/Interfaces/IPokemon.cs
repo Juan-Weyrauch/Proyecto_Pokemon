@@ -48,7 +48,9 @@ public interface IPokemon
     public IAttack GetAttack(int index);
 
     int TurnosDormido { get; set; }
+    public IPokemon Clone();
+
 
     void CambiarEstado(int estado);
-    IPokemon Clone();
+    
 }

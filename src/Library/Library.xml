@@ -140,7 +140,7 @@
         </member>
         <member name="T:Library.Classes.Pokemon">
             <summary>
-            Pokémon class.
+            Pokemon class.
             </summary>
         </member>
         <member name="P:Library.Classes.Pokemon.Name">
@@ -155,7 +155,7 @@
         </member>
         <member name="P:Library.Classes.Pokemon.Defense">
             <summary>
-            The Pokémon's defense stat.
+            The pokemon must have a defense status
             </summary>
         </member>
         <member name="P:Library.Classes.Pokemon.Type">
@@ -377,7 +377,7 @@
             </summary>
             <param name="player"></param>
         </member>
-        <member name="M:Library.StaticClasses.Battle.ForceSwitchPokemon(Library.Interfaces.IPlayer,Library.Interfaces.IPlayer)">
+        <member name="M:Library.StaticClasses.Battle.ForceSwitchPokemon(Library.Interfaces.IPlayer)">
             <summary>
             Method that allows to change the selected Pokémon. (Foreced by defeat of current pokeon)
             </summary>
@@ -428,7 +428,7 @@
         <member name="M:Library.StaticClasses.Calculator.InfringeDamage(Library.Interfaces.IAttack,Library.IPokemon)">
             <summary>
             This class is responsible for:
-                1) Determining the effectiveness of the attack used,
+                1) Determining the effectiveness of the attack used.
             </summary>
             <param name="attack"></param>
             <param name="rival"></param>

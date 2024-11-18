@@ -30,7 +30,7 @@ public enum Estado
     Dormido = 4
 }
 /// <summary>
-/// Pokémon class.
+/// Pokemon class.
 /// </summary>
 public class Pokemon : IPokemon
 {
@@ -45,7 +45,7 @@ public class Pokemon : IPokemon
     public int Health { get; set; }
     
     /// <summary>
-    /// The Pokémon's defense stat.
+    /// The pokemon must have a defense status
     /// </summary>
     public int Defense { get; set; }
     
@@ -69,6 +69,8 @@ public class Pokemon : IPokemon
     /// </summary>
     public List<IAttack> Attacks { get; }
 
+    //who needs to create the pokemons?
+    
     /// <summary>
     /// Initial health of the Pokémon.
     /// </summary>
@@ -105,6 +107,7 @@ public class Pokemon : IPokemon
             EnBatalla = this.EnBatalla
         };
     }
+    
 
     /// <summary>
     /// Returns the attack selected by the player.
@@ -122,8 +125,15 @@ public class Pokemon : IPokemon
         if (Health < 0) Health = 0;
     }
 
-    public void CambiarEstado(int nuevoEstado)
-    {
-        State = (Estado)nuevoEstado;
-    }
+/*  public IPokemon Clone()
+ {
+    return new Pokemon(this.Name, this.Defense, this.Type, this.AtackList);
+ }
+ */
+
+ public void CambiarEstado(int nuevoEstado)
+ {
+     State = (Estado)nuevoEstado;
+ }
 }
+
