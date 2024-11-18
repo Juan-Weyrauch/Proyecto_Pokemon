@@ -43,4 +43,9 @@ public class Attack : IAttack
         Special = special;
         Type = type;
     }
+    
+    public IAttack Clone()
+    {
+        return new Attack(Name, Damage, Special, Type);
+    }
 }

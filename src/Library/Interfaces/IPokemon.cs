@@ -37,13 +37,11 @@ public interface IPokemon
     /// Sets the state of the pokemon
     /// </summary>
     public Estado State { get; set; }
-
-    
     
     /// <summary>
     /// A list of all the attacks that the pokemon has 
     /// </summary>
-    List<IAttack> AtackList { get; }
+    List<IAttack> Attacks { get; } // Cambiado de AtackList a Attacks
 
     void DecreaseHealth(int valueAfterCalculation);
     
@@ -51,4 +49,6 @@ public interface IPokemon
 
     int TurnosDormido { get; set; }
 
+    void CambiarEstado(int estado);
+    IPokemon Clone();
 }

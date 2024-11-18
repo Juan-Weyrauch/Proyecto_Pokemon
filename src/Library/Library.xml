@@ -113,9 +113,34 @@
             </summary>
             <param name="selectedPokemon"></param>
         </member>
+        <member name="F:Library.Classes.Estado.Normal">
+            <summary>
+            The Pokémon is in a normal state.
+            </summary>
+        </member>
+        <member name="F:Library.Classes.Estado.Quemado">
+            <summary>
+            The Pokémon is burned.
+            </summary>
+        </member>
+        <member name="F:Library.Classes.Estado.Envenenado">
+            <summary>
+            The Pokémon is poisoned.
+            </summary>
+        </member>
+        <member name="F:Library.Classes.Estado.Paralizado">
+            <summary>
+            The Pokémon is paralyzed.
+            </summary>
+        </member>
+        <member name="F:Library.Classes.Estado.Dormido">
+            <summary>
+            The Pokémon is asleep.
+            </summary>
+        </member>
         <member name="T:Library.Classes.Pokemon">
             <summary>
-            Pokemon class.
+            Pokémon class.
             </summary>
         </member>
         <member name="P:Library.Classes.Pokemon.Name">
@@ -130,41 +155,51 @@
         </member>
         <member name="P:Library.Classes.Pokemon.Defense">
             <summary>
-            The pokemon must have a defense status
+            The Pokémon's defense stat.
             </summary>
         </member>
         <member name="P:Library.Classes.Pokemon.Type">
             <summary>
-            Sets the type of the pokemon
+            The Pokémon's type.
             </summary>
         </member>
-        <member name="P:Library.Classes.Pokemon.AtackList">
+        <member name="P:Library.Classes.Pokemon.State">
             <summary>
-            A list of all the attacks that the pokemon has 
+            The Pokémon's current state (e.g., Normal, Burned).
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Pokemon.TurnosDormido">
+            <summary>
+            The number of turns the Pokémon remains asleep.
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Pokemon.Attacks">
+            <summary>
+            A list of all the attacks that the Pokémon has.
+            </summary>
+        </member>
+        <member name="P:Library.Classes.Pokemon.InitialHealth">
+            <summary>
+            Initial health of the Pokémon.
             </summary>
         </member>
         <member name="M:Library.Classes.Pokemon.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.List{Library.Interfaces.IAttack})">
             <summary>
-            Constructor for the class Pokemon
+            Constructor for the class Pokémon.
             </summary>
-            <param name="name"></param>
-            <param name="health"></param>
-            <param name="initialhealth"></param>
-            <param name="defense"></param>
-            <param name="type"></param>
-            <param name="atacks"></param>
+        </member>
+        <member name="M:Library.Classes.Pokemon.Clone">
+            <summary>
+            Creates a deep clone of the Pokémon.
+            </summary>
+            <returns>A new instance of the Pokémon with cloned properties.</returns>
         </member>
         <member name="M:Library.Classes.Pokemon.GetAttack(System.Int32)">
             <summary>
-            Returns the attack selected by the player
+            Returns the attack selected by the player.
             </summary>
             <param name="index"></param>
             <returns></returns>
-        </member>
-        <member name="P:Library.Classes.Pokemon.InitialHealth">
-            <summary>
-            Initial health of the pokemon.
-            </summary>
         </member>
         <member name="P:Library.Interfaces.IAttack.Name">
             <summary>
@@ -279,7 +314,7 @@
             Sets the state of the pokemon
             </summary>
         </member>
-        <member name="P:Library.IPokemon.AtackList">
+        <member name="P:Library.IPokemon.Attacks">
             <summary>
             A list of all the attacks that the pokemon has 
             </summary>
@@ -342,7 +377,7 @@
             </summary>
             <param name="player"></param>
         </member>
-        <member name="M:Library.StaticClasses.Battle.ForceSwitchPokemon(Library.Interfaces.IPlayer)">
+        <member name="M:Library.StaticClasses.Battle.ForceSwitchPokemon(Library.Interfaces.IPlayer,Library.Interfaces.IPlayer)">
             <summary>
             Method that allows to change the selected Pokémon. (Foreced by defeat of current pokeon)
             </summary>

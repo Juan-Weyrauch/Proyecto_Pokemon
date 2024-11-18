@@ -6,7 +6,7 @@
     <members>
         <member name="T:Tests.TrainTests">
             <summary>
-            Prueba de la clase <see cref="T:ClassLibrary.Train"/>.
+            Prueba de la clase <see cref="T:Library.Train"/>.
             </summary>
         </member>
         <member name="F:Tests.TrainTests.train">
