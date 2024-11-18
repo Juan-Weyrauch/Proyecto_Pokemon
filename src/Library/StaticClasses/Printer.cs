@@ -405,32 +405,13 @@ public static class Printer
             Console.WriteLine("╚═══════════════════════════════════════╝");
         }
     }
-    
-    public static void DisplayNoItemsMessage(string playerName)
+    public static void CancelSwitchMessage()
     {
-        Console.WriteLine($"╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║ {playerName} no tiene Pokémon vivos. El juego ha terminado. ║");
-        Console.WriteLine($"╚═══════════════════════════════════════╝");
+        Console.WriteLine("Has decidido no cambiar de Pokémon. Continúa con tu turno.");
+        Console.WriteLine("Presiona cualquier tecla para continuar...");
+        Console.ReadKey();
+        Console.Clear();
     }
 
-    public static void DisplayUsingRevivePotion(string playerName)
-    {
-        Console.WriteLine($"╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║ {playerName} está usando una Revive Potion. ║");
-        Console.WriteLine($"╚═══════════════════════════════════════╝");
-    }
-
-    public static void SpecialAttackNotReadyMessage()
-    {
-        Console.WriteLine("El ataque especial aún no está listo. Intenta nuevamente en el próximo turno.");
-    }
-
-    public static void ShowInventory(List<IPotions> potions)
-    {
-        Console.WriteLine($"╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║ {potions} está usando una Revive Potion. ║");
-        Console.WriteLine($"╚═══════════════════════════════════════╝");
-    }
-    
 
 }

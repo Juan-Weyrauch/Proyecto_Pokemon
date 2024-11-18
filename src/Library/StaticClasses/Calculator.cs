@@ -18,71 +18,71 @@ public static class Calculator
             new Dictionary<string, (List<string>, List<string>, List<string>)>
             {
                 {
-                    "Agua",
-                    (new List<string> { "Eléctrico", "Planta" }, new List<string> { "Agua", "Fuego", "Hielo" },
+                    "Water",
+                    (new List<string> { "Electric", "Plant" }, new List<string> { "Water", "Fire", "Ice" },
                         new List<string>())
                 },
                 {
-                    "Bicho",
-                    (new List<string> { "Fuego", "Roca", "Volador", "Veneno" },
-                        new List<string> { "Lucha", "Planta", "Tierra" }, new List<string>())
+                    "Bug",
+                    (new List<string> { "Fire", "Rock", "Flying", "Venom" },
+                        new List<string> { "Fight", "Plant", "Earth" }, new List<string>())
                 },
                 {
                     "Dragón",
-                    (new List<string> { "Dragón", "Hielo" },
-                        new List<string> { "Agua", "Eléctrico", "Fuego", "Planta" }, new List<string>())
+                    (new List<string> { "Dragón", "Ice" },
+                        new List<string> { "Water", "Electric", "Fire", "Plant" }, new List<string>())
                 },
                 {
-                    "Eléctrico",
-                    (new List<string> { "Tierra" }, new List<string> { "Volador" }, new List<string> { "Eléctrico" })
+                    "Electric",
+                    (new List<string> { "Earth" }, new List<string> { "Flying" }, new List<string> { "Electric" })
                 },
                 {
-                    "Fantasma",
-                    (new List<string> { "Fantasma" }, new List<string> { "Veneno", "Lucha" },
+                    "Ghost",
+                    (new List<string> { "Ghost" }, new List<string> { "Venom", "Fight" },
                         new List<string> { "Normal" })
                 },
                 {
-                    "Fuego",
-                    (new List<string> { "Agua", "Roca", "Tierra" }, new List<string> { "Bicho", "Fuego", "Planta" },
+                    "Fire",
+                    (new List<string> { "Water", "Rock", "Earth" }, new List<string> { "Bug", "Fire", "Plant" },
                         new List<string>())
                 },
                 {
-                    "Hielo",
-                    (new List<string> { "Fuego", "Lucha", "Roca" }, new List<string> { "Hielo" }, new List<string>())
+                    "Ice",
+                    (new List<string> { "Fire", "Fight", "Rock" }, new List<string> { "Ice" }, new List<string>())
                 },
                 {
-                    "Lucha",
-                    (new List<string> { "Psíquico", "Volador", "Bicho", "Roca" }, new List<string>(),
+                    "Fight",
+                    (new List<string> { "Psychic", "Flying", "Bug", "Rock" }, new List<string>(),
                         new List<string>())
                 },
-                { "Normal", (new List<string> { "Lucha" }, new List<string>(), new List<string> { "Fantasma" }) },
+                { "Normal", (new List<string> { "Fight" }, new List<string>(), new List<string> { "Ghost" }) },
                 {
-                    "Planta",
-                    (new List<string> { "Bicho", "Fuego", "Hielo", "Veneno", "Volador" },
-                        new List<string> { "Agua", "Eléctrico", "Planta", "Tierra" }, new List<string>())
+                    "Plant",
+                    (new List<string> { "Bug", "Fire", "Ice", "Venom", "Flying" },
+                        new List<string> { "Water", "Electric", "Plant", "Earth" }, new List<string>())
                 },
                 {
-                    "Psíquico",
-                    (new List<string> { "Bicho", "Lucha", "Fantasma" }, new List<string>(), new List<string>())
+                    "Psychic",
+                    (new List<string> { "Bug", "Fight", "Ghost" }, new List<string>(), new List<string>())
                 },
                 {
-                    "Roca",
-                    (new List<string> { "Agua", "Lucha", "Planta", "Tierra" },
-                        new List<string> { "Fuego", "Normal", "Veneno", "Volador" }, new List<string>())
+                    "Rock",
+                    (new List<string> { "Water", "Fight", "Plant", "Earth" },
+                        new List<string> { "Fire", "Normal", "Venom", "Flying" }, new List<string>())
                 },
                 {
-                    "Tierra",
-                    (new List<string> { "Agua", "Hielo", "Planta" }, new List<string> { "Eléctrico" },
-                        new List<string>())
-                },
-                {
-                    "Veneno",
-                    (new List<string> { "Psíquico", "Tierra" }, new List<string> { "Bicho", "Planta", "Veneno" },
+                    "Earth",
+                    (new List<string> { "Water", "Ice", "Plant" }, new List<string> { "Electric" },
                         new List<string>())
                 },
                 {
-                    "Volador",
-                    (new List<string> { "Eléctrico", "Hielo", "Roca" }, new List<string> { "Bicho", "Lucha", "Planta" },
+                    "Venom",
+                    (new List<string> { "Psychic", "Earth" }, new List<string> { "Bug", "Plant", "Venom" },
+                        new List<string>())
+                },
+                {
+                    "Flying",
+                    (new List<string> { "Electric", "Ice", "Rock" }, new List<string> { "Bug", "Fight", "Plant" },
                         new List<string>())
                 }
             };
@@ -98,11 +98,11 @@ public static class Calculator
         if (!EffectivenessTable.ContainsKey(attackType)) return 1.0;
 
         //using var because: (yes, thanks).
-        var (weaknesses, resistances, immunities) = EffectivenessTable[attackType];
+        var (weaknesses, resistances, immunities) = EffectivenessTable[pokemonType];
 
-        if (immunities.Contains(pokemonType)) return 0.0;
-        if (weaknesses.Contains(pokemonType)) return 2.0;
-        if (resistances.Contains(pokemonType)) return 0.5;
+        if (immunities.Contains(attackType)) return 0.0;
+        if (weaknesses.Contains(attackType)) return 2.0;
+        if (resistances.Contains(attackType)) return 0.5;
 
         return 1.0; // Daño normal si no hay modificaciones
     }

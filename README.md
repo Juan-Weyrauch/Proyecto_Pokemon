@@ -42,16 +42,20 @@ Comentar las siguientes líneas en los archivos de proyecto (`*.csproj`)
 
 Comentar la línea `<PackageReference Include="StyleCop.Analyzers" Version="1.1.118"/>` en los archivos de proyecto (`*.csproj`)
 
-# User Stories:
+# RECORDAR *80%* de COVERAGE 
+# User Stories: Van todas con test 
 - [x] 1: Pick 6 Pokémons. (User can see a catalogue and their selected Pokémons.)
-- [ ] 2: View Pokémon attacks. (User can see available attacks for each turn; special attacks selectable every two turns.)
-- [ ] 3: See HP of all Pokémons. (Shows Pokémon HP in numeric format, e.g., 20/50; HP updates after each attack.)
-- [ ] 4: Attack with type effectiveness. (User can attack based on Pokémon type effectiveness; system applies type advantage/disadvantage.)
-- [ ] 5: Turn indicator. (Displays whose turn it is on screen to signal when to attack or wait.)
+- [x] 2: View Pokémon attacks. (User can see available attacks for each turn; special attacks selectable every two turns.)
+- [x] 3: See HP of all Pokémons. (Shows Pokémon HP in numeric format, e.g., 20/50; HP updates after each attack.)
+- [x] 4: Attack with type effectiveness. (User can attack based on Pokémon type effectiveness; system applies type advantage/disadvantage.)
+- [x] 5: Turn indicator. (Displays whose turn it is on screen to signal when to attack or wait.)
 - [ ] 6: Win condition. (Battle ends when opponent's Pokémon HP reaches zero; winner is displayed.)
-- [ ] 7: Switch Pokémon. (User can switch Pokémon during battle; switching loses a turn.)
+- [x] 7: Switch Pokémon. (User can switch Pokémon during battle; switching loses a turn.)
 - [ ] 8: Use item. (User can use an item during battle; using an item loses a turn.)
 - [ ] 9: Join waitlist for opponents. (User receives confirmation when added to the waitlist.)
 - [ ] 10: View waitlist. (Displays the list of players waiting for opponents.)
 - [ ] 11: Start battle from waitlist. (Both players are notified of the battle start; first turn is determined randomly.)
+# No son historias como tal pero son importantes(Additions) 
+- [ ] 1: States of pokemon, posion, burned, sleep, paralyzed.
+- [ ] 2: Cementerio Pokemon
 

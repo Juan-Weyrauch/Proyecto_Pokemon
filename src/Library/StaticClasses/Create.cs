@@ -22,7 +22,7 @@ public static class Create
     public static Dictionary<int, IPokemon> CreateCatalogue()
         {
             // Add 20 Pokémon to the catalog
-          Pokedex.Add(1, new Pokemon("Venusaur", 23, "Planta", AttackGenerator.GenerateRandomAttack("Plant")));
+          Pokedex.Add(1, new Pokemon("Venusaur", 23, "Plant", AttackGenerator.GenerateRandomAttack("Plant")));
 Pokedex.Add(2, new Pokemon("Blastoise", 28, "Water", AttackGenerator.GenerateRandomAttack("Water")));
 Pokedex.Add(3, new Pokemon("Butterfree", 17, "Bug", AttackGenerator.GenerateRandomAttack("Bug")));
 Pokedex.Add(4, new Pokemon("Charizard", 26, "Fire", AttackGenerator.GenerateRandomAttack("Fire")));
