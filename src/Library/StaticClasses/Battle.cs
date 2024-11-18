@@ -59,6 +59,7 @@ public static class Battle
         if (player.SelectedPokemon.Health <= 0)
         {
             // Safety check to ensure a defeated Pokémon is not used
+            
             Printer.ForceSwitchMessage(player);
             ForceSwitchPokemon(player);
             return;
@@ -176,13 +177,8 @@ public static class Battle
 
         // Validar que el Pokémon elegido no esté debilitado
         int selectedPokemon;
-        do
-        {
-            selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
-        } while (player.Pokemons[selectedPokemon - 1].Health <= 0);
-
-        // Cambiar el Pokémon
-        player.SwitchPokemon(selectedPokemon);
+        selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
+        player.SwitchPokemon(selectedPokemon - 1);
 
         // Confirmar el cambio
         Printer.SwitchConfirmation(player, 0);
@@ -205,25 +201,22 @@ public static class Battle
     /// <param name="player"></param>
     private static void ForceSwitchPokemon(IPlayer player)
     {
-        List<IPokemon> pokemons = player.Pokemons;
-    
         // Notificar que el Pokémon ha sido derrotado y el jugador debe cambiarlo
         Printer.ForceSwitchMessage(player);
     
         // Mover el Pokémon derrotado al cementerio antes de cambiar
         player.CarryToCementerio();  // Elimina el Pokémon del equipo y lo agrega al cementerio
+        
+        List<IPokemon> pokemons = player.Pokemons;
 
         Printer.ShowInventory(player.Pokemons);
-
+        
+        // we ask for pokemon input
         int selectedPokemon;
-        do
-        {
-            // Validar que el jugador elija un Pokémon disponible (y que esté en buen estado)
-            selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
-        } while (player.Pokemons[selectedPokemon - 1].Health <= 0); // Asegurar que el Pokémon esté en estado saludable
-
+        selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count); 
         // Cambiar el Pokémon seleccionado
-        player.SwitchPokemon(selectedPokemon);
+        player.SwitchPokemon(selectedPokemon - 1);
+
 
         // Confirmar el cambio de Pokémon
         Printer.SwitchConfirmation(player, 0);
