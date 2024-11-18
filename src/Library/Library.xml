@@ -107,7 +107,7 @@
             <param name="selectedPokemon"></param>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
-        <member name="M:Library.Classes.Player.SwitchPokemon(Library.IPokemon)">
+        <member name="M:Library.Classes.Player.SwitchPokemon(System.Int32)">
             <summary>
             Lets the PLAYER change ITS Pokémon.
             </summary>
@@ -219,7 +219,7 @@
             </summary>
             <param name="itemChoice"></param>
         </member>
-        <member name="M:Library.Interfaces.IPlayer.SwitchPokemon(Library.IPokemon)">
+        <member name="M:Library.Interfaces.IPlayer.SwitchPokemon(System.Int32)">
             <summary>
             Changes the Selected Pokemon for a new IPokemon recieved 
             </summary>
@@ -302,11 +302,11 @@
              It includes turn selection, displaying the current player's options, 
              and delegating actions to the appropriate methods.
             
-             You’re not actually re-creating the values; you’re simply
+             You’re not re-creating the values; you’re simply
              accessing them as part of Battle.StartBattle. When you pass
              player1 and player2 to Battle, you’re passing the references to
              these Player objects. This means that Battle is using the same player
-             instances created in Selections—it’s not making new copies of them.
+             instances created in Facade—it’s not making new copies of them.
              </summary>
         </member>
         <member name="M:Library.StaticClasses.Battle.StartBattle">
@@ -328,6 +328,25 @@
             </summary>
             <param name="player"></param>
             <param name="rival"></param>
+        </member>
+        <member name="M:Library.StaticClasses.Battle.UseItem(Library.Interfaces.IPlayer)">
+            <summary>
+            Method that allows the player to use an item.
+            </summary>
+            <param name="player"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Library.StaticClasses.Battle.VoluntarySwitchPokemon(Library.Interfaces.IPlayer)">
+            <summary>
+            Method that allows to change the selected Pokémon. (Voluntarily)
+            </summary>
+            <param name="player"></param>
+        </member>
+        <member name="M:Library.StaticClasses.Battle.ForceSwitchPokemon(Library.Interfaces.IPlayer)">
+            <summary>
+            Method that allows to change the selected Pokémon. (Foreced by defeat of current pokeon)
+            </summary>
+            <param name="player"></param>
         </member>
         <member name="T:Library.StaticClasses.Calculator">
             <summary>
@@ -549,6 +568,12 @@
             </summary>
             <param name="value"></param>
             <param name="attack"></param>
+        </member>
+        <member name="M:Library.StaticClasses.Printer.ForceSwitchMessage(Library.Interfaces.IPlayer)">
+            <summary>
+            Shows the player that it's Pokémon has been defeated and that it needs to change the current one.
+            </summary>
+            <param name="player"></param>
         </member>
         <member name="T:Library.Train">
             <summary>

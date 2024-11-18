@@ -12,9 +12,11 @@ public interface IPlayer
     /// A list containing all the players Pokémon.
     /// </summary>
     List<IPokemon> Pokemons { get; }
-    
-    
-    
+
+    List<IPokemon> Cementerio { get; }
+
+
+
     /// <summary>
     /// A list containing all the players potions.
     /// This list gets updated along the Battle to remove Items that have already been used.
@@ -50,5 +52,7 @@ public interface IPlayer
     /// Changes the Selected Pokemon for a new IPokemon recieved 
     /// </summary>
     /// <param name="newPokemonIndex"></param>
-    void SwitchPokemon(IPokemon selectedPokemon);
+    void SwitchPokemon(int pokemonChoice);
+
+    public void CarryToCementerio();
 }

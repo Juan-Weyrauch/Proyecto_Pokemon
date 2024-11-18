@@ -64,6 +64,9 @@ public class Player : IPlayer
     public List<IPokemon> Pokemons { get; private set; }
     
     
+    public List<IPokemon> Cementerio {get; private set;}
+    
+    
     /// <summary>
     /// A list containing all potions of the player
     /// </summary>
@@ -90,11 +93,13 @@ public class Player : IPlayer
     {
         Name = name;
         Pokemons = pokemons;
+        Cementerio = new List<IPokemon>();
         Potions = new List<IPotions>
         {
             new RevivePotion(),
             new TotalCure(), new TotalCure(),
             new SuperPotion(), new SuperPotion(), new SuperPotion(), new SuperPotion()
+            
         };
         SelectedPokemon = selectedPokemon;
         Turn = 0;
@@ -143,14 +148,21 @@ public class Player : IPlayer
     /// Lets the PLAYER change ITS Pokémon.
     /// </summary>
     /// <param name="selectedPokemon"></param>
-    public void SwitchPokemon(IPokemon selectedPokemon)
+    public void SwitchPokemon(int pokemonChoice)
     {
-        SelectedPokemon = selectedPokemon;
+        SelectedPokemon = Pokemons[pokemonChoice];
     }
 
     public void UseItem(int itemChoice)
     {
      //On the works...
     }
+
+    public void CarryToCementerio()
+    {
+        Cementerio.Add(SelectedPokemon);
+        Pokemons.Remove(SelectedPokemon);
+    }
+    
     
 }
