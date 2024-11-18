@@ -14,9 +14,17 @@
   <ItemGroup>
     <Folder Include="Abstract Classes\" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Discord.NET" Version="3.16.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+  </ItemGroup>
   <PropertyGroup>
     <NoWarn>
       $(NoWarn); SA1623; SA1642; CA1002; CA1303; CA5394
     </NoWarn>
+    <UserSecretsId>422a05ac-10ae-48d8-af7f-4df6393dab65</UserSecretsId>
   </PropertyGroup>
 </Project>
