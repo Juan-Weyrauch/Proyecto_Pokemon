@@ -1,5 +1,8 @@
 namespace Library.Game.Attacks;
 
+/// <summary>
+/// 
+/// </summary>
 public interface IAttack
 {
     /// <summary>
