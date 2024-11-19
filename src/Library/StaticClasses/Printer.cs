@@ -413,6 +413,13 @@ public static class Printer
         Console.Clear();
     }
 
+    /// <summary>
+    /// Imprime un mensaje en la consola indicando el cambio de estado de un Pokémon.
+    /// </summary>
+    /// <param name="nombrePokemon">El nombre del Pokémon cuyo estado ha cambiado.</param>
+    /// <param name="estado">El código numérico que representa el nuevo estado del Pokémon.
+    /// El valor puede ser:
+    /// 0 - Normal, 1 - Quemado, 2 - Envenenado, 3 - Paralizado, 4 - Dormido.</param>
     public static void ImprimirCambioEstado(string nombrePokemon, int estado)
     {
         switch (estado)
@@ -423,19 +430,16 @@ public static class Printer
             case 1:
                 Console.WriteLine($"{nombrePokemon} está quemado y recibe daño residual.");
                 break;
-
             case 2:
                 Console.WriteLine($"{nombrePokemon} está envenenado y recibe daño residual.");
                 break;
-
             case 3:
                 Console.WriteLine($"{nombrePokemon} está paralizado y no puede atacar.");
                 break;
-
             case 4:
                 Console.WriteLine($"{nombrePokemon} está dormido y pierde el turno.");
                 break;
         }
-
     }
+
 }

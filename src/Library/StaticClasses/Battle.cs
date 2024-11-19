@@ -150,7 +150,11 @@ public static class Battle
 
         //End: Returns to StartBattle
     }
-
+    /// <summary>
+    /// Checks the current state of the Pokémon.
+    /// </summary>
+    /// <param name="pokemon">The Pokémon whose state is being checked.</param>
+    /// <returns>Returns 0 if the Pokémon is in normal state, otherwise 1.</returns>
     public static int ChequearEstado(IPokemon pokemon)
     {
         // Ahora usamos directamente el enum Estado en lugar de un valor numérico
@@ -163,7 +167,12 @@ public static class Battle
             return 1; // Otros estados
         }
     }
-
+    /// <summary>
+    /// Checks if the selected attack has any special effect and applies it if necessary.
+    /// </summary>
+    /// <param name="ataque">The attack being used.</param>
+    /// <param name="jugadorActual">The current player using the attack.</param>
+    /// <param name="jugadorRival">The opposing player being attacked.</param>
     public static void ChequearAtaqueEspecial(IAttack ataque, IPlayer jugadorActual, IPlayer jugadorRival)
     {
         IAttack ataqueActual = ataque;
@@ -279,7 +288,10 @@ public static class Battle
 
 
 
-
+    /// <summary>
+    /// Applies the effects of a Pokémon's current state (e.g., paralysis, sleep, burn, poison).
+    /// </summary>
+    /// <param name="pokemon">The Pokémon whose effects are being applied.</param>
     private static void AplicarEfectos(IPokemon pokemon)
     {
         Random random = new Random();
