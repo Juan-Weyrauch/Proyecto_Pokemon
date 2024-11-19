@@ -1,5 +1,6 @@
+using System.Globalization;
 using Library.Game.Players;
-using Library.Game.Pokemon;
+using Library.Game.Pokemons;
 using Library.Game.Utilities;
 
 namespace Library.Facade;
@@ -45,16 +46,15 @@ public static class Facade
             Console.Clear();
         
             // Informar de quién es el turno
-            Printer.YourTurn((i + 1).ToString());  // Pasamos el número del jugador, pero no necesitamos el Pokémon para esta parte.
+            Printer.YourTurn((i + 1).ToString(CultureInfo.InvariantCulture));
+            // Pasamos el número del jugador, pero no necesitamos el Pokémon para esta parte.  
 
             // Variables del jugador
-            string playerName;
             List<IPokemon> playerPokemons = new List<IPokemon>();
-            IPokemon selectedPokemon;
 
             // Solicitar nombre del jugador
             Printer.NameSelection();
-            playerName = Console.ReadLine();
+            string playerName = Console.ReadLine();
 
             // Mostrar todos los Pokémon disponibles
             Printer.ShowCatalogue(Catalogue.GetPokedex());
@@ -71,7 +71,7 @@ public static class Facade
             Printer.ShowInventory(playerPokemons);
             Console.Write("\nPick your starting Pokemon: \n> ");
             int starterSelection = Calculator.ValidateSelectionInGivenRange(1, 6);
-            selectedPokemon = playerPokemons[starterSelection - 1];
+            IPokemon selectedPokemon = playerPokemons[starterSelection - 1];
 
             // Crear jugadores en el sistema
             Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, i);

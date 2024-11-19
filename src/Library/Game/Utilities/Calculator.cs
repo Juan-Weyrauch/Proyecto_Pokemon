@@ -1,11 +1,12 @@
+using System.Data;
 using Library.Game.Attacks;
 using Library.Game.Players;
-using Library.Game.Pokemon;
+using Library.Game.Pokemons;
 
 namespace Library.Game.Utilities;
 
 /// <summary>
-/// This class has the responsabilities of making calculations, these being:
+/// This class has the responsibilities of making calculations, these being:
 ///     - Index in range
 ///     - Approving of inputs
 ///     - Damage calculations
@@ -20,71 +21,71 @@ public static class Calculator
             {
                 {
                     "Water",
-                    (new List<string> { "Electric", "Plant" }, new List<string> { "Water", "Fire", "Ice" },
-                        new List<string>())
+                    (["Electric", "Plant"], ["Water", "Fire", "Ice"],
+                        [])
                 },
                 {
                     "Bug",
-                    (new List<string> { "Fire", "Rock", "Flying", "Venom" },
-                        new List<string> { "Fight", "Plant", "Earth" }, new List<string>())
+                    (["Fire", "Rock", "Flying", "Venom"],
+                        ["Fight", "Plant", "Earth"], [])
                 },
                 {
                     "Dragón",
-                    (new List<string> { "Dragón", "Ice" },
-                        new List<string> { "Water", "Electric", "Fire", "Plant" }, new List<string>())
+                    (["Dragón", "Ice"],
+                        ["Water", "Electric", "Fire", "Plant"], [])
                 },
                 {
                     "Electric",
-                    (new List<string> { "Earth" }, new List<string> { "Flying" }, new List<string> { "Electric" })
+                    (["Earth"], ["Flying"], ["Electric"])
                 },
                 {
                     "Ghost",
-                    (new List<string> { "Ghost" }, new List<string> { "Venom", "Fight" },
-                        new List<string> { "Normal" })
+                    (["Ghost"], ["Venom", "Fight"],
+                        ["Normal"])
                 },
                 {
                     "Fire",
-                    (new List<string> { "Water", "Rock", "Earth" }, new List<string> { "Bug", "Fire", "Plant" },
-                        new List<string>())
+                    (["Water", "Rock", "Earth"], ["Bug", "Fire", "Plant"],
+                        [])
                 },
                 {
                     "Ice",
-                    (new List<string> { "Fire", "Fight", "Rock" }, new List<string> { "Ice" }, new List<string>())
+                    (["Fire", "Fight", "Rock"], ["Ice"], [])
                 },
                 {
                     "Fight",
-                    (new List<string> { "Psychic", "Flying", "Bug", "Rock" }, new List<string>(),
-                        new List<string>())
+                    (["Psychic", "Flying", "Bug", "Rock"], [],
+                        [])
                 },
-                { "Normal", (new List<string> { "Fight" }, new List<string>(), new List<string> { "Ghost" }) },
+                { "Normal", (["Fight"], [], ["Ghost"]) },
                 {
                     "Plant",
-                    (new List<string> { "Bug", "Fire", "Ice", "Venom", "Flying" },
-                        new List<string> { "Water", "Electric", "Plant", "Earth" }, new List<string>())
+                    (["Bug", "Fire", "Ice", "Venom", "Flying"],
+                        ["Water", "Electric", "Plant", "Earth"], [])
                 },
                 {
                     "Psychic",
-                    (new List<string> { "Bug", "Fight", "Ghost" }, new List<string>(), new List<string>())
+                    (["Bug", "Fight", "Ghost"], [], [])
                 },
                 {
                     "Rock",
-                    (new List<string> { "Water", "Fight", "Plant", "Earth" },
-                        new List<string> { "Fire", "Normal", "Venom", "Flying" }, new List<string>())
+                    (["Water", "Fight", "Plant", "Earth"],
+                        ["Fire", "Normal", "Venom", "Flying"], [])
                 },
                 {
                     "Earth",
-                    (new List<string> { "Water", "Ice", "Plant" }, new List<string> { "Electric" },
-                        new List<string>())
+                    (["Water", "Ice", "Plant"], ["Electric"],
+                        [])
                 },
                 {
                     "Venom",
-                    (new List<string> { "Psychic", "Earth" }, new List<string> { "Bug", "Plant", "Venom" },
-                        new List<string>())
+                    (["Psychic", "Earth"], ["Bug", "Plant", "Venom"],
+                        [])
                 },
                 {
                     "Flying",
-                    (new List<string> { "Electric", "Ice", "Rock" }, new List<string> { "Bug", "Fight", "Plant" },
-                        new List<string>())
+                    (["Electric", "Ice", "Rock"], ["Bug", "Fight", "Plant"],
+                        [])
                 }
             };
 
@@ -94,7 +95,7 @@ public static class Calculator
     /// <param name="attackType"></param>
     /// <param name="pokemonType"></param>
     /// <returns></returns>
-    public static double GetEffectivenessMultiplier(string attackType, string pokemonType)
+    private static double GetEffectivenessMultiplier(string attackType, string pokemonType)
     {
         if (!EffectivenessTable.ContainsKey(attackType)) return 1.0;
 
@@ -109,7 +110,7 @@ public static class Calculator
     }
 
     /// <summary>
-    /// Checks for effectiness in the attack recieved.
+    /// Checks for effectiveness in the attack received.
     /// It compares the attack type to the Pokémon type and returns a double value for the effectiveness.
     /// </summary>
     /// <param name="attack"></param>
@@ -117,7 +118,15 @@ public static class Calculator
     /// <returns></returns>
     public static double CheckEffectiveness(IAttack attack, IPokemon pokemon)
     {
-        return GetEffectivenessMultiplier(attack.Type, pokemon.Type);
+        if (attack != null && pokemon != null)
+        {
+            return (GetEffectivenessMultiplier(attack.Type, pokemon.Type));
+        }
+        else
+        {
+            throw new NoNullAllowedException("Attack or Pokemon was null.");
+        }
+
     }
 
     /// <summary>
@@ -162,6 +171,10 @@ public static class Calculator
         return number;
     }
 
+    /// <summary>
+    /// Sets randomly the first player.
+    /// </summary>
+    /// <returns>integer 1 or 2</returns>
     public static int FirstTurnSelection()
     {
         //Always starts the player 1? Should it be random?
@@ -177,7 +190,8 @@ public static class Calculator
     /// <returns>True if the player has Pokémon, False if not</returns>
     public static bool HasActivePokemon(IPlayer player)
     {
-
+        if (player == null) return false;   
+        
         if (player.Pokemons.Count == 0)
         {
             return false;
@@ -187,7 +201,7 @@ public static class Calculator
     }
 
 
-    // ================================== DO DAMAGE / INFRENGE DAMAGE SECTION ==================================
+    // ================================== DO DAMAGE / INFRINGE DAMAGE SECTION ==================================
 
     /// <summary>
     /// This class is responsible for:

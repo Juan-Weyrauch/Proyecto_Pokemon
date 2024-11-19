@@ -1,7 +1,6 @@
-using Library.Game;
 using Library.Game.Attacks;
 using Library.Game.Players;
-using Library.Game.Pokemon;
+using Library.Game.Pokemons;
 using Library.Game.Utilities;
 
 namespace Library.Facade;
@@ -179,8 +178,7 @@ public static class Battle
         Printer.ShowInventory(pokemons);
 
         // Validar que el Pokémon elegido no esté debilitado
-        int selectedPokemon;
-        selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
+        int selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
         player.SwitchPokemon(selectedPokemon - 1);
 
         // Confirmar el cambio
@@ -199,7 +197,7 @@ public static class Battle
 
     
     /// <summary>
-    /// Method that allows to change the selected Pokémon. (Foreced by defeat of current pokeon)
+    /// Method that allows to change the selected Pokémon. (Forced by defeat of current Pokémon)
     /// </summary>
     /// <param name="player"></param>
     private static void ForceSwitchPokemon(IPlayer player)
@@ -214,9 +212,8 @@ public static class Battle
 
         Printer.ShowInventory(player.Pokemons);
         
-        // we ask for pokemon input
-        int selectedPokemon;
-        selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count); 
+        // we ask for Pokémon input
+        int selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count); 
         // Cambiar el Pokémon seleccionado
         player.SwitchPokemon(selectedPokemon - 1);
 

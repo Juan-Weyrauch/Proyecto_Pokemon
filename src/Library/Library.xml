@@ -48,13 +48,13 @@
             <summary>
             Method that allows to change the selected Pokémon. (Voluntarily)
             </summary>
-            <param name="player"></param>
+            <param name="player"/>
         </member>
         <member name="M:Library.Facade.Battle.ForceSwitchPokemon(Library.Game.Players.IPlayer)">
             <summary>
             Method that allows to change the selected Pokémon. (Foreced by defeat of current pokeon)
             </summary>
-            <param name="player"></param>
+            <param name="player"/>
         </member>
         <member name="T:Library.Facade.Facade">
             <summary>
@@ -86,7 +86,7 @@
         </member>
         <member name="P:Library.Game.Attacks.Attack.Special">
             <summary>
-            Check if the attack is a special one or not.
+            Check if the attack is special or not.
             </summary>
         </member>
         <member name="P:Library.Game.Attacks.Attack.Type">
@@ -133,7 +133,7 @@
         </member>
         <member name="P:Library.Game.Attacks.IAttack.Special">
             <summary>
-            Check if the attack is a special one or not
+            Check if the attack is special or not
             </summary>
         </member>
         <member name="P:Library.Game.Attacks.IAttack.Type">
@@ -543,7 +543,7 @@
             <summary>
             Shows the user inventory in a boxed format.
             </summary>
-            <param name="inventory">List of IPokemon items, between 1 and 6 items.</param>
+            <param name="inventory">List of IPokemon items, between one and six items.</param>
         </member>
         <member name="M:Library.Game.Utilities.Printer.PrintInventoryHeader">
             <summary>

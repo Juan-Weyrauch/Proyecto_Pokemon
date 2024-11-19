@@ -1,4 +1,4 @@
-using Library.Game.Pokemon;
+using Library.Game.Pokemons;
 
 namespace Library.Game.Utilities;
 
@@ -10,7 +10,7 @@ public static class Catalogue
     /// <summary>
     /// Contains all the Pokémon.
     /// </summary>
-    public static Dictionary<int, IPokemon> _pokedex = new();
+    private static Dictionary<int, IPokemon> _pokedex = [];
 
     /// <summary>
     /// Creates the catalog, initializing all Pokémon.
@@ -30,7 +30,7 @@ public static class Catalogue
     }
 
     /// <summary>
-    /// Returns the pokemon that the user picked so that it can be added to its inventory.
+    /// Returns the Pokémon that the user picked so that it can be added to its inventory.
     /// </summary>
     /// <param name="pokemonId"></param>
     /// <returns></returns>
