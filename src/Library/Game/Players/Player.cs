@@ -179,7 +179,7 @@ public class Player : IPlayer
     /// </summary>
     /// <param name="item">Item selected to use with the player</param>
     public void UseSuperPotion(SuperPotion item)
-    {
+    {   if(item != null)
         {
             Printer.ShowInventory(this.Pokemons);
             Console.WriteLine($"Which pokemon you want to use {item.Name} ");
@@ -187,9 +187,12 @@ public class Player : IPlayer
             item.Use(Pokemons[pokemonSelecionado]);
         }
     }
-
+    /// <summary>
+    /// Overloading method to use a TotalCure from a player. This shows the team
+    /// </summary>
+    /// <param name="item">item that you want to use on the pokemon</param>
     public void UseTotalCure(TotalCure item)
-    {
+    {if(item != null)
         {
             Printer.ShowInventory(this.Pokemons);
             Console.WriteLine($"Which pokemon you want to use {item.Name} ");
@@ -201,9 +204,9 @@ public class Player : IPlayer
     /// <summary>
     /// Overloading method to use a RevivePotion from a player. This shows the team
     /// </summary>
-    /// <param name="item"></param>
+    /// <param name="item">item that you want to use on the pokemon</param>
     public void UseRevivePotion(RevivePotion item)
-    {
+    {if(item != null)
         {
             Printer.ShowInventory(this.Cementerio);
             Console.WriteLine($"Which pokemon you want to use {item.Name} ");

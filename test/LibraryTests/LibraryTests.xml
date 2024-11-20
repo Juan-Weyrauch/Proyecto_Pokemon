@@ -4,30 +4,5 @@
         <name>LibraryTests</name>
     </assembly>
     <members>
-        <member name="T:Tests.TrainTests">
-            <summary>
-            Prueba de la clase <see cref="T:ClassLibrary.Train"/>.
-            </summary>
-        </member>
-        <member name="F:Tests.TrainTests.train">
-            <summary>
-            El tren para probar.
-            </summary>
-        </member>
-        <member name="M:Tests.TrainTests.Setup">
-            <summary>
-            Crea un tren para probar.
-            </summary>
-        </member>
-        <member name="M:Tests.TrainTests.StartTrainTest">
-            <summary>
-            Prueba que el tren arranque.
-            </summary>
-        </member>
-        <member name="M:Tests.TrainTests.StopTrainTest">
-            <summary>
-            Prueba que el tren se detenga.
-            </summary>
-        </member>
     </members>
 </doc>

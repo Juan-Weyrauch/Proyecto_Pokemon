@@ -66,7 +66,24 @@ public interface IPlayer
     /// </summary>
     public void CarryToCementerio();
 
+    /// <summary>
+    /// The Player can select  which pokemon you want to use the items you selected before."
+    /// </summary>
+    /// <param name="item">Item selected to use with the player</param>
     public void UseSuperPotion(SuperPotion item);
+    
+    
+    /// <summary>
+    /// Overloading method to use a TotalCure from a player. This shows the team
+    /// </summary>
+    /// <param name="item">item that you want to use on the pokemon</param>
+    
     public void UseTotalCure(TotalCure item);
+    
+    /// <summary>
+    /// Overloading method to use a RevivePotion from a player. This shows the team
+    /// </summary>
+    /// <param name="item">item that you want to use on the pokemon</param>
+    /// 
     public void UseRevivePotion(RevivePotion item);
 }

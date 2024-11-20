@@ -272,6 +272,25 @@
             changes the dead Pokémon to the cemetery list of dead Pokémon.
             </summary>
         </member>
+        <member name="M:Library.Game.Players.IPlayer.UseSuperPotion(Library.Game.Items.SuperPotion)">
+            <summary>
+            The Player can select  which pokemon you want to use the items you selected before."
+            </summary>
+            <param name="item">Item selected to use with the player</param>
+        </member>
+        <member name="M:Library.Game.Players.IPlayer.UseTotalCure(Library.Game.Items.TotalCure)">
+            <summary>
+            Overloading method to use a TotalCure from a player. This shows the team
+            </summary>
+            <param name="item">item that you want to use on the pokemon</param>
+        </member>
+        <member name="M:Library.Game.Players.IPlayer.UseRevivePotion(Library.Game.Items.RevivePotion)">
+            <summary>
+            Overloading method to use a RevivePotion from a player. This shows the team
+            </summary>
+            <param name="item">item that you want to use on the pokemon</param>
+            
+        </member>
         <member name="T:Library.Game.Players.Player">
             <summary>
             Class Player, holds the players info
@@ -360,6 +379,24 @@
             <summary>
             Sends the current Pokémon to the dead list.
             </summary>
+        </member>
+        <member name="M:Library.Game.Players.Player.UseSuperPotion(Library.Game.Items.SuperPotion)">
+            <summary>
+            The Player can select  which pokemon you want to use the items you selected before."
+            </summary>
+            <param name="item">Item selected to use with the player</param>
+        </member>
+        <member name="M:Library.Game.Players.Player.UseTotalCure(Library.Game.Items.TotalCure)">
+            <summary>
+            Overloading method to use a TotalCure from a player. This shows the team
+            </summary>
+            <param name="item">item that you want to use on the pokemon</param>
+        </member>
+        <member name="M:Library.Game.Players.Player.UseRevivePotion(Library.Game.Items.RevivePotion)">
+            <summary>
+            Overloading method to use a RevivePotion from a player. This shows the team
+            </summary>
+            <param name="item">item that you want to use on the pokemon</param>
         </member>
         <member name="T:Library.Game.Pokemons.IPokemon">
             <summary>
