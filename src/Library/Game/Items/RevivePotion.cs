@@ -1,10 +1,6 @@
 using Library.Game.Pokemons;
 namespace Library.Game.Items
 
-/// <summary>
-/// This is a potion item, it allows the player to revive a dead pokemon.
-/// </summary>
-
 {
     /// <summary>
     /// This is a potion item, it allows the player to revive a dead pokemon.
