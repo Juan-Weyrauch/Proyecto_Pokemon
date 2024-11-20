@@ -6,7 +6,7 @@ namespace Library.Game.Players;
 /// <summary>
 /// Interface for the player class. Argument for this to exist?? null, I think.
 /// </summary>
-public interface IPlayer
+public interface  
 {
     /// <summary>
     /// Sets the name of the player
@@ -30,7 +30,7 @@ public interface IPlayer
     /// A list containing all the player potions.
     /// This list gets updated along the Battle to remove Items that have already been used.
     /// </summary>
-    List<IPotions> Potions { get; }
+    List<Item> Potions { get; }
     
     
     

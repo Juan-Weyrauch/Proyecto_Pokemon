@@ -142,7 +142,7 @@
             We use this to check for effectiveness against other Pokémon types.
             </summary>
         </member>
-        <member name="T:Library.Game.Items.IPotions">
+        <member name="T:Library.Game.Items.Item">
             <summary>
             This interface sets the rules for the creation of potion elements.
             The different kind of potions are:
@@ -151,12 +151,12 @@
                 - Total Cure potion: (Eliminates any effect the Pokémon might have)
             </summary>
         </member>
-        <member name="P:Library.Game.Items.IPotions.Name">
+        <member name="P:Library.Game.Items.Item.Name">
             <summary>
             Sets the name of the potion
             </summary>
         </member>
-        <member name="P:Library.Game.Items.IPotions.RegenValue">
+        <member name="P:Library.Game.Items.Item.RegenValue">
             <summary>
             Sets the regeneration value of the potion
             </summary>

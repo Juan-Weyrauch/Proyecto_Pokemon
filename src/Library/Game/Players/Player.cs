@@ -1,6 +1,5 @@
 using Library.Game.Items;
 using Library.Game.Pokemons;
-
 namespace Library.Game.Players;
 
 /// <summary>
@@ -73,7 +72,7 @@ public class Player : IPlayer
     /// <summary>
     /// A list containing all potions of the player
     /// </summary>
-    public List<IPotions> Potions { get; private set; }
+    public List<Item> Potions { get; private set; }
     
     
     
@@ -97,7 +96,7 @@ public class Player : IPlayer
         Name = name;
         Pokemons = pokemons;
         Cementerio = new List<IPokemon>();
-        Potions = new List<IPotions>
+        Potions = new List<Item>
         {
             new RevivePotion(),
             new TotalCure(), new TotalCure(),
