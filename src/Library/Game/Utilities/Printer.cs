@@ -458,30 +458,34 @@ public static class Printer
         int counterSuperPotion = 0;
         int counterRevival = 0;
         int counterTotalCure = 0;
-        foreach (Item item in items)
+        if (items != null)
         {
-            if (item.Name == "Super Potion")
+            foreach (Item item in items)
             {
-                counterSuperPotion++;
+                if (item.Name == "Super Potion")
+                {
+                    counterSuperPotion++;
+                }
+
+                if (item.Name == "Revival")
+                {
+                    counterRevival++;
+                }
+
+                if (item.Name == "Total Cure")
+                {
+                    counterTotalCure++;
+                }
+
             }
 
-            if (item.Name == "Revival")
-            {
-                counterRevival++;
-            }
-
-            if (item.Name == "Total Cure")
-            {
-                counterTotalCure++;
-            }
-            
+            Console.WriteLine("╔═══════════════════════════════════════╗");
+            Console.WriteLine($"║  You have this items:                ║");
+            Console.WriteLine($"║    Super Potion: {counterSuperPotion}║");
+            Console.WriteLine($"║    Total Cure: {counterTotalCure}    ║");
+            Console.WriteLine($"║     Revival: {counterRevival}        ║");
+            Console.WriteLine("╚═══════════════════════════════════════╝");
         }
-        Console.WriteLine("╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║  You have this items:                ║");
-        Console.WriteLine($"║    Super Potion: {counterSuperPotion}║");
-        Console.WriteLine($"║    Total Cure: {counterTotalCure}    ║");
-        Console.WriteLine($"║     Revival: {counterRevival}        ║");
-        Console.WriteLine("╚═══════════════════════════════════════╝");
     }
 
 
