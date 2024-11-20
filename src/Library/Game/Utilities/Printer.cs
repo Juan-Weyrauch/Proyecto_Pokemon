@@ -1,4 +1,5 @@
 using Library.Game.Attacks;
+using Library.Game.Items;
 using Library.Game.Players;
 using Library.Game.Pokemons;
 
@@ -445,6 +446,42 @@ public static class Printer
         Console.WriteLine("Presiona cualquier tecla para continuar...");
         Console.ReadKey();
         Console.Clear();
+    }
+
+    /// <summary>
+    /// This a method to print the list of items from each player, this make possible that
+    /// we can give this information to the player.
+    /// </summary>
+    /// <param name="items">List of items of the player.  </param>
+    public static void PrintearItems(List<Item> items)
+    {
+        int counterSuperPotion = 0;
+        int counterRevival = 0;
+        int counterTotalCure = 0;
+        foreach (Item item in items)
+        {
+            if (item.Name == "Super Potion")
+            {
+                counterSuperPotion++;
+            }
+
+            if (item.Name == "Revival")
+            {
+                counterRevival++;
+            }
+
+            if (item.Name == "Total Cure")
+            {
+                counterTotalCure++;
+            }
+            
+        }
+        Console.WriteLine("╔═══════════════════════════════════════╗");
+        Console.WriteLine($"║  You have this items:                ║");
+        Console.WriteLine($"║    Super Potion: {counterSuperPotion}║");
+        Console.WriteLine($"║    Total Cure: {counterTotalCure}    ║");
+        Console.WriteLine($"║     Revival: {counterRevival}        ║");
+        Console.WriteLine("╚═══════════════════════════════════════╝");
     }
 
 

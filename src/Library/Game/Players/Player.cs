@@ -100,7 +100,7 @@ public class Player : IPlayer
         Cementerio = new List<IPokemon>();
         Potions = new List<Item>
         {
-            new RevivePotion(),
+            new   RevivePotion(),
             new TotalCure(), new TotalCure(),
             new SuperPotion(), new SuperPotion(), new SuperPotion(), new SuperPotion()
             

@@ -12,7 +12,7 @@ public class SuperPotion : Item
     /// </summary>
     public SuperPotion()
     {
-        Name = "Super Pocion";
+        Name = "Super Potion";
     }
     
    

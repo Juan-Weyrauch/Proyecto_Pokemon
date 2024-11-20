@@ -760,5 +760,12 @@
             Lets the player see that the action has been canceled.
             </summary>
         </member>
+        <member name="M:Library.Game.Utilities.Printer.PrintearItems(System.Collections.Generic.List{Library.Game.Items.Item})">
+            <summary>
+            This a method to print the list of items from each player, this make possible that
+            we can give this information to the player.
+            </summary>
+            <param name="items">List of items of the player.  </param>
+        </member>
     </members>
 </doc>
