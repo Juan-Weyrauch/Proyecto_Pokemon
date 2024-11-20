@@ -1,5 +1,7 @@
 using Library.Game.Items;
 using Library.Game.Pokemons;
+using Library.Game.Utilities;
+
 namespace Library.Game.Players;
 
 /// <summary>
@@ -171,7 +173,43 @@ public class Player : IPlayer
         Cementerio.Add(SelectedPokemon);
         Pokemons.Remove(SelectedPokemon);
     }
-    
-    
+
+    /// <summary>
+    /// The Player can select  which pokemon you want to use the items you selected before."
+    /// </summary>
+    /// <param name="item">Item selected to use with the player</param>
+    public void UseSuperPotion(SuperPotion item)
+    {
+        {
+            Printer.ShowInventory(this.Pokemons);
+            Console.WriteLine($"Which pokemon you want to use {item.Name} ");
+            int pokemonSelecionado = Calculator.ValidateSelectionInGivenRange(1, Pokemons.Count);
+            item.Use(Pokemons[pokemonSelecionado]);
+        }
+    }
+
+    public void UseTotalCure(TotalCure item)
+    {
+        {
+            Printer.ShowInventory(this.Pokemons);
+            Console.WriteLine($"Which pokemon you want to use {item.Name} ");
+            int pokemonSelecionado = Calculator.ValidateSelectionInGivenRange(1, Pokemons.Count);
+            item.Use(Pokemons[pokemonSelecionado]);
+        }
+    }
+
+    /// <summary>
+    /// Overloading method to use a RevivePotion from a player. This shows the team
+    /// </summary>
+    /// <param name="item"></param>
+    public void UseRevivePotion(RevivePotion item)
+    {
+        {
+            Printer.ShowInventory(this.Cementerio);
+            Console.WriteLine($"Which pokemon you want to use {item.Name} ");
+            int pokemonSelecionado = Calculator.ValidateSelectionInGivenRange(1, Cementerio.Count);
+            item.Use(Cementerio[pokemonSelecionado]);
+        }
+    }
     
 }

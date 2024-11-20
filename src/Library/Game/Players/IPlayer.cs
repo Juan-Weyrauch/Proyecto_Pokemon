@@ -65,4 +65,8 @@ public interface IPlayer
     /// changes the dead Pokémon to the cemetery list of dead Pokémon.
     /// </summary>
     public void CarryToCementerio();
+
+    public void UseSuperPotion(SuperPotion item);
+    public void UseTotalCure(TotalCure item);
+    public void UseRevivePotion(RevivePotion item);
 }
