@@ -1,9 +1,8 @@
-﻿/*
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.IO;
-using Library.StaticClasses; // Asegúrate de que este es el espacio de nombres correcto
-using Library.Classes; // Asegúrate de que este es el espacio de nombres correcto
+using Library.Game.Utilities;
+
 
 namespace Library.Tests
 {
@@ -88,4 +87,3 @@ namespace Library.Tests
         }
     }
 }
-*/

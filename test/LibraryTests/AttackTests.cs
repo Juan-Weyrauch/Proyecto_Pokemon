@@ -1,6 +1,4 @@
-﻿/*
-using Library.Classes;
-using Library.Interfaces;
+﻿using Library.Game.Attacks;
 using NUnit.Framework;
 
 namespace Library.Tests
@@ -56,4 +54,3 @@ namespace Library.Tests
         }
     }
 }
-*/

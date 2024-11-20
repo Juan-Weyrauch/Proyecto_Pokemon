@@ -1,6 +1,6 @@
-﻿/*
-using Library.Classes;
-using Library.Interfaces;
+﻿using Library.Game.Players;
+using Library.Game.Pokemons;
+using Library.Game.Attacks;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -168,4 +168,3 @@ namespace Library.Tests
         public IPokemon Clone() => new MockPokemon(Name);
     }
 }
-*/
