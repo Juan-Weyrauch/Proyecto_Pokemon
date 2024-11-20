@@ -6,7 +6,7 @@ namespace Library.Game.Players;
 /// <summary>
 /// Interface for the player class. Argument for this to exist?? null, I think.
 /// </summary>
-public interface  
+public interface IPlayer
 {
     /// <summary>
     /// Sets the name of the player
