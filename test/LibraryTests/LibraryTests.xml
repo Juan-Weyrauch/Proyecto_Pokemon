@@ -4,5 +4,25 @@
         <name>LibraryTests</name>
     </assembly>
     <members>
+        <member name="T:Library.Tests.AttackTests">
+            <summary>
+            Tests for the Attack class.
+            </summary>
+        </member>
+        <member name="T:Library.Tests.PlayerTests">
+            <summary>
+            Tests for the Player class.
+            </summary>
+        </member>
+        <member name="T:Library.Tests.MockPokemon">
+            <summary>
+            Mock implementation of IPokemon for testing purposes.
+            </summary>
+        </member>
+        <member name="T:Library.Tests.PokemonTests">
+            <summary>
+            Tests for the Pokemon class.
+            </summary>
+        </member>
     </members>
 </doc>
