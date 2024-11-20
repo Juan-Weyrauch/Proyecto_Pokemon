@@ -1,7 +1,7 @@
-using Library.Interfaces;
-using System.Collections.Generic;
+using Library.Game.Items;
+using Library.Game.Pokemons;
 
-namespace Library.Classes;
+namespace Library.Game.Players;
 
 /// <summary>
 /// Class Player, holds the players info
@@ -26,7 +26,7 @@ public class Player : IPlayer
         {
             if (_player1 == null)
             {
-                throw new System.InvalidOperationException("Player1 has not been initialized.");
+                throw new InvalidOperationException("Player1 has not been initialized.");
             }
 
             return _player1;
@@ -44,7 +44,7 @@ public class Player : IPlayer
         {
             if (_player2 == null)
             {
-                throw new System.InvalidOperationException("Player2 has not been initialized.");
+                throw new InvalidOperationException("Player2 has not been initialized.");
             }
 
             return _player2;
@@ -64,6 +64,9 @@ public class Player : IPlayer
     public List<IPokemon> Pokemons { get; private set; }
     
     
+    /// <summary>
+    ///  A list of all the dead pokemons of the player.
+    /// </summary>
     public List<IPokemon> Cementerio {get; private set;}
     
     
@@ -121,7 +124,7 @@ public class Player : IPlayer
         }
         else
         {
-            throw new System.InvalidOperationException("Player1 has already been initialized.");
+            throw new InvalidOperationException("Player1 has already been initialized.");
         }
     }
     
@@ -140,24 +143,30 @@ public class Player : IPlayer
         }
         else
         {
-            throw new System.InvalidOperationException("Player2 has already been initialized.");
+            throw new InvalidOperationException("Player2 has already been initialized.");
         }
     }
 
     /// <summary>
     /// Lets the PLAYER change ITS Pokémon.
     /// </summary>
-    /// <param name="selectedPokemon"></param>
     public void SwitchPokemon(int pokemonChoice)
     {
         SelectedPokemon = Pokemons[pokemonChoice];
     }
 
+    /// <summary>
+    /// Polymorphic method that allows the user to use any item.
+    /// </summary>
+    /// <param name="itemChoice"></param>
     public void UseItem(int itemChoice)
     {
      //On the works...
     }
 
+    /// <summary>
+    /// Sends the current Pokémon to the dead list.
+    /// </summary>
     public void CarryToCementerio()
     {
         Cementerio.Add(SelectedPokemon);

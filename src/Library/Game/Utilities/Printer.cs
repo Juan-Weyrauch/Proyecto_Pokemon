@@ -1,7 +1,8 @@
-using Library.Classes;
-using Library.Interfaces;
+using Library.Game.Attacks;
+using Library.Game.Players;
+using Library.Game.Pokemons;
 
-namespace Library.StaticClasses;
+namespace Library.Game.Utilities;
 
 /// <summary>
 /// This class is responsible for showing the user what's happening on console
@@ -108,9 +109,11 @@ public static class Printer
     /// </summary>
     public static void ShowCatalogue(Dictionary<int, IPokemon> pokedex)
     {
+        ArgumentNullException.ThrowIfNull(pokedex);
+        
         int count = 0;
         List<string[]> boxes = new List<string[]>();
-
+        
         foreach (var entry in pokedex)
         {
             // Get the formatted box lines for each Pokémon and add to list
@@ -154,6 +157,7 @@ public static class Printer
     /// </summary>
     /// <param name="index">The index of the Pokémon.</param>
     /// <param name="name">The name of the Pokémon.</param>
+    /// <param name="life"></param>
     /// <returns>An array of strings, each representing a line in the box format.</returns>
     private static string[] FormatPokemonBox(int index, string name, int life)
     {
@@ -163,7 +167,7 @@ public static class Printer
         string nameLine = $"║  Name: {name,-20}║"; // Aligns the name within the box
         string lifeLine = $"║  Life: {life,-20}║"; // Aligns the name within the box
 
-        return new string[] { boxTop, indexLine, nameLine, lifeLine ,boxBottom };
+        return [boxTop, indexLine, nameLine, lifeLine ,boxBottom];
     }
 
     /// <summary>
@@ -208,6 +212,7 @@ public static class Printer
     /// <param name="inventory">List of IPokemon items, between 1 and 6 items.</param>
     public static void ShowInventory(List<IPokemon> inventory)
     {
+        ArgumentNullException.ThrowIfNull(inventory);
         Console.Clear();
         PrintInventoryHeader(); // Print the "Your Inventory" header
         
@@ -244,8 +249,14 @@ public static class Printer
         Console.WriteLine(bottom);
     }
 
+    /// <summary>
+    /// Shows the player it's Pokémon.
+    /// </summary>
+    /// <param name="pokemon"></param>
+    /// <param name="name"></param>
     public static void ShowSelectedPokemon(IPokemon pokemon, string name)
     {
+        ArgumentNullException.ThrowIfNull(pokemon);
         // Calculate the width based on the longest line
         string line1 = $"This is your pokemon {name}!";
         string line2 = $"Name: {pokemon.Name}";
@@ -274,6 +285,7 @@ public static class Printer
     /// <param name="receiver">The Pokémon that will receive the attack.</param>
     public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
     {
+        ArgumentNullException.ThrowIfNull(attacker);
         // Display header box for the Pokémon's attacks
         Console.WriteLine("╔═══════════════════════════════════════╗");
         Console.WriteLine($"║     Attacks of {attacker.Name,-20}\t║");
@@ -298,17 +310,20 @@ public static class Printer
 
         Console.WriteLine(); // Extra line for spacing
     }
-    
-    
+
+
     /// <summary>
     /// Displays whose turn it is and prompts the player to choose an action.
     /// </summary>
     /// /// <summary>
     /// Prints the current and initial health of the Pokémon.
     /// </summary>
+    /// <param name="player"></param>
     /// <param name="pokemon">The Pokémon whose health will be shown.</param>
     public static void ShowTurnInfo(IPlayer player, IPokemon pokemon)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        ArgumentNullException.ThrowIfNull(pokemon);
 
         // Determina el texto más largo
         string line1 = $"{player.Name}'s turn!";
@@ -376,8 +391,10 @@ public static class Printer
     /// <param name="player"></param>
     public static void ForceSwitchMessage(IPlayer player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+
         IPokemon pokemon = player.SelectedPokemon;
-        // Display message that current pokemon has been defeated:
+        // Display message that current Pokémon has been defeated:
         Console.WriteLine("╔═══════════════════════════════════════╗");
         Console.WriteLine($"║     {player.Name} your pokemon {pokemon.Name, -10} Has been defeated!\t║");
         Console.WriteLine($"║     Please pick another one from your list! \t║");
@@ -385,16 +402,30 @@ public static class Printer
     }
 
 
+    /// <summary>
+    /// Asks the player for confirmation.
+    /// </summary>
+    /// <param name="player"></param>
     public static void SwitchQuestion(IPlayer player)
-    { //Let us ask to player if it want to change the pokemon or cancel the action.
+    { 
+        ArgumentNullException.ThrowIfNull(player);
+        
+        //Lets us ask player if it wants to change the Pokémon or cancel the action.
         IPokemon pokemon = player.SelectedPokemon;
         Console.WriteLine("╔═══════════════════════════════════════╗");
         Console.WriteLine($"║     {player.Name} want to change your pokemon {pokemon.Name}\t║");
         Console.WriteLine($"║     1) Yes 2) No \t║");
         Console.WriteLine("╚═══════════════════════════════════════╝");
     }
+    /// <summary>
+    /// Asks the player for confirmation.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="option"></param>
     public static void SwitchConfirmation(IPlayer player, int option)
     {
+        ArgumentNullException.ThrowIfNull(player);
+        
         if (option == 0)
         {
             IPokemon pokemon = player.SelectedPokemon;
@@ -405,6 +436,9 @@ public static class Printer
             Console.WriteLine("╚═══════════════════════════════════════╝");
         }
     }
+    /// <summary>
+    /// Lets the player see that the action has been canceled.
+    /// </summary>
     public static void CancelSwitchMessage()
     {
         Console.WriteLine("Has decidido no cambiar de Pokémon. Continúa con tu turno.");

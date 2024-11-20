@@ -1,4 +1,4 @@
-namespace Library.Interfaces;
+namespace Library.Game.Items;
 
 /// <summary>
 /// This interface sets the rules for the creation of potion elements.

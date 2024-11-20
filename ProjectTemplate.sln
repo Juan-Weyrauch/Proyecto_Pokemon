@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{454AD4A3-D1D1-43AC-B1E9-AA3BDE115E4D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Program", "src\Program\Program.csproj", "{BBDCC081-34D8-4CB3-AFB3-2B8C2B2CDFC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game", "src\Game\Game.csproj", "{BBDCC081-34D8-4CB3-AFB3-2B8C2B2CDFC0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library", "src\Library\Library.csproj", "{6F057E84-10CD-45DE-8820-3D4B818C6EE3}"
 EndProject
