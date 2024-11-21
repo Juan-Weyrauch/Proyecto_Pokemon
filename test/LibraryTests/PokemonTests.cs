@@ -1,18 +1,20 @@
 ﻿using Library.Game.Pokemons;
 using Library.Game.Attacks;
 using NUnit.Framework;
-using System.Collections.Generic;
 
-namespace Library.Tests
+namespace LibraryTests
 {
     /// <summary>
-    /// Tests for the Pokemon class.
+    /// Tests for the <see cref="Pokemon"/> class.
     /// </summary>
     [TestFixture]
     public class PokemonTests
     {
+        /// <summary>
+        /// Verifies that the <see cref="Pokemon"/> constructor assigns properties correctly.
+        /// </summary>
         [Test]
-        public void Pokemon_Creation_AssignsPropertiesCorrectly()
+        public void PokemonCreationAssignsPropertiesCorrectly()
         {
             // Arrange
             string expectedName = "Pikachu";
@@ -39,8 +41,11 @@ namespace Library.Tests
             });
         }
 
+        /// <summary>
+        /// Verifies that <see cref="Pokemon.GetAttack"/> returns the correct attack based on the index.
+        /// </summary>
         [Test]
-        public void Pokemon_GetAttack_ReturnsCorrectAttack()
+        public void PokemonGetAttackReturnsCorrectAttack()
         {
             // Arrange
             var attacks = new List<IAttack>
@@ -57,8 +62,11 @@ namespace Library.Tests
             Assert.That(attack.Name, Is.EqualTo("Quick Attack"));
         }
 
+        /// <summary>
+        /// Verifies that <see cref="Pokemon.Clone"/> creates an identical copy of the Pokémon.
+        /// </summary>
         [Test]
-        public void Pokemon_Clone_CreatesIdenticalPokemon()
+        public void PokemonCloneCreatesIdenticalPokemon()
         {
             // Arrange
             var attacks = new List<IAttack>
@@ -82,8 +90,11 @@ namespace Library.Tests
             });
         }
 
+        /// <summary>
+        /// Verifies that setting properties on a <see cref="Pokemon"/> modifies the values correctly.
+        /// </summary>
         [Test]
-        public void Pokemon_SetProperties_ModifiesValuesCorrectly()
+        public void PokemonSetPropertiesModifiesValuesCorrectly()
         {
             // Arrange
             var pokemon = new Pokemon("Bulbasaur", 50, "Grass", new List<IAttack>());

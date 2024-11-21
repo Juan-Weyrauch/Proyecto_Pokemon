@@ -1,7 +1,7 @@
 ﻿using Library.Game.Attacks;
 using NUnit.Framework;
 
-namespace Library.Tests
+namespace LibraryTests
 {
     /// <summary>
     /// Tests for the Attack class.
@@ -9,8 +9,11 @@ namespace Library.Tests
     [TestFixture]
     public class AttackTests
     {
+        /// <summary>
+        /// Verifica que la creación de un ataque asigna las propiedades correctamente.
+        /// </summary>
         [Test]
-        public void Attack_Creation_AssignsPropertiesCorrectly()
+        public void AttackCreationAssignsPropertiesCorrectly()
         {
             // Arrange
             string expectedName = "Thunderbolt";
@@ -30,9 +33,11 @@ namespace Library.Tests
                 Assert.That(attack.Type, Is.EqualTo(expectedType));
             });
         }
-
+        /// <summary>
+        /// Verifies that setting properties on an <see cref="Attack"/> modifies the values correctly.
+        /// </summary>
         [Test]
-        public void Attack_SetProperties_ModifiesValuesCorrectly()
+        public void AttackSetPropertiesModifiesValuesCorrectly()
         {
             // Arrange
             var attack = new Attack("Quick Attack", 40, 0, "Normal");
