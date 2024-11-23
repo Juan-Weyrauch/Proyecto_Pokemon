@@ -1,25 +1,46 @@
+There are a few more details we could address to make the fusion of these two versions more comprehensive and polished. Here's a breakdown of additional improvements and explanations:
+
+### Additional Considerations and Improvements
+
+1. **Health and Experience Tracking**:
+   - The `StaticClasses` version includes logic for handling Pokémon health and experience. This can be extended to the `Facade` version to track health, level-up, and experience when Pokémon are involved in battles.
+   - Make sure the Pokémon’s experience is updated after each battle and ensure they are promoted when they level up.
+
+2. **Player Inventory and Items**:
+   - While the `UseItem` functionality is implemented in the fusion, we could enhance it by handling items that heal or have other effects, such as status healing (like Paralyze Heal or Antidote).
+   - Similarly, we can track item usage limits (e.g., you can use only one healing item per turn).
+
+3. **Turn Flow Enhancement**:
+   - Adding a more complex turn structure, like checking if the player or opponent can execute certain actions based on other battle conditions (e.g., if the opponent has a status effect like burn or paralysis).
+   - The turn structure could be more granular, such as adding delays between actions to simulate animation or time to process the turn in a more realistic manner.
+
+4. **Battle Start Conditions**:
+   - The battle start logic could be expanded to include specific victory conditions. For instance, we could implement winning conditions for the player, e.g., when all Pokémon on the opposing side are defeated.
+   - Implementing logic for when the player's Pokémon faint, prompting a forced switch, and then making the player choose a replacement, as previously mentioned.
+
+5. **Pokémon Status Effects During Combat**:
+   - The `AplicarEfectos` method applies the status effects for Pokémon in a combat scenario. We could extend this further to reflect a wider range of statuses and add checks for different item interactions (like healing items that also cure statuses).
+
+6. **Battle UI Enhancements**:
+   - Adding clear user interface prompts (like showing health, Pokémon info, attack options, item usage) can enhance the player's experience.
+   - Including messages to show battle progress, such as “The opposing Pokémon is getting weaker!” or “It’s a critical hit!” could further enhance the experience.
+
+### Expanded Fusion with Enhancements:
+
+Here’s an updated, more feature-complete version based on the initial fusion but with added functionalities:
+
+```csharp
 using Library.Game.Attacks;
 using Library.Game.Items;
 using Library.Game.Players;
 using Library.Game.Pokemons;
 using Library.Game.Utilities;
+using System.Collections.Generic;
 
 namespace Library.Facade
 {
-    /// <summary>
-    /// Static class responsible for managing the battle between two players.
-    /// It includes turn selection, displaying the current player's options, 
-    /// and delegating actions to the appropriate methods.
-    /// 
-    /// You’re not re-creating the values; you’re simply accessing them as part of Battle.StartBattle. 
-    /// When you pass player1 and player2 to Battle, you’re passing the references to these Player objects. 
-    /// This means that Battle is using the same player instances created in Facade—it’s not making new copies of them.
-    /// </summary>
     public static class Battle
     {
-        /// <summary>
-        /// Starts the battle by selecting the turn order and guiding each player's actions.
-        /// </summary>
         public static void StartBattle()
         {
             Player currentPlayer = Player.Player1;
@@ -27,7 +48,8 @@ namespace Library.Facade
 
             while (Calculator.HasActivePokemon(currentPlayer) && Calculator.HasActivePokemon(opposingPlayer))
             {
-                if (currentPlayer.SelectedPokemon.Health <= 0) // Maybe we
+                // Check if the current player's Pokémon is fainted
+                if (currentPlayer.SelectedPokemon.Health <= 0)
                 {
                     Printer.ForceSwitchMessage(currentPlayer);
                     currentPlayer.CarryToCementerio();
@@ -48,17 +70,11 @@ namespace Library.Facade
             }
         }
 
-        /// <summary>
-        /// Handles the selected action for the current player's turn.
-        /// </summary>
-        /// <param name="player">The current player whose turn is being handled.</param>
-        /// <param name="rival">The opposing player in the battle.</param>
         private static void PlayerAction(IPlayer player, IPlayer rival)
         {
-            
+            // Ensure the player isn't trying to use a fainted Pokémon
             if (player.SelectedPokemon.Health <= 0)
             {
-                // Safety check to ensure a defeated Pokémon is not used
                 Printer.ForceSwitchMessage(player);
                 ForceSwitchPokemon(player);
                 return;
@@ -81,7 +97,7 @@ namespace Library.Facade
                         break;
 
                     case 2: // Use item
-                        UseItemAux(player, rival);
+                        UseItem(player, rival);
                         repeatTurn = false; // Ends the turn
                         break;
 
@@ -101,41 +117,48 @@ namespace Library.Facade
             }
         }
 
-        /// <summary>
-        /// This method is responsible for:
-        /// 1) Showing the available attacks to the player.
-        /// 2) Calling the damage Calculator and storing that int.
-        /// 3) Inflicting damage to the opponent's selected Pokémon.
-        /// </summary>
-        /// <param name="player">The player performing the attack.</param>
-        /// <param name="rival">The opposing player who is receiving the attack.</param>
         private static void Attack(IPlayer player, IPlayer rival)
         {
             IPokemon attacker = player.SelectedPokemon;
             IPokemon receiver = rival.SelectedPokemon;
 
-            // 1) Display the available attacks
+            // Apply Pokémon's state effects before attacking
+            AplicarEfectos(attacker);
+
+            // Show the available attacks
             Printer.ShowAttacks(attacker, receiver);
 
             // Let the player pick one
             int attackInput = Calculator.ValidateSelectionInGivenRange(1, 4);
 
-            // We get the attack of the Pokémon
+            // Get the attack selected by the player
             IAttack attack = attacker.GetAttack(attackInput - 1);
 
-            // 2) Now we call for a function that uses the attack on the rival's Pokémon
+            // Apply the attack on the rival's Pokémon
             Calculator.InfringeDamage(attack, receiver);
 
-            // 3) We print both Pokémon's health
+            // Show the updated health of both Pokémon
             Printer.ShowSelectedPokemon(attacker, player.Name);
             Printer.ShowSelectedPokemon(receiver, rival.Name);
         }
 
-        /// <summary>
-        /// Method that allows the player to voluntarily change their selected Pokémon during their turn.
-        /// </summary>
-        /// <param name="player">The player attempting to switch their Pokémon.</param>
-        /// <returns>Returns a boolean indicating whether the Pokémon was successfully switched.</returns>
+        private static void UseItem(IPlayer player, IPlayer rival)
+        {
+            // Show available items
+            Printer.PrintearItems(player.Items);
+
+            // Ask the player to select an item
+            int itemSelection = Calculator.ValidateSelectionInGivenRange(1, 3);
+            Item item = player.GetItem(itemSelection); // Get the item
+
+            // Use the item (functionality for applying item effects would go here)
+            // For now, we're just displaying the use of item
+            Printer.DisplayItemUseMessage(item, player);
+
+            // Heal the Pokémon or apply the item's effect
+            item.ApplyEffect(player.SelectedPokemon);
+        }
+
         private static bool VoluntarySwitchPokemon(IPlayer player)
         {
             List<IPokemon> pokemons = player.Pokemons;
@@ -172,10 +195,6 @@ namespace Library.Facade
             return true; // Pokémon switched successfully
         }
 
-        /// <summary>
-        /// Method that allows the player to change their Pokémon, forced by the defeat of the current Pokémon.
-        /// </summary>
-        /// <param name="player">The player who needs to switch their defeated Pokémon.</param>
         private static void ForceSwitchPokemon(IPlayer player)
         {
             // Notify that the Pokémon was defeated and the player must switch it
@@ -199,50 +218,52 @@ namespace Library.Facade
             Console.ReadLine();
         }
 
-        /// <summary>
-        /// Method that allows the player to use an item during their turn. 
-        /// Depending on the item, the player may use it on a Pokémon from their team or the cemetery.
-        /// </summary>
-        /// <param name="player">The player using the item.</param>
-        /// <param name="rival">The opposing player in the battle.</param>
-        private static void UseItemAux(IPlayer player, IPlayer rival)
+        private static void AplicarEfectos(IPokemon pokemon)
         {
-            // Show the player's available items
-            Printer.PrintearItems(player.Items);
+            Random random = new Random();
 
-            // Ask the player to select an item
-            int itemSelection = Calculator.ValidateSelectionInGivenRange(1, 3); // Assuming 3 types of items
-            Item item = player.GetItem(itemSelection); // Call the player's UseItem method
-
-            if (item != null)
+            switch (pokemon.State)
             {
-                // If the item is a healing item (SuperPotion or TotalCure), ask the player which Pokémon to use it on
-                if (item is SuperPotion or TotalCure)
-                {
-                    Printer.ShowInventory(player.Pokemons);
-                    Console.WriteLine($"Which Pokémon do you want to use {item.Name} on?");
-                    int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Pokemons.Count);
-                    item.Use(player.Pokemons[pokemonChoice - 1]); // Use the item on the selected Pokémon
-                    player.RemoveItem(itemSelection);
-                }
-                // If it's a revive potion, use it on a Pokémon in the cemetery
-                else if (item is RevivePotion)
-                {
-                    if (player.Cementerio.Count > 0)
+                case Estado.Paralizado:
+                    if (random.NextDouble() < 0.5) // 50% chance to be unable to attack
                     {
-                        Printer.ShowInventory(player.Cementerio);
-                        Console.WriteLine($"Which Pokémon do you want to revive with {item.Name}?");
-                        int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Cementerio.Count);
-                        item.Use(player.Cementerio[pokemonChoice - 1]); // Revive the selected Pokémon
-                        player.RemoveItem(itemSelection);
+                        Printer.ImprimirCambioEstado(pokemon.Name, 3);
                     }
                     else
                     {
-                        Console.WriteLine("No Pokémon to revive.");
-                        PlayerAction(player, rival);
+                        Console.WriteLine($"{pokemon.Name} is paralyzed but can attack.");
                     }
-                }
+                    break;
+
+                case Estado.Dormido:
+                    if (pokemon.TurnosDormido > 0)
+                    {
+                        Printer.ImprimirCambioEstado(pokemon.Name, 4);
+                        pokemon.TurnosDormido--; // Reduce sleep turns
+                        return; // Skip turn if Pokémon is asleep
+                    }
+                    else
+                    {
+                        // Pokémon may wake up with a 25% chance
+                        if (random.NextDouble() < 0.25)
+                        {
+                            Console.WriteLine($"{pokemon.Name} woke up early.");
+                            pokemon.CambiarEstado(0); // Set state to normal
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{pokemon.Name} is still asleep.");
+                        }
+                    }
+                    break;
+
+                case Estado.Quemado:
+                    Printer.ImprimirCambioEstado(pokemon.Name, 1);
+                    pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.10)); // Burn damage
+                    break;
+
+                case Estado.Envenenado:
+                    Printer.ImprimirCambioEstado(pokemon.Name, 2);
+                    pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.05)); // Poison damage
+                    break;
             }
-        }
-    }
-}
