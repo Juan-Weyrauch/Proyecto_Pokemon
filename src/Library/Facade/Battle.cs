@@ -27,7 +27,7 @@ namespace Library.Facade
 
             while (Calculator.HasActivePokemon(currentPlayer) && Calculator.HasActivePokemon(opposingPlayer))
             {
-                if (currentPlayer.SelectedPokemon.Health <= 0)
+                if (currentPlayer.SelectedPokemon.Health <= 0) // Maybe we
                 {
                     Printer.ForceSwitchMessage(currentPlayer);
                     currentPlayer.CarryToCementerio();
@@ -55,6 +55,7 @@ namespace Library.Facade
         /// <param name="rival">The opposing player in the battle.</param>
         private static void PlayerAction(IPlayer player, IPlayer rival)
         {
+            
             if (player.SelectedPokemon.Health <= 0)
             {
                 // Safety check to ensure a defeated Pokémon is not used
@@ -216,7 +217,7 @@ namespace Library.Facade
             if (item != null)
             {
                 // If the item is a healing item (SuperPotion or TotalCure), ask the player which Pokémon to use it on
-                if (item is SuperPotion || item is TotalCure)
+                if (item is SuperPotion or TotalCure)
                 {
                     Printer.ShowInventory(player.Pokemons);
                     Console.WriteLine($"Which Pokémon do you want to use {item.Name} on?");

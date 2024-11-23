@@ -158,8 +158,11 @@ namespace Library.Game.Players
         /// </summary>
         public void CarryToCementerio()
         {
-            Cementerio.Add(SelectedPokemon);
-            Pokemons.Remove(SelectedPokemon);
+            if (!Cementerio.Contains(SelectedPokemon))
+            {
+                Cementerio.Add(SelectedPokemon);
+                Pokemons.Remove(SelectedPokemon);
+            }
         }
 
         /// <summary>
