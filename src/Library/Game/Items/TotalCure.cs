@@ -1,22 +1,38 @@
+using Library.Game.Pokemons;
+
 namespace Library.Game.Items;
 
 /// <summary>
 /// This class Creates a potion that allows the player to cure the chosen Pokémon to 100% of HP.
 /// </summary>
-public class TotalCure : IPotions
+public class TotalCure : Item
 {
-    /// <inheritdoc />
-    public string Name { get; set; }
-
-    /// <inheritdoc />
-    public int RegenValue { get; set; }
-
+    
+    
     /// <summary>
-    /// Constructor for the class.
+    /// This is the constructor of the class that let us cure a pokemon 
     /// </summary>
     public TotalCure()
     {
         Name = "Total Cure";
-        RegenValue = 0;
     }
+
+    
+    /// <inheritdoc />
+
+
+    /// <summary>
+    /// The function to use the pokemon and use the total cure potion..
+    /// </summary>
+
+    public override void Use(IPokemon pokemon)
+    {
+        if (pokemon != null)
+        {
+          
+            pokemon.State = 0;
+        }
+       
+    }
+    
 }
