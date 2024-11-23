@@ -5,17 +5,15 @@
     </assembly>
     <members>
         <member name="T:Library.Facade.Battle">
-             <summary>
-             Static class responsible for managing the battle between two players.
-             It includes turn selection, displaying the current player's options, 
-             and delegating actions to the appropriate methods.
+            <summary>
+            Static class responsible for managing the battle between two players.
+            It includes turn selection, displaying the current player's options, 
+            and delegating actions to the appropriate methods.
             
-             You’re not re-creating the values; you’re simply
-             accessing them as part of Battle.StartBattle. When you pass
-             player1 and player2 to Battle, you’re passing the references to
-             these Player objects. This means that Battle is using the same player
-             instances created in Facade—it’s not making new copies of them.
-             </summary>
+            You’re not re-creating the values; you’re simply accessing them as part of Battle.StartBattle. 
+            When you pass player1 and player2 to Battle, you’re passing the references to these Player objects. 
+            This means that Battle is using the same player instances created in Facade—it’s not making new copies of them.
+            </summary>
         </member>
         <member name="M:Library.Facade.Battle.StartBattle">
             <summary>
@@ -26,35 +24,39 @@
             <summary>
             Handles the selected action for the current player's turn.
             </summary>
+            <param name="player">The current player whose turn is being handled.</param>
+            <param name="rival">The opposing player in the battle.</param>
         </member>
         <member name="M:Library.Facade.Battle.Attack(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
             <summary>
             This method is responsible for:
-                1) Showing the available attacks to the player.
-                2) Calling the damage Calculator and storing that int.
-                3) Actually 'doing' the damage to the opponents selected Pokémon.
+            1) Showing the available attacks to the player.
+            2) Calling the damage Calculator and storing that int.
+            3) Inflicting damage to the opponent's selected Pokémon.
             </summary>
-            <param name="player"></param>
-            <param name="rival"></param>
-        </member>
-        <member name="M:Library.Facade.Battle.UseItem(Library.Game.Players.IPlayer)">
-            <summary>
-            Method that allows the player to use an item.
-            </summary>
-            <param name="player"></param>
-            <exception cref="T:System.NotImplementedException"></exception>
+            <param name="player">The player performing the attack.</param>
+            <param name="rival">The opposing player who is receiving the attack.</param>
         </member>
         <member name="M:Library.Facade.Battle.VoluntarySwitchPokemon(Library.Game.Players.IPlayer)">
             <summary>
-            Method that allows to change the selected Pokémon. (Voluntarily)
+            Method that allows the player to voluntarily change their selected Pokémon during their turn.
             </summary>
-            <param name="player"></param>
+            <param name="player">The player attempting to switch their Pokémon.</param>
+            <returns>Returns a boolean indicating whether the Pokémon was successfully switched.</returns>
         </member>
         <member name="M:Library.Facade.Battle.ForceSwitchPokemon(Library.Game.Players.IPlayer)">
             <summary>
-            Method that allows to change the selected Pokémon. (Forced by defeat of current Pokémon)
+            Method that allows the player to change their Pokémon, forced by the defeat of the current Pokémon.
             </summary>
-            <param name="player"></param>
+            <param name="player">The player who needs to switch their defeated Pokémon.</param>
+        </member>
+        <member name="M:Library.Facade.Battle.UseItemAux(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
+            <summary>
+            Method that allows the player to use an item during their turn. 
+            Depending on the item, the player may use it on a Pokémon from their team or the cemetery.
+            </summary>
+            <param name="player">The player using the item.</param>
+            <param name="rival">The opposing player in the battle.</param>
         </member>
         <member name="T:Library.Facade.Facade">
             <summary>
@@ -222,181 +224,162 @@
         </member>
         <member name="T:Library.Game.Players.IPlayer">
             <summary>
-            Interface for the player class. Argument for this to exist?? null, I think.
+            Interface for the player class. This defines the methods and properties
+            a player object should implement to interact with Pokémon and battle mechanics.
             </summary>
         </member>
         <member name="P:Library.Game.Players.IPlayer.Name">
             <summary>
-            Sets the name of the player
+            Gets the name of the player.
             </summary>
         </member>
         <member name="P:Library.Game.Players.IPlayer.Pokemons">
             <summary>
-            A list containing all the players Pokémon.
+            A list containing all the player's Pokémon.
             </summary>
         </member>
         <member name="P:Library.Game.Players.IPlayer.Cementerio">
             <summary>
-            A list of all the Pokémon that are out of battle.
+            A list of all the Pokémon that are out of battle (i.e., "dead" or not active).
             </summary>
         </member>
-        <member name="P:Library.Game.Players.IPlayer.Potions">
+        <member name="P:Library.Game.Players.IPlayer.Items">
             <summary>
-            A list containing all the player potions.
-            This list gets updated along the Battle to remove Items that have already been used.
+            A list containing all the player's items (potions, revival items, etc.).
+            This list is updated during the battle as items are used or removed.
             </summary>
         </member>
         <member name="P:Library.Game.Players.IPlayer.SelectedPokemon">
             <summary>
-            IPokemon type to determine the Selected Pokémon of the player.
+            The current selected Pokémon of the player.
             </summary>
         </member>
         <member name="P:Library.Game.Players.IPlayer.Turn">
             <summary>
-            Integer used for cooldown in the attacks of the Pokémon.
+            The current turn of the player, used for attack cooldown.
             </summary>
-        </member>
-        <member name="M:Library.Game.Players.IPlayer.UseItem(System.Int32)">
-            <summary>
-            Method that lets the user use an Item on the selected Pokémon (or on any, we'll see.) 
-            </summary>
-            <param name="itemChoice"></param>
         </member>
         <member name="M:Library.Game.Players.IPlayer.SwitchPokemon(System.Int32)">
             <summary>
-            Changes the Selected Pokémon for a new IPokemon received.
+            Changes the selected Pokémon for a new one based on the player's choice.
             </summary>
+            <param name="pokemonChoice">The index of the new Pokémon selected from the player's Pokémon list.</param>
         </member>
         <member name="M:Library.Game.Players.IPlayer.CarryToCementerio">
             <summary>
-            changes the dead Pokémon to the cemetery list of dead Pokémon.
+            Moves the currently "dead" Pokémon to the cemetery list of Pokémon that are no longer in battle.
+            This method is called when a Pokémon is fainted.
             </summary>
         </member>
-        <member name="M:Library.Game.Players.IPlayer.UseSuperPotion(Library.Game.Items.SuperPotion)">
+        <member name="M:Library.Game.Players.IPlayer.GetItem(System.Int32)">
             <summary>
-            The Player can select  which pokemon you want to use the items you selected before."
+            Retrieves the item from the player's item list based on the provided index.
             </summary>
-            <param name="item">Item selected to use with the player</param>
+            <param name="itemListIndex">The index of the item in the list to be retrieved.</param>
+            <returns>The item corresponding to the provided index.</returns>
         </member>
-        <member name="M:Library.Game.Players.IPlayer.UseTotalCure(Library.Game.Items.TotalCure)">
+        <member name="M:Library.Game.Players.IPlayer.RemoveItem(System.Int32)">
             <summary>
-            Overloading method to use a TotalCure from a player. This shows the team
+            Removes the item from the player's item list based on the provided index.
             </summary>
-            <param name="item">item that you want to use on the pokemon</param>
-        </member>
-        <member name="M:Library.Game.Players.IPlayer.UseRevivePotion(Library.Game.Items.RevivePotion)">
-            <summary>
-            Overloading method to use a RevivePotion from a player. This shows the team
-            </summary>
-            <param name="item">item that you want to use on the pokemon</param>
-            
+            <param name="itemListIndex">The index of the item in the list to be removed.</param>
         </member>
         <member name="T:Library.Game.Players.Player">
-            <summary>
-            Class Player, holds the players info
-            This information is:
-                - Name
-                - A list of pokemons (team)
-                - A list of items (potions)
-            </summary>
+            <inheritdoc />
         </member>
         <member name="P:Library.Game.Players.Player.Player1">
             <summary>
-            Property to access Player1 singleton instance
+            Property to access Player1 singleton instance.
+            Throws an exception if Player1 has not been initialized.
             </summary>
-            <exception cref="T:System.InvalidOperationException"></exception>
+            <exception cref="T:System.InvalidOperationException">Thrown when Player1 has not been initialized.</exception>
         </member>
         <member name="P:Library.Game.Players.Player.Player2">
             <summary>
-            Property to access Player2 singleton instance
+            Property to access Player2 singleton instance.
+            Throws an exception if Player2 has not been initialized.
             </summary>
-            <exception cref="T:System.InvalidOperationException"></exception>
+            <exception cref="T:System.InvalidOperationException">Thrown when Player2 has not been initialized.</exception>
         </member>
         <member name="P:Library.Game.Players.Player.Name">
             <summary>
-            The Name of the player
+            The name of the player.
             </summary>
         </member>
         <member name="P:Library.Game.Players.Player.Pokemons">
             <summary>
-            A list containing all the players Pokémon
+            The list of Pokémon owned by the player.
             </summary>
         </member>
         <member name="P:Library.Game.Players.Player.Cementerio">
             <summary>
-             A list of all the dead pokemons of the player.
+            The list of Pokémon that are out of battle (dead or fainted).
             </summary>
         </member>
-        <member name="P:Library.Game.Players.Player.Potions">
+        <member name="P:Library.Game.Players.Player.Items">
             <summary>
-            A list containing all potions of the player
+            The list of items the player possesses (potions, revival items, etc.).
             </summary>
         </member>
         <member name="P:Library.Game.Players.Player.SelectedPokemon">
             <summary>
-            The Pokémon that the player has selected
+            The currently selected Pokémon for the player.
             </summary>
         </member>
         <member name="P:Library.Game.Players.Player.Turn">
             <summary>
-            Sets the turn of the player.
-            This is used for enabling the user to use special attacks, which can only be used once every 2 turns.
-            The logic is:
-                - If the user selects a special attack, it starts a counter that increments the 'Turn' variable
-                - After that, we always check this variable, whenever it's 0 the user can 
+            The current turn of the player, used for attack cooldown.
             </summary>
+        </member>
+        <member name="M:Library.Game.Players.Player.#ctor(System.String,System.Collections.Generic.List{Library.Game.Pokemons.IPokemon},Library.Game.Pokemons.IPokemon)">
+            <summary>
+            Private constructor for creating a new Player instance.
+            </summary>
+            <param name="name">The name of the player.</param>
+            <param name="pokemons">The list of Pokémon the player owns.</param>
+            <param name="selectedPokemon">The Pokémon the player selects to fight with.</param>
         </member>
         <member name="M:Library.Game.Players.Player.InitializePlayer1(System.String,System.Collections.Generic.List{Library.Game.Pokemons.IPokemon},Library.Game.Pokemons.IPokemon)">
             <summary>
-            Static method to initialize Player1
+            Initializes Player1 with the given name, Pokémon, and selected Pokémon.
             </summary>
-            <param name="name"></param>
-            <param name="pokemons"></param>
-            <param name="selectedPokemon"></param>
-            <exception cref="T:System.InvalidOperationException"></exception>
+            <param name="name">The name of Player1.</param>
+            <param name="pokemons">The list of Pokémon Player1 owns.</param>
+            <param name="selectedPokemon">The Pokémon Player1 selects to fight with.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if Player1 is already initialized.</exception>
         </member>
         <member name="M:Library.Game.Players.Player.InitializePlayer2(System.String,System.Collections.Generic.List{Library.Game.Pokemons.IPokemon},Library.Game.Pokemons.IPokemon)">
             <summary>
-            Static method to initialize Player2
+            Initializes Player2 with the given name, Pokémon, and selected Pokémon.
             </summary>
-            <param name="name"></param>
-            <param name="pokemons"></param>
-            <param name="selectedPokemon"></param>
-            <exception cref="T:System.InvalidOperationException"></exception>
+            <param name="name">The name of Player2.</param>
+            <param name="pokemons">The list of Pokémon Player2 owns.</param>
+            <param name="selectedPokemon">The Pokémon Player2 selects to fight with.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if Player2 is already initialized.</exception>
         </member>
         <member name="M:Library.Game.Players.Player.SwitchPokemon(System.Int32)">
             <summary>
-            Lets the PLAYER change ITS Pokémon.
+            Switches the player's selected Pokémon based on the player's choice.
             </summary>
-        </member>
-        <member name="M:Library.Game.Players.Player.UseItem(System.Int32)">
-            <summary>
-            Polymorphic method that allows the user to use any item.
-            </summary>
-            <param name="itemChoice"></param>
+            <param name="pokemonChoice">The index of the Pokémon selected by the player.</param>
         </member>
         <member name="M:Library.Game.Players.Player.CarryToCementerio">
             <summary>
-            Sends the current Pokémon to the dead list.
+            Moves the currently selected Pokémon to the cemetery list and removes it from the player's active Pokémon list.
             </summary>
         </member>
-        <member name="M:Library.Game.Players.Player.UseSuperPotion(Library.Game.Items.SuperPotion)">
+        <member name="M:Library.Game.Players.Player.GetItem(System.Int32)">
             <summary>
-            The Player can select  which pokemon you want to use the items you selected before."
+            Retrieves an item from the player's inventory based on the given index.
             </summary>
-            <param name="item">Item selected to use with the player</param>
+            <param name="itemListIndex">The index of the item in the player's inventory list.</param>
+            <returns>The item selected by the player.</returns>
         </member>
-        <member name="M:Library.Game.Players.Player.UseTotalCure(Library.Game.Items.TotalCure)">
+        <member name="M:Library.Game.Players.Player.RemoveItem(System.Int32)">
             <summary>
-            Overloading method to use a TotalCure from a player. This shows the team
+            Removes an item from the player's inventory list based on the given index.
             </summary>
-            <param name="item">item that you want to use on the pokemon</param>
-        </member>
-        <member name="M:Library.Game.Players.Player.UseRevivePotion(Library.Game.Items.RevivePotion)">
-            <summary>
-            Overloading method to use a RevivePotion from a player. This shows the team
-            </summary>
-            <param name="item">item that you want to use on the pokemon</param>
+            <param name="itemListIndex">The index of the item to remove from the inventory.</param>
         </member>
         <member name="T:Library.Game.Pokemons.IPokemon">
             <summary>
@@ -760,7 +743,7 @@
             Lets the player see that the action has been canceled.
             </summary>
         </member>
-        <member name="M:Library.Game.Utilities.Printer.PrintearItems(System.Collections.Generic.List{Library.Game.Items.Item})">
+        <member name="M:Library.Game.Utilities.Printer.PrintearItems(System.Collections.Generic.List{System.Collections.Generic.List{Library.Game.Items.Item}})">
             <summary>
             This a method to print the list of items from each player, this make possible that
             we can give this information to the player.

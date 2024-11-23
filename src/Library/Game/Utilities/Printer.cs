@@ -453,40 +453,37 @@ public static class Printer
     /// we can give this information to the player.
     /// </summary>
     /// <param name="items">List of items of the player.  </param>
-    public static void PrintearItems(List<Item> items)
+    public static void PrintearItems(List<List<Item>> items)
     {
-        int counterSuperPotion = 0;
-        int counterRevival = 0;
-        int counterTotalCure = 0;
-        if (items != null)
+        // Check if the items list is null or empty
+        if (items != null && items.Count > 0)
         {
-            foreach (Item item in items)
+            // Create a table-like header
+            Console.WriteLine("╔═══════════════════════════════════════╗");
+            Console.WriteLine($"║  You have these items:                ║");
+
+            // Loop through each category of items
+            for (int i = 0; i < items.Count; i++)
             {
-                if (item.Name == "Super Potion")
+                // Check if the current category has items in it
+                if (items[i].Count > 0)
                 {
-                    counterSuperPotion++;
+                    // Dynamically display the item category and count
+                    string itemName = items[i].FirstOrDefault()?.Name ?? "Unnamed Item";
+                    Console.WriteLine($"║ {i + 1}) {itemName} x{items[i].Count,-4}    ║");
                 }
-
-                if (item.Name == "Revival")
-                {
-                    counterRevival++;
-                }
-
-                if (item.Name == "Total Cure")
-                {
-                    counterTotalCure++;
-                }
-
             }
 
-            Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine($"║  You have this items:                ║");
-            Console.WriteLine($"║    Super Potion: {counterSuperPotion}║");
-            Console.WriteLine($"║    Total Cure: {counterTotalCure}    ║");
-            Console.WriteLine($"║     Revival: {counterRevival}        ║");
+            // Close the table-like border
             Console.WriteLine("╚═══════════════════════════════════════╝");
         }
+        else
+        {
+            // If no items are available
+            Console.WriteLine("You don't have any items.");
+        }
     }
+
 
 
 }
