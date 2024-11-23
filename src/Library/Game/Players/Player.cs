@@ -1,195 +1,202 @@
 using Library.Game.Items;
 using Library.Game.Pokemons;
 
-namespace Library.Game.Players;
 
-/// <summary>
-/// Class Player, holds the players info
-/// This information is:
-///     - Name
-///     - A list of pokemons (team)
-///     - A list of items (potions)
-/// </summary>
-public class Player : IPlayer
+
+namespace Library.Game.Players
 {
-    // Static fields for singleton instances
-    private static Player _player1;
-    private static Player _player2;
-
-    /// <summary>
-    /// Property to access Player1 singleton instance
-    /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
-    public static Player Player1
+    /// <inheritdoc />
+    public class Player : IPlayer
     {
-        get
+        // Static fields for singleton instances
+        private static Player _player1;
+        private static Player _player2;
+
+        /// <summary>
+        /// Property to access Player1 singleton instance.
+        /// Throws an exception if Player1 has not been initialized.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when Player1 has not been initialized.</exception>
+        public static Player Player1
+        {
+            get
+            {
+                if (_player1 == null)
+                {
+                    throw new InvalidOperationException("Player1 has not been initialized.");
+                }
+
+                return _player1;
+            }
+        }
+
+        /// <summary>
+        /// Property to access Player2 singleton instance.
+        /// Throws an exception if Player2 has not been initialized.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when Player2 has not been initialized.</exception>
+        public static Player Player2
+        {
+            get
+            {
+                if (_player2 == null)
+                {
+                    throw new InvalidOperationException("Player2 has not been initialized.");
+                }
+
+                return _player2;
+            }
+        }
+
+        // Public properties
+        /// <summary>
+        /// The name of the player.
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// The list of Pokémon owned by the player.
+        /// </summary>
+        public List<IPokemon> Pokemons { get; private set; }
+
+        /// <summary>
+        /// The list of Pokémon that are out of battle (dead or fainted).
+        /// </summary>
+        public List<IPokemon> Cementerio { get; private set; }
+
+        /// <summary>
+        /// The list of items the player possesses (potions, revival items, etc.).
+        /// </summary>
+        public List<List<Item>> Items { get; private set; }
+
+        /// <summary>
+        /// The currently selected Pokémon for the player.
+        /// </summary>
+        public IPokemon SelectedPokemon { get; private set; }
+
+        /// <summary>
+        /// The current turn of the player, used for attack cooldown.
+        /// </summary>
+        public int Turn { get; private set; }
+
+        // Private constructor to initialize a player
+        /// <summary>
+        /// Private constructor for creating a new Player instance.
+        /// </summary>
+        /// <param name="name">The name of the player.</param>
+        /// <param name="pokemons">The list of Pokémon the player owns.</param>
+        /// <param name="selectedPokemon">The Pokémon the player selects to fight with.</param>
+        private Player(string name, List<IPokemon> pokemons, IPokemon selectedPokemon)
+        {
+            Name = name;
+            Pokemons = pokemons;
+            Cementerio = new List<IPokemon>();
+
+            // Initialize the Items list with some predefined items
+            this.Items = new List<List<Item>>
+            {
+                new List<Item> { new RevivePotion() },
+                new List<Item> { new TotalCure(), new TotalCure() },
+                new List<Item> { new SuperPotion(), new SuperPotion(), new SuperPotion() }
+            };
+
+            SelectedPokemon = selectedPokemon;
+            Turn = 0;
+        }
+
+        // Initialization methods for the players
+        /// <summary>
+        /// Initializes Player1 with the given name, Pokémon, and selected Pokémon.
+        /// </summary>
+        /// <param name="name">The name of Player1.</param>
+        /// <param name="pokemons">The list of Pokémon Player1 owns.</param>
+        /// <param name="selectedPokemon">The Pokémon Player1 selects to fight with.</param>
+        /// <exception cref="InvalidOperationException">Thrown if Player1 is already initialized.</exception>
+        public static void InitializePlayer1(string name, List<IPokemon> pokemons, IPokemon selectedPokemon)
         {
             if (_player1 == null)
             {
-                throw new InvalidOperationException("Player1 has not been initialized.");
+                _player1 = new Player(name, pokemons, selectedPokemon);
             }
-
-            return _player1;
+            else
+            {
+                throw new InvalidOperationException("Player1 has already been initialized.");
+            }
         }
-    }
 
-    
-    /// <summary>
-    /// Property to access Player2 singleton instance
-    /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
-    public static Player Player2
-    {
-        get
+        /// <summary>
+        /// Initializes Player2 with the given name, Pokémon, and selected Pokémon.
+        /// </summary>
+        /// <param name="name">The name of Player2.</param>
+        /// <param name="pokemons">The list of Pokémon Player2 owns.</param>
+        /// <param name="selectedPokemon">The Pokémon Player2 selects to fight with.</param>
+        /// <exception cref="InvalidOperationException">Thrown if Player2 is already initialized.</exception>
+        public static void InitializePlayer2(string name, List<IPokemon> pokemons, IPokemon selectedPokemon)
         {
             if (_player2 == null)
             {
-                throw new InvalidOperationException("Player2 has not been initialized.");
+                _player2 = new Player(name, pokemons, selectedPokemon);
             }
-
-            return _player2;
+            else
+            {
+                throw new InvalidOperationException("Player2 has already been initialized.");
+            }
         }
-    }
 
-    // Public properties
-    /// <summary>
-    /// The Name of the player
-    /// </summary>
-    public string Name { get; private set; }
-    
-    
-    /// <summary>
-    /// A list containing all the players Pokémon
-    /// </summary>
-    public List<IPokemon> Pokemons { get; private set; }
-    
-    
-    /// <summary>
-    ///  A list of all the dead pokemons of the player.
-    /// </summary>
-    public List<IPokemon> Cementerio {get; private set;}
-    
-    
-    /// <summary>
-    /// A list containing all potions of the player
-    /// </summary>
-    public List<IPotions> Potions { get; private set; }
-    
-    
-    
-    /// <summary>
-    /// The Pokémon that the player has selected
-    /// </summary>
-    public IPokemon SelectedPokemon { get; private set; }
-    
-    /// <summary>
-    /// Sets the turn of the player.
-    /// This is used for enabling the user to use special attacks, which can only be used once every 2 turns.
-    /// The logic is:
-    ///     - If the user selects a special attack, it starts a counter that increments the 'Turn' variable
-    ///     - After that, we always check this variable, whenever it's 0 the user can 
-    /// </summary>
-    public int Turn { get; private set; } //private set beacause we use 'SetTurn' method. (Which is public)
+        // Player action methods
 
-    // Private constructor
-    private Player(string name, List<IPokemon> pokemons, IPokemon selectedPokemon)
-    {
-        Name = name;
-        Pokemons = pokemons;
-        Cementerio = new List<IPokemon>();
-        Potions = new List<IPotions>
+        /// <summary>
+        /// Switches the player's selected Pokémon based on the player's choice.
+        /// </summary>
+        /// <param name="pokemonChoice">The index of the Pokémon selected by the player.</param>
+        public void SwitchPokemon(int pokemonChoice)
         {
-            new RevivePotion(),
-            new TotalCure(), new TotalCure(),
-            new SuperPotion(), new SuperPotion(), new SuperPotion(), new SuperPotion()
-            
-        };
-        SelectedPokemon = selectedPokemon;
-        Turn = 0;
-    }
-
-    
-    /// <summary>
-    /// Static method to initialize Player1
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="pokemons"></param>
-    /// <param name="selectedPokemon"></param>
-    /// <exception cref="InvalidOperationException"></exception>
-    public static void InitializePlayer1(string name, List<IPokemon> pokemons, IPokemon selectedPokemon)
-    {
-        if (_player1 == null)
-        {
-            _player1 = new Player(name, pokemons, selectedPokemon);
-        }
-        else
-        {
-            throw new InvalidOperationException("Player1 has already been initialized.");
-        }
-    }
-    
-    /// <summary>
-    /// Static method to initialize Player2
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="pokemons"></param>
-    /// <param name="selectedPokemon"></param>
-    /// <exception cref="InvalidOperationException"></exception>
-    public static void InitializePlayer2(string name, List<IPokemon> pokemons, IPokemon selectedPokemon)
-    {
-        if (_player2 == null)
-        {
-            _player2 = new Player(name, pokemons, selectedPokemon);
-        }
-        else
-        {
-            throw new InvalidOperationException("Player2 has already been initialized.");
-        }
-    }
-
-    /// <summary>
-    /// Lets the PLAYER change ITS Pokémon.
-    /// </summary>
-    public void SwitchPokemon(int pokemonChoice)
-    {
-        // Validar que el índice está dentro del rango
+            // Validar que el índice está dentro del rango
         if (pokemonChoice < 0 || pokemonChoice >= Pokemons.Count)
         {
             throw new ArgumentOutOfRangeException(nameof(pokemonChoice), "Pokemon choice is out of range.");
+        }SelectedPokemon = Pokemons[pokemonChoice];
         }
-    
-        SelectedPokemon = Pokemons[pokemonChoice];
-    }
 
+        /// <summary>
+        /// Moves the currently selected Pokémon to the cemetery list and removes it from the player's active Pokémon list.
+        /// </summary>
+        public void CarryToCementerio()
+        {
+            if (!Cementerio.Contains(SelectedPokemon))
+            {
+                Cementerio.Add(SelectedPokemon);
+                Pokemons.Remove(SelectedPokemon);
+            }
+        }
 
-    /// <summary>
-    /// Polymorphic method that allows the user to use any item.
-    /// </summary>
-    /// <param name="itemChoice"></param>
-    public void UseItem(int itemChoice)
-    {
-     //On the works...
-    }
+        /// <summary>
+        /// Retrieves an item from the player's inventory based on the given index.
+        /// </summary>
+        /// <param name="itemListIndex">The index of the item in the player's inventory list.</param>
+        /// <returns>The item selected by the player.</returns>
+        public Item GetItem(int itemListIndex)
+        {
+            itemListIndex--; // Adjust for 1-based indexing
+            Item item = Items[itemListIndex].FirstOrDefault();
 
-    /// <summary>
-    /// Sends the current Pokémon to the dead list.
-    /// </summary>
-    public void CarryToCementerio()
-    {
-        Cementerio.Add(SelectedPokemon);
-        Pokemons.Remove(SelectedPokemon);
-    }
-    
-    /// <summary>
-    /// Resets the game state for testing by setting the players to null.
-    /// This is typically used to prepare the system for a fresh test, ensuring
-    /// that no previous state influences the test results.
-    /// </summary>
-    public static void ResetForTesting()
-    {
-        _player1 = null;
-        _player2 = null;
-    }
+            // Remove the item from the player's list and return it
+            return item;
+        }
 
-    
+        /// <summary>
+        /// Removes an item from the player's inventory list based on the given index.
+        /// </summary>
+        /// <param name="itemListIndex">The index of the item to remove from the inventory.</param>
+        public void RemoveItem(int itemListIndex)
+        {
+            itemListIndex--; // Adjust for 1-based indexing
+            Items[itemListIndex].RemoveAt(0);
+        }
+        public static void ResetForTesting()
+        {
+            _player1 = null;
+            _player2 = null;
+        }
+    }
 }

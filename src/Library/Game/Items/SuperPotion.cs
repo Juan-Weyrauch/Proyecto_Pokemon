@@ -1,22 +1,38 @@
-namespace Library.Game.Items;
+using Library.Game.Pokemons;
 
+namespace Library.Game.Items;
 /// <summary>
 /// This super potion regenerates 70 points of HP to the Pokémon.
 /// </summary>
-public class SuperPotion : IPotions
+public class SuperPotion : Item
 {
-    /// <inheritdoc />
-    public string Name { get; set; }
-
-    /// <inheritdoc />
-    public int RegenValue { get; set; }
 
     /// <summary>
-    /// Constructor for the class SuperPotion.
+    /// Constructor of the Potion
     /// </summary>
     public SuperPotion()
     {
         Name = "Super Potion";
-        RegenValue = 70;
     }
+    
+   
+
+
+    /// <summary>
+    /// The constructor for the class.
+    /// </summary>
+
+    public override void Use(IPokemon pokemon)
+    {
+        if (pokemon != null)
+        {
+            pokemon.Health = pokemon.Health + 70;
+            if (pokemon.Health > 100)
+            {
+                pokemon.Health = 100;
+            }
+        }
+       
+    }
+    
 }

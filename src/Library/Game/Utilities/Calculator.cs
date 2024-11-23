@@ -30,8 +30,8 @@ public static class Calculator
                         ["Fight", "Plant", "Earth"], [])
                 },
                 {
-                    "Dragón",
-                    (["Dragón", "Ice"],
+                    "Dragon",
+                    (["Dragon", "Ice"],
                         ["Water", "Electric", "Fire", "Plant"], [])
                 },
                 {

@@ -1,4 +1,5 @@
 using Library.Game.Attacks;
+using Library.Game.Items;
 using Library.Game.Players;
 using Library.Game.Pokemons;
 
@@ -446,6 +447,43 @@ public static class Printer
         Console.ReadKey();
         Console.Clear();
     }
+
+    /// <summary>
+    /// This a method to print the list of items from each player, this make possible that
+    /// we can give this information to the player.
+    /// </summary>
+    /// <param name="items">List of items of the player.  </param>
+    public static void PrintearItems(List<List<Item>> items)
+    {
+        // Check if the items list is null or empty
+        if (items != null && items.Count > 0)
+        {
+            // Create a table-like header
+            Console.WriteLine("╔═══════════════════════════════════════╗");
+            Console.WriteLine($"║  You have these items:                ║");
+
+            // Loop through each category of items
+            for (int i = 0; i < items.Count; i++)
+            {
+                // Check if the current category has items in it
+                if (items[i].Count > 0)
+                {
+                    // Dynamically display the item category and count
+                    string itemName = items[i].FirstOrDefault()?.Name ?? "Unnamed Item";
+                    Console.WriteLine($"║ {i + 1}) {itemName} x{items[i].Count,-4}    ║");
+                }
+            }
+
+            // Close the table-like border
+            Console.WriteLine("╚═══════════════════════════════════════╝");
+        }
+        else
+        {
+            // If no items are available
+            Console.WriteLine("You don't have any items.");
+        }
+    }
+
 
 
 }
