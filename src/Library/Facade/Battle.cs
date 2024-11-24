@@ -4,7 +4,7 @@ using Library.Game.Items;
 using Library.Game.Players;
 using Library.Game.Pokemons;
 using Library.Game.Utilities;
-using System.Collections.Generic;
+
 
 namespace Library.Facade
 {
@@ -41,7 +41,17 @@ namespace Library.Facade
 
         private static void PlayerAction(IPlayer player, IPlayer rival)
         {
-            AplicarEfectos(player.SelectedPokemon);
+            // Apply status effects before action
+            bool feedback = AplicarEfectos(player.SelectedPokemon); //If something changed on the pokemon.
+            
+            // If the turn is skipped, exit early
+            if (feedback)
+            {
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadLine();
+                return; // Skip the turn if paralyzed or asleep
+            }
+
             // Ensure the player isn't trying to use a fainted Pokémon
             if (player.SelectedPokemon.Health <= 0)
             {
@@ -92,10 +102,6 @@ namespace Library.Facade
         {
             IPokemon attacker = player.SelectedPokemon;
             IPokemon receiver = rival.SelectedPokemon;
-
-            
-            // Apply Pokémon's state effects before attacking
-           
 
             // Show the available attacks
             Printer.ShowAttacks(attacker, receiver);
@@ -215,56 +221,61 @@ namespace Library.Facade
             Console.ReadLine();
         }
 
-        private static void AplicarEfectos(IPokemon pokemon)
-        {
-            Random random = new Random();
+        private static bool AplicarEfectos(IPokemon pokemon)
+{
+    Random random = new Random();
 
-            switch (pokemon.State)
+    switch (pokemon.State)
+    {
+        case Estado.Paralizado:
+            Printer.ImprimirCambioEstado(pokemon.Name, 3); // Print "Paralized" state change message
+            if (random.NextDouble() < 0.5) // 50% chance to be unable to attack
             {
-                case Estado.Paralizado:
-                    if (random.NextDouble() < 0.5) // 50% chance to be unable to attack
-                    {
-                        Printer.ImprimirCambioEstado(pokemon.Name, 3); // Print paralyzed state change message
-                        return; // Skip the turn if paralyzed
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{pokemon.Name} is paralyzed but can attack.");
-                    }
-                    break;
-
-                case Estado.Dormido:
-                    if (pokemon.TurnosDormido > 0)
-                    {
-                        Printer.ImprimirCambioEstado(pokemon.Name, 4); // Print sleep state change message
-                        pokemon.DecreaseTurnosDormido(); // Reduce sleep turns
-                        return; // Skip turn if Pokémon is asleep
-                    }
-                    else
-                    {
-                        // Pokémon may wake up with a 25% chance
-                        if (random.NextDouble() < 0.25)
-                        {
-                            Console.WriteLine($"{pokemon.Name} woke up early.");
-                            pokemon.CambiarEstado(Estado.Normal); // Set to normal state
-                        }
-                        else
-                        {
-                            Console.WriteLine($"{pokemon.Name} is still asleep.");
-                        }
-                    }
-                    break;
-
-                case Estado.Quemado:
-                    Printer.ImprimirCambioEstado(pokemon.Name, 1); // Print burn state change message
-                    pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.10)); // Apply burn damage (10% of initial health)
-                    break;
-
-                case Estado.Envenenado:
-                    Printer.ImprimirCambioEstado(pokemon.Name, 2); // Print poisoned state change message
-                    pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.05)); // Apply poison damage (5% of initial health)
-                    break;
+             
+                return true; // Skip the turn if paralyzed
             }
-        }
-        }
+           
+            break;
+
+        case Estado.Dormido:
+            Printer.ImprimirCambioEstado(pokemon.Name, 4); // Print "Asleep" state change message
+            if (pokemon.TurnosDormido > 0)
+            {
+                
+                pokemon.DecreaseTurnosDormido(); // Reduce sleep turns
+                return true; // Skip the turn if still asleep
+            }
+            else
+            {
+                // Pokémon may wake up with a 25% chance
+                if (random.NextDouble() < 0.25)
+                {
+                    Console.WriteLine($"{pokemon.Name} woke up early.");
+                    pokemon.CambiarEstado(Estado.Normal); // Set to normal state
+                    
+                }
+                else
+                {
+                    Console.WriteLine($"{pokemon.Name} is still asleep.");
+                    return true;
+                }
+            }
+            break;
+
+        case Estado.Quemado:
+            Printer.ImprimirCambioEstado(pokemon.Name, 1); // Print "Burned" state change message
+            pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.10)); // Apply burn damage (10% of initial health)
+            
+            break;
+
+        case Estado.Envenenado:
+            Printer.ImprimirCambioEstado(pokemon.Name, 2); // Print "Poisoned" state change message
+            pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.05)); // Apply poison damage (5% of initial health)
+            
+            break;
     }
+
+    return false; // No state effect to skip the turn
+}
+    }
+}

@@ -329,7 +329,7 @@ public static class Printer
         // Determina el texto más largo
         string line1 = $"{player.Name}'s turn!";
         string line2 = $"{pokemon.Name} Health: {pokemon.Health}/{pokemon.InitialHealth}";
-        string line3 = $"{(int)pokemon.State}"; //"What would you like to do?";
+        string line3 = $"{(int)pokemon.State}";//"What would you like to do?";
         string line4 = "1. AttackList";
         string line5 = "2. Use Item";
         string line6 = "3. Switch Pokémon";
@@ -452,19 +452,19 @@ public static class Printer
         switch (estado)
         {   
             case 0:
-                Console.WriteLine($"{nombrePokemon} ha cambiado su estado a normal.");
+                Console.WriteLine($"{nombrePokemon} it is now in normal state.");
                 break;
             case 1:
-                Console.WriteLine($"{nombrePokemon} está quemado y recibe daño residual.");
+                Console.WriteLine($"{nombrePokemon}  is burned.");
                 break;
             case 2:
-                Console.WriteLine($"{nombrePokemon} está envenenado y recibe daño residual.");
+                Console.WriteLine($"{nombrePokemon}  is poisoned.");
                 break;
             case 3:
-                Console.WriteLine($"{nombrePokemon} está paralizado y no puede atacar.");
+                Console.WriteLine($"{nombrePokemon} is paralyzed and cannot attack this turn.");
                 break;
             case 4:
-                Console.WriteLine($"{nombrePokemon} está dormido y pierde el turno.");
+                Console.WriteLine($"{nombrePokemon} is asleep and can't attack this turn.");
                 break;
         }
     }
@@ -504,7 +504,5 @@ public static class Printer
             Console.WriteLine("You don't have any items.");
         }
     }
-
-
 
 }
