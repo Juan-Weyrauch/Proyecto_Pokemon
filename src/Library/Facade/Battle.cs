@@ -8,8 +8,15 @@ using Library.Game.Utilities;
 
 namespace Library.Facade
 {
+    /// <summary>
+    /// Proporciona la lógica principal para gestionar las batallas Pokémon entre dos jugadores.
+    /// Contiene métodos para iniciar la batalla, gestionar acciones de los jugadores y aplicar efectos de estado.
+    /// </summary>
     public static class Battle
     {
+        /// <summary>
+        /// Inicia una batalla entre dos jugadores, alternando turnos hasta que uno pierda.
+        /// </summary>
         public static void StartBattle()
         {
             Player currentPlayer = Player.Player1;
@@ -39,6 +46,12 @@ namespace Library.Facade
             }
         }
 
+        /// <summary>
+        /// Gestiona las acciones de un jugador durante su turno en la batalla.
+        /// Aplica efectos de estado, verifica el estado del Pokémon seleccionado y permite al jugador realizar una acción.
+        /// </summary>
+        /// <param name="player">El jugador que está tomando su turno.</param>
+        /// <param name="rival">El jugador rival que será afectado por las acciones del jugador actual.</param>
         private static void PlayerAction(IPlayer player, IPlayer rival)
         {
             // Apply status effects before action
@@ -221,8 +234,17 @@ namespace Library.Facade
             Console.ReadLine();
         }
 
-        private static bool AplicarEfectos(IPokemon pokemon)
-{
+    /// <summary>
+    /// Aplica los efectos del estado actual de un Pokémon, como parálisis, sueño, quemaduras o envenenamiento.
+    /// Actualiza la salud del Pokémon o determina si pierde el turno debido al estado.
+    /// </summary>
+    /// <param name="pokemon">El Pokémon al que se aplicarán los efectos del estado.</param>
+    /// <returns>
+    /// Un valor booleano que indica si el Pokémon pierde el turno debido a su estado actual.
+    /// <c>true</c> si el turno es omitido (por parálisis o sueño), <c>false</c> en caso contrario.
+    /// </returns>
+    private static bool AplicarEfectos(IPokemon pokemon)
+    {
     Random random = new Random();
 
     switch (pokemon.State)

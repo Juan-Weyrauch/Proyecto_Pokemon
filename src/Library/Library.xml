@@ -4,6 +4,36 @@
         <name>Library</name>
     </assembly>
     <members>
+        <member name="T:Library.Facade.Battle">
+            <summary>
+            Proporciona la lógica principal para gestionar las batallas Pokémon entre dos jugadores.
+            Contiene métodos para iniciar la batalla, gestionar acciones de los jugadores y aplicar efectos de estado.
+            </summary>
+        </member>
+        <member name="M:Library.Facade.Battle.StartBattle">
+            <summary>
+            Inicia una batalla entre dos jugadores, alternando turnos hasta que uno pierda.
+            </summary>
+        </member>
+        <member name="M:Library.Facade.Battle.PlayerAction(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
+            <summary>
+            Gestiona las acciones de un jugador durante su turno en la batalla.
+            Aplica efectos de estado, verifica el estado del Pokémon seleccionado y permite al jugador realizar una acción.
+            </summary>
+            <param name="player">El jugador que está tomando su turno.</param>
+            <param name="rival">El jugador rival que será afectado por las acciones del jugador actual.</param>
+        </member>
+        <member name="M:Library.Facade.Battle.AplicarEfectos(Library.Game.Pokemons.IPokemon)">
+            <summary>
+            Aplica los efectos del estado actual de un Pokémon, como parálisis, sueño, quemaduras o envenenamiento.
+            Actualiza la salud del Pokémon o determina si pierde el turno debido al estado.
+            </summary>
+            <param name="pokemon">El Pokémon al que se aplicarán los efectos del estado.</param>
+            <returns>
+            Un valor booleano que indica si el Pokémon pierde el turno debido a su estado actual.
+            <c>true</c> si el turno es omitido (por parálisis o sueño), <c>false</c> en caso contrario.
+            </returns>
+        </member>
         <member name="T:Library.Facade.Facade">
             <summary>
             Responsable for:
@@ -436,7 +466,7 @@
             <param name="name">The name of the Pokémon.</param>
             <param name="defense">The defense value of the Pokémon.</param>
             <param name="type">The type of the Pokémon.</param>
-            <param name="attack">The list of attacks that the Pokémon has.</param>
+            <param name="attacks">The list of attacks that the Pokémon has.</param>
         </member>
         <member name="M:Library.Game.Pokemons.Pokemon.Clone">
             <summary>
@@ -464,9 +494,39 @@
             </summary>
             <param name="nuevoEstado">The new state to apply to the Pokémon.</param>
         </member>
+        <member name="M:Library.Game.Pokemons.Pokemon.DecreaseTurnosDormido">
+            <summary>
+            Reduce en 1 el contador de turnos en los que el Pokémon permanece dormido.
+            </summary>
+        </member>
         <member name="T:Library.Game.Pokemons.Estado">
             <summary>
             Enum representing different states of a Pokémon.
+            </summary>
+        </member>
+        <member name="F:Library.Game.Pokemons.Estado.Normal">
+            <summary>
+            The Pokémon is in a normal state.
+            </summary>
+        </member>
+        <member name="F:Library.Game.Pokemons.Estado.Quemado">
+            <summary>
+            The Pokémon is burned.
+            </summary>
+        </member>
+        <member name="F:Library.Game.Pokemons.Estado.Envenenado">
+            <summary>
+            The Pokémon is poisoned.
+            </summary>
+        </member>
+        <member name="F:Library.Game.Pokemons.Estado.Paralizado">
+            <summary>
+            The Pokémon is paralyzed.
+            </summary>
+        </member>
+        <member name="F:Library.Game.Pokemons.Estado.Dormido">
+            <summary>
+            The Pokémon is asleep.
             </summary>
         </member>
         <member name="T:Library.Game.Utilities.Calculator">

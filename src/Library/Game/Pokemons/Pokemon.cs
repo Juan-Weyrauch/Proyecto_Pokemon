@@ -60,7 +60,7 @@ namespace Library.Game.Pokemons
         /// <param name="name">The name of the Pokémon.</param>
         /// <param name="defense">The defense value of the Pokémon.</param>
         /// <param name="type">The type of the Pokémon.</param>
-        /// <param name="attack">The list of attacks that the Pokémon has.</param>
+        /// <param name="attacks">The list of attacks that the Pokémon has.</param>
         public Pokemon(string name, int defense, string type, List<IAttack> attacks)
         {
             InitialHealth = 100;
@@ -123,6 +123,9 @@ namespace Library.Game.Pokemons
             
         }
 
+        /// <summary>
+        /// Reduce en 1 el contador de turnos en los que el Pokémon permanece dormido.
+        /// </summary>
         public void DecreaseTurnosDormido()
         {
             TurnosDormido--;
@@ -134,10 +137,29 @@ namespace Library.Game.Pokemons
     /// </summary>
     public enum Estado
     {
+        /// <summary>
+        /// The Pokémon is in a normal state.
+        /// </summary>
         Normal = 0,
+
+        /// <summary>
+        /// The Pokémon is burned.
+        /// </summary>
         Quemado = 1,
+
+        /// <summary>
+        /// The Pokémon is poisoned.
+        /// </summary>
         Envenenado = 2,
+
+        /// <summary>
+        /// The Pokémon is paralyzed.
+        /// </summary>
         Paralizado = 3,
+
+        /// <summary>
+        /// The Pokémon is asleep.
+        /// </summary>
         Dormido = 4
     }
 }
