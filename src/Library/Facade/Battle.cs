@@ -124,7 +124,7 @@ namespace Library.Facade
             IAttack attack = attacker.GetAttack(attackInput - 1);
 
             // 2) Now we call for a function that uses the attack on the rival's Pokémon
-            Calculator.InfringeDamage(attack, receiver);
+            Calculator.InfringeDamage(attack, receiver,attacker);
 
             // 3) We print both Pokémon's health
             Printer.ShowSelectedPokemon(attacker, player.Name);

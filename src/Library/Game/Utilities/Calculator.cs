@@ -13,7 +13,7 @@ namespace Library.Game.Utilities;
 /// </summary>
 public static class Calculator
 {
-// Table of attacks
+// Table of attacks.
     private static readonly
         Dictionary<string, (List<string> Weaknesses, List<string> Resistances, List<string> Immunities)>
         EffectivenessTable =
