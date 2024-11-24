@@ -42,7 +42,7 @@ public interface IPokemon
     /// <summary>
     /// A list of all the attacks that the Pokémon has.
     /// </summary>
-    List<IAttack> AtackList { get; }
+    List<IAttack> AttackList { get; }
 
 
     /// <summary>

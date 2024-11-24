@@ -60,7 +60,7 @@ namespace Library.Facade
 
                 switch (choice)
                 {
-                    case 1: // Attack
+                    case 1: // AttackList
                         Attack(player, rival);
                         repeatTurn = false; // Ends the turn
                         break;
@@ -81,6 +81,7 @@ namespace Library.Facade
                             // If no Pokémon was switched, show options again
                             Printer.ShowTurnInfo(player, player.SelectedPokemon);
                         }
+
                         break;
                 }
             }
@@ -113,19 +114,42 @@ namespace Library.Facade
 
         private static void UseItem(IPlayer player, IPlayer rival)
         {
-            // Show available items
+            // Show the player's available items
             Printer.PrintearItems(player.Items);
 
             // Ask the player to select an item
-            int itemSelection = Calculator.ValidateSelectionInGivenRange(1, 3);
-            Item item = player.GetItem(itemSelection); // Get the item
+            int itemSelection = Calculator.ValidateSelectionInGivenRange(1, 3); // Assuming 3 types of items
+            Item item = player.GetItem(itemSelection); // Call the player's UseItem method
 
-            // Use the item (functionality for applying item effects would go here)
-            // For now, we're just displaying the use of item
-          //  Printer.DisplayItemUseMessage(item, player);
-
-            // Heal the Pokémon or apply the item's effect
-            item.ApplyEffect(player.SelectedPokemon);
+            if (item != null)
+            {
+                // If the item is a healing item (SuperPotion or TotalCure), ask the player which Pokémon to use it on
+                if (item is SuperPotion or TotalCure)
+                {
+                    Printer.ShowInventory(player.Pokemons);
+                    Console.WriteLine($"Which Pokémon do you want to use {item.Name} on?");
+                    int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Pokemons.Count);
+                    item.Use(player.Pokemons[pokemonChoice - 1]); // Use the item on the selected Pokémon
+                    player.RemoveItem(itemSelection);
+                }
+                // If it's a revive potion, use it on a Pokémon in the cemetery
+                else if (item is RevivePotion)
+                {
+                    if (player.Cementerio.Count > 0)
+                    {
+                        Printer.ShowInventory(player.Cementerio);
+                        Console.WriteLine($"Which Pokémon do you want to revive with {item.Name}?");
+                        int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Cementerio.Count);
+                        item.Use(player.Cementerio[pokemonChoice - 1]); // Revive the selected Pokémon
+                        player.RemoveItem(itemSelection);
+                    }
+                    else
+                    {
+                        Console.WriteLine("No Pokémon to revive.");
+                        PlayerAction(player, rival);
+                    }
+                }
+            }
         }
 
         private static bool VoluntarySwitchPokemon(IPlayer player)
@@ -202,6 +226,7 @@ namespace Library.Facade
                     {
                         Console.WriteLine($"{pokemon.Name} is paralyzed but can attack.");
                     }
+
                     break;
 
                 case Estado.Dormido:
@@ -224,6 +249,7 @@ namespace Library.Facade
                             Console.WriteLine($"{pokemon.Name} is still asleep.");
                         }
                     }
+
                     break;
 
                 case Estado.Quemado:
@@ -236,3 +262,6 @@ namespace Library.Facade
                     pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.05)); // Poison damage
                     break;
             }
+        }
+    }
+}

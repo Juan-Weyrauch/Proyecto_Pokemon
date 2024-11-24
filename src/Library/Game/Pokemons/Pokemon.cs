@@ -42,7 +42,7 @@ namespace Library.Game.Pokemons
         /// <summary>
         /// Gets the list of all the attacks that the Pokémon has.
         /// </summary>
-        public List<IAttack> Attacks { get; }
+        public List<IAttack> AttackList { get; }
 
         /// <summary>
         /// Gets or sets the initial health of the Pokémon.
@@ -60,7 +60,7 @@ namespace Library.Game.Pokemons
         /// <param name="name">The name of the Pokémon.</param>
         /// <param name="defense">The defense value of the Pokémon.</param>
         /// <param name="type">The type of the Pokémon.</param>
-        /// <param name="attacks">The list of attacks that the Pokémon has.</param>
+        /// <param name="attack">The list of attacks that the Pokémon has.</param>
         public Pokemon(string name, int defense, string type, List<IAttack> attacks)
         {
             InitialHealth = 100;
@@ -68,7 +68,7 @@ namespace Library.Game.Pokemons
             Health = 100;
             Defense = defense;
             Type = type;
-            Attacks = attacks;
+            AttackList = attacks;
             TurnosDormido = 0;
             EnBatalla = false;
         }
@@ -79,7 +79,7 @@ namespace Library.Game.Pokemons
         /// <returns>A new instance of the <see cref="IPokemon"/> with the same properties as the original.</returns>
         public IPokemon Clone()
         {
-            return new Pokemon(Name, Defense, Type, Attacks.Select(attack => attack.Clone()).ToList())
+            return new Pokemon(Name, Defense, Type, AttackList.Select(attack => attack.Clone()).ToList())
             {
                 Health = this.Health,
                 InitialHealth = this.InitialHealth,
@@ -96,7 +96,7 @@ namespace Library.Game.Pokemons
         /// <returns>The <see cref="IAttack"/> at the specified index.</returns>
         public IAttack GetAttack(int index)
         {
-            return Attacks[index];
+            return AttackList[index];
         }
 
         /// <summary>

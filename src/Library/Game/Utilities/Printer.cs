@@ -294,13 +294,13 @@ public static class Printer
 
         int i = 1;
         // Iterate through each attack in the Pokémon's attack list
-        foreach (IAttack attack in attacker.AtackList)
+        foreach (IAttack attack in attacker.AttackList)
         {
             double special = Calculator.CheckEffectiveness(attack, receiver);
             
             // Display each attack's details in a box format.
             Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine($"║  Attack {i, -29} ║");
+            Console.WriteLine($"║  AttackList {i, -29} ║");
             Console.WriteLine($"║  Name: {attack.Name,-31}║");
             Console.WriteLine($"║  Damage: {attack.Damage,-29}║");
             Console.WriteLine($"║  Type: {attack.Type,-31}║");
@@ -330,7 +330,7 @@ public static class Printer
         string line1 = $"{player.Name}'s turn!";
         string line2 = $"{pokemon.Name} Health: {pokemon.Health}/{pokemon.InitialHealth}";
         string line3 = "What would you like to do?";
-        string line4 = "1. Attack";
+        string line4 = "1. AttackList";
         string line5 = "2. Use Item";
         string line6 = "3. Switch Pokémon";
 
@@ -370,19 +370,19 @@ public static class Printer
         // possible values = 0.0, 0.5, 2.0
         if (value == 0)
         {
-            Console.WriteLine($"Attack {attack} was ineffective! X0 Damage!");
+            Console.WriteLine($"AttackList {attack} was ineffective! X0 Damage!");
         }        
         else if (value == 1)
         {
-            Console.WriteLine($"Attack {attack} was used! x1 Damage!");
+            Console.WriteLine($"AttackList {attack} was used! x1 Damage!");
         }        
         else if (value == 2)
         {
-            Console.WriteLine($"Attack {attack} was effective! X2 Damage!");
+            Console.WriteLine($"AttackList {attack} was effective! X2 Damage!");
         }
         else if (value == 3)
         {
-            Console.WriteLine($"Attack {attack} was slightly ineffective! X0.5 Damage!");
+            Console.WriteLine($"AttackList {attack} was slightly ineffective! X0.5 Damage!");
         }
     }
     

@@ -131,9 +131,9 @@ namespace Library.Game.Attacks
         ]
     },
     { "Flying", [
-            new Attack("Wing Attack", 10, 0, "Flying"),
+            new Attack("Wing AttackList", 10, 0, "Flying"),
             new Attack("Aerial Ace", 35, 0, "Flying"),
-            new Attack("Sky Attack", 60, 0, "Flying")
+            new Attack("Sky AttackList", 60, 0, "Flying")
         ]
     }
 };

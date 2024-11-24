@@ -124,7 +124,7 @@ public static class Calculator
         }
         else
         {
-            throw new NoNullAllowedException("Attack or Pokemon was null.");
+            throw new NoNullAllowedException("AttackList or Pokemon was null.");
         }
 
     }

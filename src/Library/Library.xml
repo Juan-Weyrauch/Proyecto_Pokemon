@@ -27,7 +27,7 @@
             <param name="player">The current player whose turn is being handled.</param>
             <param name="rival">The opposing player in the battle.</param>
         </member>
-        <member name="M:Library.Facade.Battle.Attack(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
+        <member name="M:Library.Facade.Battle.AttackList(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
             <summary>
             This method is responsible for:
             1) Showing the available attacks to the player.
@@ -71,7 +71,7 @@
             Starts the program and asks the player for the initial input
             </summary>
         </member>
-        <member name="T:Library.Game.Attacks.Attack">
+        <member name="T:Library.Game.Attacks.AttackList">
             <summary>
             These are the attacks.
             </summary>
@@ -83,7 +83,7 @@
             <param name="special"></param>
             <param name="type"></param>
         </member>
-        <member name="M:Library.Game.Attacks.Attack.#ctor(System.String,System.Int32,System.Int32,System.String)">
+        <member name="M:Library.Game.Attacks.AttackList.#ctor(System.String,System.Int32,System.Int32,System.String)">
             <summary>
             These are the attacks.
             </summary>
@@ -95,22 +95,22 @@
             <param name="special"></param>
             <param name="type"></param>
         </member>
-        <member name="P:Library.Game.Attacks.Attack.Name">
+        <member name="P:Library.Game.Attacks.AttackList.Name">
             <summary>
             Name of the attack.
             </summary>
         </member>
-        <member name="P:Library.Game.Attacks.Attack.Damage">
+        <member name="P:Library.Game.Attacks.AttackList.Damage">
             <summary>
             Damage to the attack.
             </summary>
         </member>
-        <member name="P:Library.Game.Attacks.Attack.Special">
+        <member name="P:Library.Game.Attacks.AttackList.Special">
             <summary>
             Check if the attack is special or not.
             </summary>
         </member>
-        <member name="P:Library.Game.Attacks.Attack.Type">
+        <member name="P:Library.Game.Attacks.AttackList.Type">
             <summary>
             Sets the type of the attack.
             We use this to check for effectiveness against other Pokémon types.
