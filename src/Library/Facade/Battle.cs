@@ -233,7 +233,7 @@ namespace Library.Facade
                     if (pokemon.TurnosDormido > 0)
                     {
                         Printer.ImprimirCambioEstado(pokemon.Name, 4);
-                        pokemon.TurnosDormido--; // Reduce sleep turns
+                        pokemon.DecreaseTurnosDormido(); // Reduce sleep turns
                         return; // Skip turn if Pokémon is asleep
                     }
                     else

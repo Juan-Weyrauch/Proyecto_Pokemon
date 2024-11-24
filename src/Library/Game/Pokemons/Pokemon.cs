@@ -37,7 +37,7 @@ namespace Library.Game.Pokemons
         /// <summary>
         /// Gets or sets the number of turns the Pokémon remains asleep.
         /// </summary>
-        public int TurnosDormido { get; set; }
+        public int TurnosDormido { get; private set; }
 
         /// <summary>
         /// Gets the list of all the attacks that the Pokémon has.
@@ -117,6 +117,11 @@ namespace Library.Game.Pokemons
         public void CambiarEstado(Estado nuevoEstado)
         {
             State = nuevoEstado;
+        }
+
+        public void DecreaseTurnosDormido()
+        {
+            TurnosDormido--;
         }
     }
 
