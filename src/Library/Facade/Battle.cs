@@ -41,6 +41,7 @@ namespace Library.Facade
 
         private static void PlayerAction(IPlayer player, IPlayer rival)
         {
+            AplicarEfectos(player.SelectedPokemon);
             // Ensure the player isn't trying to use a fainted Pokémon
             if (player.SelectedPokemon.Health <= 0)
             {
@@ -92,8 +93,9 @@ namespace Library.Facade
             IPokemon attacker = player.SelectedPokemon;
             IPokemon receiver = rival.SelectedPokemon;
 
+            
             // Apply Pokémon's state effects before attacking
-            AplicarEfectos(attacker);
+           
 
             // Show the available attacks
             Printer.ShowAttacks(attacker, receiver);
@@ -103,6 +105,8 @@ namespace Library.Facade
 
             // Get the attack selected by the player
             IAttack attack = attacker.GetAttack(attackInput - 1);
+            receiver.CambiarEstado(attack.State);
+            
 
             // Apply the attack on the rival's Pokémon
             Calculator.InfringeDamage(attack, receiver);
@@ -220,19 +224,19 @@ namespace Library.Facade
                 case Estado.Paralizado:
                     if (random.NextDouble() < 0.5) // 50% chance to be unable to attack
                     {
-                        Printer.ImprimirCambioEstado(pokemon.Name, 3);
+                        Printer.ImprimirCambioEstado(pokemon.Name, 3); // Print paralyzed state change message
+                        return; // Skip the turn if paralyzed
                     }
                     else
                     {
                         Console.WriteLine($"{pokemon.Name} is paralyzed but can attack.");
                     }
-
                     break;
 
                 case Estado.Dormido:
                     if (pokemon.TurnosDormido > 0)
                     {
-                        Printer.ImprimirCambioEstado(pokemon.Name, 4);
+                        Printer.ImprimirCambioEstado(pokemon.Name, 4); // Print sleep state change message
                         pokemon.DecreaseTurnosDormido(); // Reduce sleep turns
                         return; // Skip turn if Pokémon is asleep
                     }
@@ -242,26 +246,25 @@ namespace Library.Facade
                         if (random.NextDouble() < 0.25)
                         {
                             Console.WriteLine($"{pokemon.Name} woke up early.");
-                            pokemon.CambiarEstado(0); // Set state to normal
+                            pokemon.CambiarEstado(Estado.Normal); // Set to normal state
                         }
                         else
                         {
                             Console.WriteLine($"{pokemon.Name} is still asleep.");
                         }
                     }
-
                     break;
 
                 case Estado.Quemado:
-                    Printer.ImprimirCambioEstado(pokemon.Name, 1);
-                    pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.10)); // Burn damage
+                    Printer.ImprimirCambioEstado(pokemon.Name, 1); // Print burn state change message
+                    pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.10)); // Apply burn damage (10% of initial health)
                     break;
 
                 case Estado.Envenenado:
-                    Printer.ImprimirCambioEstado(pokemon.Name, 2);
-                    pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.05)); // Poison damage
+                    Printer.ImprimirCambioEstado(pokemon.Name, 2); // Print poisoned state change message
+                    pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.05)); // Apply poison damage (5% of initial health)
                     break;
             }
         }
+        }
     }
-}

@@ -1,3 +1,5 @@
+using Library.Game.Pokemons;
+
 namespace Library.Game.Attacks;
 
 /// <summary>
@@ -22,7 +24,7 @@ public interface IAttack
     /// <summary>
     /// Check if the attack is special or not
     /// </summary>
-    int Special { get; set; }
+    Estado State { get; set; }
     
     
     /// <summary>

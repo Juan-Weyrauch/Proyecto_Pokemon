@@ -29,7 +29,7 @@
             <param name="special"></param>
             <param name="type"></param>
         </member>
-        <member name="M:Library.Game.Attacks.Attack.#ctor(System.String,System.Int32,System.Int32,System.String)">
+        <member name="M:Library.Game.Attacks.Attack.#ctor(System.String,System.Int32,Library.Game.Pokemons.Estado,System.String)">
             <summary>
             These are the attacks.
             </summary>
@@ -51,7 +51,7 @@
             Damage to the attack.
             </summary>
         </member>
-        <member name="P:Library.Game.Attacks.Attack.Special">
+        <member name="P:Library.Game.Attacks.Attack.State">
             <summary>
             Check if the attack is special or not.
             </summary>
@@ -64,7 +64,7 @@
         </member>
         <member name="T:Library.Game.Attacks.AttackGenerator">
             <summary>
-            This static class is responsible for creating a list of attacks depending on the Pokémon type.
+            Static class responsible for creating a list of attacks depending on the Pokémon type.
             </summary>
         </member>
         <member name="M:Library.Game.Attacks.AttackGenerator.GenerateRandomAttack(System.String)">
@@ -89,7 +89,7 @@
             Damage to the attack
             </summary>
         </member>
-        <member name="P:Library.Game.Attacks.IAttack.Special">
+        <member name="P:Library.Game.Attacks.IAttack.State">
             <summary>
             Check if the attack is special or not
             </summary>

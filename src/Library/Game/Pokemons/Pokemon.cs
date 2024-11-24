@@ -116,7 +116,11 @@ namespace Library.Game.Pokemons
         /// <param name="nuevoEstado">The new state to apply to the Pokémon.</param>
         public void CambiarEstado(Estado nuevoEstado)
         {
-            State = nuevoEstado;
+            // Check if the state is actually changing
+           
+                State = nuevoEstado;
+               
+            
         }
 
         public void DecreaseTurnosDormido()

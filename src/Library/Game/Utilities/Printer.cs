@@ -329,7 +329,7 @@ public static class Printer
         // Determina el texto más largo
         string line1 = $"{player.Name}'s turn!";
         string line2 = $"{pokemon.Name} Health: {pokemon.Health}/{pokemon.InitialHealth}";
-        string line3 = "What would you like to do?";
+        string line3 = $"{(int)pokemon.State}"; //"What would you like to do?";
         string line4 = "1. AttackList";
         string line5 = "2. Use Item";
         string line6 = "3. Switch Pokémon";

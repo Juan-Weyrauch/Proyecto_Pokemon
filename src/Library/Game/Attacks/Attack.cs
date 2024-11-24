@@ -1,3 +1,5 @@
+using Library.Game.Pokemons;
+
 namespace Library.Game.Attacks;
 
 /// <summary>
@@ -10,7 +12,7 @@ namespace Library.Game.Attacks;
 /// <param name="damage"></param>
 /// <param name="special"></param>
 /// <param name="type"></param>
-public class Attack(string name, int damage, int special, string type) : IAttack
+    public class Attack(string name, int damage, Estado state, string type) : IAttack
 {
     /// <summary>
     /// Name of the attack.
@@ -25,7 +27,7 @@ public class Attack(string name, int damage, int special, string type) : IAttack
     /// <summary>
     /// Check if the attack is special or not.
     /// </summary>
-    public int Special { get; set; } = special;
+    public Estado State { get; set; } = state;
 
     /// <summary>
     /// Sets the type of the attack.
@@ -35,6 +37,6 @@ public class Attack(string name, int damage, int special, string type) : IAttack
     // We use this to clone attack and returns, this is the clone system.
     public IAttack Clone()
     {
-        return new Attack(Name, Damage, Special, Type);
+        return new Attack(Name, Damage, state, Type);
     }
 }
