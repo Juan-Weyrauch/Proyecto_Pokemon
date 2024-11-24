@@ -1,35 +1,4 @@
-There are a few more details we could address to make the fusion of these two versions more comprehensive and polished. Here's a breakdown of additional improvements and explanations:
 
-### Additional Considerations and Improvements
-
-1. **Health and Experience Tracking**:
-   - The `StaticClasses` version includes logic for handling Pokémon health and experience. This can be extended to the `Facade` version to track health, level-up, and experience when Pokémon are involved in battles.
-   - Make sure the Pokémon’s experience is updated after each battle and ensure they are promoted when they level up.
-
-2. **Player Inventory and Items**:
-   - While the `UseItem` functionality is implemented in the fusion, we could enhance it by handling items that heal or have other effects, such as status healing (like Paralyze Heal or Antidote).
-   - Similarly, we can track item usage limits (e.g., you can use only one healing item per turn).
-
-3. **Turn Flow Enhancement**:
-   - Adding a more complex turn structure, like checking if the player or opponent can execute certain actions based on other battle conditions (e.g., if the opponent has a status effect like burn or paralysis).
-   - The turn structure could be more granular, such as adding delays between actions to simulate animation or time to process the turn in a more realistic manner.
-
-4. **Battle Start Conditions**:
-   - The battle start logic could be expanded to include specific victory conditions. For instance, we could implement winning conditions for the player, e.g., when all Pokémon on the opposing side are defeated.
-   - Implementing logic for when the player's Pokémon faint, prompting a forced switch, and then making the player choose a replacement, as previously mentioned.
-
-5. **Pokémon Status Effects During Combat**:
-   - The `AplicarEfectos` method applies the status effects for Pokémon in a combat scenario. We could extend this further to reflect a wider range of statuses and add checks for different item interactions (like healing items that also cure statuses).
-
-6. **Battle UI Enhancements**:
-   - Adding clear user interface prompts (like showing health, Pokémon info, attack options, item usage) can enhance the player's experience.
-   - Including messages to show battle progress, such as “The opposing Pokémon is getting weaker!” or “It’s a critical hit!” could further enhance the experience.
-
-### Expanded Fusion with Enhancements:
-
-Here’s an updated, more feature-complete version based on the initial fusion but with added functionalities:
-
-```csharp
 using Library.Game.Attacks;
 using Library.Game.Items;
 using Library.Game.Players;
@@ -153,7 +122,7 @@ namespace Library.Facade
 
             // Use the item (functionality for applying item effects would go here)
             // For now, we're just displaying the use of item
-            Printer.DisplayItemUseMessage(item, player);
+          //  Printer.DisplayItemUseMessage(item, player);
 
             // Heal the Pokémon or apply the item's effect
             item.ApplyEffect(player.SelectedPokemon);
