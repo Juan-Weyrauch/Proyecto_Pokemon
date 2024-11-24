@@ -1,18 +1,17 @@
 ﻿//--------------------------------------------------------------------------------
-// <copyright file="Program.cs" company="Universidad Católica del Uruguay">
+// <copyright file="Game.cs" company="Universidad Católica del Uruguay">
 //     Copyright (c) Programación II. Derechos reservados.
 // </copyright>
 //--------------------------------------------------------------------------------
 
-using Library;
-using Library.StaticClasses;
+using Library.Facade;
 
 namespace Program
 {
     /// <summary>
     /// Programa de consola de demostración.
     /// </summary>
-    public static class Program
+    public static class Game
     {
         /// <summary>
         /// Punto de entrada al programa principal.
@@ -20,9 +19,6 @@ namespace Program
         public static void Main()
         {
             Facade.Start();
-            var train = new Train();
-            train.StartEngines();
-            Console.WriteLine("Hello World!");
         }
     }
 }

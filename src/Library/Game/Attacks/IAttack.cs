@@ -1,5 +1,8 @@
-namespace Library.Interfaces;
+namespace Library.Game.Attacks;
 
+/// <summary>
+/// 
+/// </summary>
 public interface IAttack
 {
     /// <summary>
@@ -10,14 +13,14 @@ public interface IAttack
     
     
     /// <summary>
-    /// Damage of the attack
+    /// Damage to the attack
     /// </summary>
     int Damage { get; set; }
     
     
     
     /// <summary>
-    /// Check if the attack is a special one or not
+    /// Check if the attack is special or not
     /// </summary>
     int Special { get; set; }
     

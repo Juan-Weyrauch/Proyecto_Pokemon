@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Program</name>
+        <name>Game</name>
     </assembly>
     <members>
-        <member name="T:Program.Program">
+        <member name="T:Program.Game">
             <summary>
             Programa de consola de demostración.
             </summary>
         </member>
-        <member name="M:Program.Program.Main">
+        <member name="M:Program.Game.Main">
             <summary>
             Punto de entrada al programa principal.
             </summary>

@@ -11,9 +11,6 @@
     <AnalysisMode>All</AnalysisMode>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Abstract Classes\" />
-  </ItemGroup>
   <PropertyGroup>
     <NoWarn>
       $(NoWarn); SA1623; SA1642; CA1002; CA1303; CA5394
