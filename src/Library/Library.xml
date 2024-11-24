@@ -48,28 +48,30 @@
             </summary>
         </member>
         <member name="T:Library.Game.Attacks.Attack">
-            <summary>
-            These are the attacks.
-            </summary>
-            <remarks>
-            Primary constructor.
-            </remarks>
-            <param name="name"></param>
-            <param name="damage"></param>
-            <param name="special"></param>
-            <param name="type"></param>
+             <summary>
+             These are the attacks. Class that let us create attacks and understand how we need to
+            manipulate the system for this.
+             </summary>
+             <remarks>
+             Primary constructor.
+             </remarks>
+             <param name="name"></param>
+             <param name="damage"></param>
+             <param name="state"></param>
+             <param name="type"></param>
         </member>
         <member name="M:Library.Game.Attacks.Attack.#ctor(System.String,System.Int32,Library.Game.Pokemons.Estado,System.String)">
-            <summary>
-            These are the attacks.
-            </summary>
-            <remarks>
-            Primary constructor.
-            </remarks>
-            <param name="name"></param>
-            <param name="damage"></param>
-            <param name="special"></param>
-            <param name="type"></param>
+             <summary>
+             These are the attacks. Class that let us create attacks and understand how we need to
+            manipulate the system for this.
+             </summary>
+             <remarks>
+             Primary constructor.
+             </remarks>
+             <param name="name"></param>
+             <param name="damage"></param>
+             <param name="state"></param>
+             <param name="type"></param>
         </member>
         <member name="P:Library.Game.Attacks.Attack.Name">
             <summary>
@@ -90,6 +92,11 @@
             <summary>
             Sets the type of the attack.
             We use this to check for effectiveness against other Pokémon types.
+            </summary>
+        </member>
+        <member name="M:Library.Game.Attacks.Attack.Clone">
+            <summary>
+             We use this to clone attack and returns, this is the clone system.
             </summary>
         </member>
         <member name="T:Library.Game.Attacks.AttackGenerator">
@@ -129,6 +136,12 @@
             Sets the type of the attack.
             We use this to check for effectiveness against other Pokémon types.
             </summary>
+        </member>
+        <member name="M:Library.Game.Attacks.IAttack.Clone">
+            <summary>
+            Method that let us clone attacks. 
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:Library.Game.Items.Item">
             <summary>
@@ -377,6 +390,11 @@
             Initial health of the Pokémon
             </summary>
         </member>
+        <member name="P:Library.Game.Pokemons.IPokemon.TurnosDormido">
+            <summary>
+            How many turns have the pokemons have left to wake up. 
+            </summary>
+        </member>
         <member name="P:Library.Game.Pokemons.IPokemon.Defense">
             <summary>
             The Pokémon must have a defense status
@@ -404,9 +422,26 @@
             <param name="index">The index of the attack in the list.</param>
             <returns>The attack at the specified index.</returns>
         </member>
+        <member name="M:Library.Game.Pokemons.IPokemon.CambiarEstado(Library.Game.Pokemons.Estado)">
+            <summary>
+            Pokemon can change his state with this.
+            </summary>
+            <param name="nuevoEstado"></param>
+        </member>
         <member name="M:Library.Game.Pokemons.IPokemon.DecreaseHealth(System.Int32)">
             <summary>
             Clones the Pokémon so that there can exist multiple instances of the same.
+            </summary>
+        </member>
+        <member name="M:Library.Game.Pokemons.IPokemon.Clone">
+            <summary>
+            Method that let us clone this pokemon and use it for state system.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Game.Pokemons.IPokemon.DecreaseTurnosDormido">
+            <summary>
+            Reduce the turn that pokemon has to wake up.
             </summary>
         </member>
         <member name="T:Library.Game.Pokemons.Pokemon">
@@ -775,6 +810,13 @@
             <summary>
             Lets the player see that the action has been canceled.
             </summary>
+        </member>
+        <member name="M:Library.Game.Utilities.Printer.ImprimirCambioEstado(System.String,System.Int32)">
+            <summary>
+            This  method print the change in the state of the pokemon.
+            </summary>
+            <param name="nombrePokemon"></param>
+            <param name="estado"></param>
         </member>
         <member name="M:Library.Game.Utilities.Printer.PrintearItems(System.Collections.Generic.List{System.Collections.Generic.List{Library.Game.Items.Item}})">
             <summary>

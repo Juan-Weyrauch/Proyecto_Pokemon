@@ -3,14 +3,15 @@ using Library.Game.Pokemons;
 namespace Library.Game.Attacks;
 
 /// <summary>
-/// These are the attacks.
+/// These are the attacks. Class that let us create attacks and understand how we need to
+///manipulate the system for this.
 /// </summary>
 /// <remarks>
 /// Primary constructor.
 /// </remarks>
 /// <param name="name"></param>
 /// <param name="damage"></param>
-/// <param name="special"></param>
+/// <param name="state"></param>
 /// <param name="type"></param>
     public class Attack(string name, int damage, Estado state, string type) : IAttack
 {
@@ -34,9 +35,12 @@ namespace Library.Game.Attacks;
     /// We use this to check for effectiveness against other Pokémon types.
     /// </summary>
     public string Type { get; set; } = type;
-    // We use this to clone attack and returns, this is the clone system.
+    
+    ///<summary>
+    /// We use this to clone attack and returns, this is the clone system.
+    ///</summary>
     public IAttack Clone()
     {
-        return new Attack(Name, Damage, state, Type);
+        return new Attack(Name, Damage, State, Type);
     }
 }

@@ -447,6 +447,11 @@ public static class Printer
         Console.ReadKey();
         Console.Clear();
     }
+    /// <summary>
+    /// This  method print the change in the state of the pokemon.
+    /// </summary>
+    /// <param name="nombrePokemon"></param>
+    /// <param name="estado"></param>
     public static void ImprimirCambioEstado(string nombrePokemon, int estado)
     {
         switch (estado)

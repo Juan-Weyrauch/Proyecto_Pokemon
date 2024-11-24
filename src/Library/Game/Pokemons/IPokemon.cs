@@ -23,6 +23,9 @@ namespace Library.Game.Pokemons
         /// </summary>
         int InitialHealth { get; set; }
 
+        /// <summary>
+        /// How many turns have the pokemons have left to wake up. 
+        /// </summary>
         int TurnosDormido { get;  }
 
     /// <summary>
@@ -52,13 +55,24 @@ namespace Library.Game.Pokemons
         /// <returns>The attack at the specified index.</returns>
         IAttack GetAttack(int index);
 
+        /// <summary>
+        /// Pokemon can change his state with this.
+        /// </summary>
+        /// <param name="nuevoEstado"></param>
         public void CambiarEstado(Estado nuevoEstado);
         /// <summary>
         /// Clones the Pokémon so that there can exist multiple instances of the same.
         /// </summary>
         public void DecreaseHealth(int valueAfterCalculation);
+        /// <summary>
+        /// Method that let us clone this pokemon and use it for state system.
+        /// </summary>
+        /// <returns></returns>
         IPokemon Clone();
 
+        /// <summary>
+        /// Reduce the turn that pokemon has to wake up.
+        /// </summary>
         public void DecreaseTurnosDormido();
     }
 }
