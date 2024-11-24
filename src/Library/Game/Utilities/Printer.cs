@@ -65,6 +65,7 @@ public static class Printer
         Console.WriteLine(centeredMessage);
         Console.WriteLine(bottomBorder);
     }
+
     /// <summary>
     /// Displays a summary of an attack, including the attacker, the attack used, the damage dealt, 
     /// and the remaining health of the Pokémon that received the attack.
@@ -85,7 +86,8 @@ public static class Printer
         string line3 = $"{receiver.Name} has {receiver.Health} HP remaining.";
 
         // Calcular el ancho del cuadro basado en el texto más largo
-        int boxWidth = Math.Max(line1.Length, Math.Max(line2.Length, line3.Length)) + 4; // Espacio para bordes y padding
+        int boxWidth =
+            Math.Max(line1.Length, Math.Max(line2.Length, line3.Length)) + 4; // Espacio para bordes y padding
 
         // Crear bordes del cuadro
         string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
@@ -130,7 +132,7 @@ public static class Printer
     {
         Console.Clear();
 
-    
+
         // Calculate the box width based on the length of the player's name
         int playerMessageLength = $"Your turn Player {name}".Length;
         int boxWidth = playerMessageLength + 4; // Add space for borders and padding
@@ -157,10 +159,10 @@ public static class Printer
     public static void ShowCatalogue(Dictionary<int, IPokemon> pokedex)
     {
         ArgumentNullException.ThrowIfNull(pokedex);
-        
+
         int count = 0;
         List<string[]> boxes = new List<string[]>();
-        
+
         foreach (var entry in pokedex)
         {
             // Get the formatted box lines for each Pokémon and add to list
@@ -214,7 +216,7 @@ public static class Printer
         string nameLine = $"║  Name: {name,-20}║"; // Aligns the name within the box
         string lifeLine = $"║  Life: {life,-20}║"; // Aligns the name within the box
 
-        return [boxTop, indexLine, nameLine, lifeLine ,boxBottom];
+        return [boxTop, indexLine, nameLine, lifeLine, boxBottom];
     }
 
     /// <summary>
@@ -222,23 +224,23 @@ public static class Printer
     /// </summary>
     /// <param name="boxes">List of box lines for the row.</param>
     private static void PrintRow(List<string[]> boxes)
-{
-    // Imprime cada línea de las cajas en secuencia para todas las cajas en la fila
-    for (int i = 0; i < boxes[0].Length; i++)
     {
-        foreach (var box in boxes)
+        // Imprime cada línea de las cajas en secuencia para todas las cajas en la fila
+        for (int i = 0; i < boxes[0].Length; i++)
         {
-            // Imprime cada línea de la caja directamente, sin espacios adicionales
-            Console.Write(box[i]);
+            foreach (var box in boxes)
+            {
+                // Imprime cada línea de la caja directamente, sin espacios adicionales
+                Console.Write(box[i]);
+            }
+
+            // Mueve a la siguiente línea después de imprimir una fila de cajas
+            Console.WriteLine();
         }
 
-        // Mueve a la siguiente línea después de imprimir una fila de cajas
+        // Imprime una línea adicional solo si es necesario (esto se podría eliminar si no es deseado)
         Console.WriteLine();
     }
-
-    // Imprime una línea adicional solo si es necesario (esto se podría eliminar si no es deseado)
-    Console.WriteLine();
-}
 
 
 
@@ -249,7 +251,7 @@ public static class Printer
     /// <param name="name"></param>
     public static void AskForPokemon(int index, string name)
     {
-        Console.Write($"{name}! Pick your Pokemon N°{index }: ");
+        Console.Write($"{name}! Pick your Pokemon N°{index}: ");
         Console.WriteLine("");
     }
 
@@ -262,7 +264,7 @@ public static class Printer
         ArgumentNullException.ThrowIfNull(inventory);
         Console.Clear();
         PrintInventoryHeader(); // Print the "Your Inventory" header
-        
+
         int count = 0;
         List<string[]> boxes = new List<string[]>();
 
@@ -280,8 +282,8 @@ public static class Printer
             }
         }
     }
-    
-    
+
+
     /// <summary>
     /// Prints the header box for the inventory.
     /// </summary>
@@ -289,8 +291,9 @@ public static class Printer
     {
         string top = "╔════════════════════════════════════════════════════════════════════════════════════════════╗";
         string title = "║                                      Your Team                                             ║";
-        string bottom = "╚════════════════════════════════════════════════════════════════════════════════════════════╝";
-    
+        string bottom =
+            "╚════════════════════════════════════════════════════════════════════════════════════════════╝";
+
         Console.WriteLine(top);
         Console.WriteLine(title);
         Console.WriteLine(bottom);
@@ -326,65 +329,67 @@ public static class Printer
 
 
     /// <summary>
-/// Show the attacks of each Pokémon, displaying if they are special, the damage they deal, and their effectiveness.
-/// </summary>
-/// <param name="attacker">The Pokémon whose attacks will be displayed.</param>
-/// <param name="receiver">The Pokémon that will receive the attack.</param>
-public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
-{
-    ArgumentNullException.ThrowIfNull(attacker);
-
-    // Obtener el texto más largo de la lista de ataques para calcular el ancho dinámico
-    string header = $"Attacks of {attacker.Name}";
-    int maxAttackNameLength = attacker.AtackList.Max(a => a.Name.Length);
-    int maxTypeLength = attacker.AtackList.Max(a => a.Type.Length);
-    int maxEffectivenessLength = "Effectiveness (against opponent): ".Length;
-
-    // Calcular el ancho del cuadro (considera los datos más largos)
-    int boxWidth = Math.Max(header.Length, maxAttackNameLength + maxTypeLength + 30);
-    boxWidth = Math.Max(boxWidth, maxEffectivenessLength + 4); // Asegura que también incluya Effectiveness
-
-    // Crear bordes
-    string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
-    string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
-
-    // Mostrar encabezado
-    Console.Clear();
-    Console.WriteLine(topBorder);
-    Console.WriteLine($"║ {header.PadRight(boxWidth - 4)} ║");
-    Console.WriteLine(bottomBorder);
-
-    int i = 1;
-
-    // Iterar por cada ataque en la lista de ataques del atacante
-    foreach (IAttack attack in attacker.AtackList)
+    /// Show the attacks of each Pokémon, displaying if they are special, the damage they deal, and their effectiveness.
+    /// </summary>
+    /// <param name="attacker">The Pokémon whose attacks will be displayed.</param>
+    /// <param name="receiver">The Pokémon that will receive the attack.</param>
+    public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
     {
-        double effectiveness = Calculator.CheckEffectiveness(attack, receiver);
+        ArgumentNullException.ThrowIfNull(attacker);
 
-        // Construir líneas para mostrar la información del ataque
-        string attackInfo = $"Attack {i}: {attack.Name}";
-        string damageInfo = $"Damage: {attack.Damage}";
-        string typeInfo = $"Type: {attack.Type}";
-        string effectivenessInfo = $"Effectiveness (against opponent): {effectiveness:F1}";
+        // Obtener el texto más largo de la lista de ataques para calcular el ancho dinámico
+        string header = $"Attacks of {attacker.Name}";
+        int maxAttackNameLength = attacker.AtackList.Max(a => a.Name.Length);
+        int maxTypeLength = attacker.AtackList.Max(a => a.Type.Length);
+        int maxEffectivenessLength = "Effectiveness (against opponent): ".Length;
 
-        // Actualizar bordes dinámicos según el contenido más largo
-        boxWidth = Math.Max(boxWidth, Math.Max(attackInfo.Length, Math.Max(damageInfo.Length, Math.Max(typeInfo.Length, effectivenessInfo.Length))) + 4);
-        topBorder = $"╔{new string('═', boxWidth - 2)}╗";
-        bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        // Calcular el ancho del cuadro (considera los datos más largos)
+        int boxWidth = Math.Max(header.Length, maxAttackNameLength + maxTypeLength + 30);
+        boxWidth = Math.Max(boxWidth, maxEffectivenessLength + 4); // Asegura que también incluya Effectiveness
 
-        // Mostrar recuadro del ataque
+        // Crear bordes
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Mostrar encabezado
+        Console.Clear();
         Console.WriteLine(topBorder);
-        Console.WriteLine($"║ {attackInfo.PadRight(boxWidth - 4)} ║");
-        Console.WriteLine($"║ {damageInfo.PadRight(boxWidth - 4)} ║");
-        Console.WriteLine($"║ {typeInfo.PadRight(boxWidth - 4)} ║");
-        Console.WriteLine($"║ {effectivenessInfo.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {header.PadRight(boxWidth - 4)} ║");
         Console.WriteLine(bottomBorder);
 
-        i++;
-    }
+        int i = 1;
 
-    Console.WriteLine(); // Línea adicional para separar del siguiente contenido
-}
+        // Iterar por cada ataque en la lista de ataques del atacante
+        foreach (IAttack attack in attacker.AtackList)
+        {
+            double effectiveness = Calculator.CheckEffectiveness(attack, receiver);
+
+            // Construir líneas para mostrar la información del ataque
+            string attackInfo = $"Attack {i}: {attack.Name}";
+            string damageInfo = $"Damage: {attack.Damage}";
+            string typeInfo = $"Type: {attack.Type}";
+            string effectivenessInfo = $"Effectiveness (against opponent): {effectiveness:F1}";
+
+            // Actualizar bordes dinámicos según el contenido más largo
+            boxWidth = Math.Max(boxWidth,
+                Math.Max(attackInfo.Length,
+                    Math.Max(damageInfo.Length, Math.Max(typeInfo.Length, effectivenessInfo.Length))) + 4);
+            topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+            bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+            // Mostrar recuadro del ataque
+            Console.WriteLine(topBorder);
+            Console.WriteLine($"║ {attackInfo.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine($"║ {damageInfo.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine($"║ {typeInfo.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine($"║ {effectivenessInfo.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine(bottomBorder);
+
+            i++;
+        }
+
+        Console.WriteLine(); // Línea adicional para separar del siguiente contenido
+    }
 
 
 
@@ -410,7 +415,8 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         string line6 = "3. Switch Pokémon";
 
         // Calcula el ancho del cuadro basado en el texto más largo
-        int maxLength = Math.Max(Math.Max(line1.Length, line2.Length), Math.Max(line3.Length, Math.Max(line4.Length, Math.Max(line5.Length, line6.Length))));
+        int maxLength = Math.Max(Math.Max(line1.Length, line2.Length),
+            Math.Max(line3.Length, Math.Max(line4.Length, Math.Max(line5.Length, line6.Length))));
         int boxWidth = maxLength + 4; // Añade espacio para los bordes y una separación adicional.
 
         // Construcción del cuadro
@@ -421,7 +427,7 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         Console.WriteLine(topBorder);
 
         // Asegurando que el nombre del jugador esté correctamente alineado
-        Console.WriteLine($"║ {line1.PadRight(boxWidth - 2)} ║");  // Restamos 2 para los bordes
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 2)} ║"); // Restamos 2 para los bordes
         Console.WriteLine($"║ {line2.PadRight(boxWidth - 2)} ║");
         Console.WriteLine($"║ {line3.PadRight(boxWidth - 2)} ║");
         Console.WriteLine($"║ {line4.PadRight(boxWidth - 2)} ║");
@@ -446,11 +452,11 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         if (value == 0)
         {
             Console.WriteLine($"Attack {attack} was ineffective! X0 Damage!");
-        }        
+        }
         else if (value == 1)
         {
             Console.WriteLine($"Attack {attack} was used! x1 Damage!");
-        }        
+        }
         else if (value == 2)
         {
             Console.WriteLine($"Attack {attack} was effective! X2 Damage!");
@@ -460,7 +466,7 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
             Console.WriteLine($"Attack {attack} was slightly ineffective! X0.5 Damage!");
         }
     }
-    
+
     /// <summary>
     /// Shows the player that its Pokémon has been defeated and that it needs to change the current one.
     /// </summary>
@@ -599,4 +605,16 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
 
 
 
+
+
+    /// <summary>
+    /// This a method to print the list of items from each player, this make possible that
+    /// we can give this information to the player.
+    /// </summary>
+    /// <param name="items">List of items of the player.  </param>
+
+    
+
+
 }
+
