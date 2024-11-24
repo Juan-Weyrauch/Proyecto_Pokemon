@@ -46,96 +46,99 @@ namespace Library.Game.Attacks
         {
             var attacksByType = new Dictionary<string, List<IAttack>>()
 {
-    { "Plant", [
-            new Attack("Vine Whip", 10, 0, "Plant"),
-            new Attack("Solar Beam", 35, 0, "Plant"),
-            new Attack("Leaf Storm", 60, 0, "Plant")
-        ]
-    },
-    { "Water", [
-            new Attack("Water Gun", 10, 0, "Water"),
-            new Attack("Hydro Pump", 35, 0, "Water"),
-            new Attack("Aqua Tail", 60, 0, "Water")
-        ]
-    },
-    { "Bug", [
-            new Attack("Bug Bite", 10, 0, "Bug"),
-            new Attack("Signal Beam", 35, 3, "Bug"), // Paraliza
-            new Attack("X-Scissor", 60, 0, "Bug")
-        ]
-    },
-    { "Dragon", [
-            new Attack("Dragon Claw", 10, 0, "Dragon"),
-            new Attack("Dragon Tail", 35, 0, "Dragon"),
-            new Attack("Draco Meteor", 60, 0, "Dragon")
-        ]
-    },
-    { "Electric", [
-            new Attack("Thunder Shock", 10, 3, "Electric"), // Paraliza
-            new Attack("Spark", 35, 3, "Electric"), // Paraliza
-            new Attack("Thunderbolt", 60, 3, "Electric")
-        ]
-    },
-    { "Ghost", [
-            new Attack("Shadow Ball", 10, 0, "Ghost"),
-            new Attack("Night Shade", 35, 0, "Ghost"),
-            new Attack("Hex", 60, 0, "Ghost")
-        ]
-    },
-    { "Fire", [
-            new Attack("Ember", 10, 1, "Fire"), // Quema
-            new Attack("Flamethrower", 35, 1, "Fire"), // Quema
-            new Attack("Fire Blast", 60, 1, "Fire")
-        ]
-    },
-    { "Ice", [
-            new Attack("Ice Shard", 10, 0, "Ice"),
-            new Attack("Blizzard", 35, 0, "Ice"),
-            new Attack("Frost Breath", 60, 0, "Ice")
-        ]
-    },
-    { "Fight", [
-            new Attack("Karate Chop", 10, 0, "Fight"),
-            new Attack("Dynamic Punch", 35, 5, "Fight"), // Confunde
-            new Attack("Close Combat", 60, 0, "Fight")
-        ]
-    },
-    { "Normal", [
-            new Attack("Tackle", 10, 0, "Normal"),
-            new Attack("Body Slam", 35, 4, "Normal"), // Duerme
-            new Attack("Hyper Beam", 60, 0, "Normal")
-        ]
-    },
-    { "Psychic", [
-            new Attack("Psybeam", 10, 0, "Psychic"),
-            new Attack("Psychic", 35, 0, "Psychic"),
-            new Attack("Future Sight", 60, 0, "Psychic")
-        ]
-    },
-    { "Rock", [
-            new Attack("Rock Throw", 10, 0, "Rock"),
-            new Attack("Rock Slide", 35, 0, "Rock"),
-            new Attack("Stone Edge", 60, 0, "Rock")
-        ]
-    },
-    { "Earth", [
-            new Attack("Mud-Slap", 10, 0, "Earth"),
-            new Attack("Earthquake", 35, 0, "Earth"),
-            new Attack("Bulldoze", 60, 0, "Earth")
-        ]
-    },
-    { "Venom", [
-            new Attack("Poison Sting", 10, 2, "Venom"), // Envenena
-            new Attack("Sludge Bomb", 35, 2, "Venom"), // Envenena
-            new Attack("Venom Shock", 60, 2, "Venom")
-        ]
-    },
-    { "Flying", [
-            new Attack("Wing Attack", 10, 0, "Flying"),
-            new Attack("Aerial Ace", 35, 0, "Flying"),
-            new Attack("Sky Attack", 60, 0, "Flying")
-        ]
-    }
+   { "Plant", [
+        new Attack("Vine Whip", 50, 0, "Plant"),
+        new Attack("Solar Beam", 60, 0, "Plant"),
+        new Attack("Leaf Storm", 65, 0, "Plant")
+    ]
+},
+{ "Water", [
+        new Attack("Water Gun", 50, 0, "Water"),
+        new Attack("Hydro Pump", 60, 0, "Water"),
+        new Attack("Aqua Tail", 65, 0, "Water")
+    ]
+},
+{ "Bug", [
+        new Attack("Bug Bite", 50, 0, "Bug"),
+        new Attack("Signal Beam", 60, 3, "Bug"), // Paraliza
+        new Attack("X-Scissor", 65, 0, "Bug")
+    ]
+},
+{ "Dragon", [
+        new Attack("Dragon Claw", 50, 0, "Dragon"),
+        new Attack("Dragon Tail", 60, 0, "Dragon"),
+        new Attack("Draco Meteor", 65, 0, "Dragon")
+    ]
+},
+{ "Electric", [
+        new Attack("Thunder Shock", 50, 3, "Electric"), // Paraliza
+        new Attack("Spark", 60, 3, "Electric"), // Paraliza
+        new Attack("Thunderbolt", 65, 3, "Electric")
+    ]
+},
+{ "Ghost", [
+        new Attack("Shadow Ball", 50, 0, "Ghost"),
+        new Attack("Night Shade", 60, 0, "Ghost"),
+        new Attack("Hex", 65, 0, "Ghost")
+    ]
+},
+{ "Fire", [
+        new Attack("Ember", 50, 1, "Fire"), // Quema
+        new Attack("Flamethrower", 60, 1, "Fire"), // Quema
+        new Attack("Fire Blast", 65, 1, "Fire")
+    ]
+},
+{ "Ice", [
+        new Attack("Ice Shard", 50, 0, "Ice"),
+        new Attack("Blizzard", 60, 0, "Ice"),
+        new Attack("Frost Breath", 65, 0, "Ice")
+    ]
+},
+{ "Fight", [
+        new Attack("Karate Chop", 50, 0, "Fight"),
+        new Attack("Dynamic Punch", 60, 5, "Fight"), // Confunde
+        new Attack("Close Combat", 65, 0, "Fight")
+    ]
+},
+{ "Normal", [
+        new Attack("Tackle", 50, 0, "Normal"),
+        new Attack("Body Slam", 60, 4, "Normal"), // Duerme
+        new Attack("Hyper Beam", 65, 0, "Normal")
+    ]
+},
+{ "Psychic", [
+        new Attack("Psybeam", 50, 0, "Psychic"),
+        new Attack("Psychic", 60, 0, "Psychic"),
+        new Attack("Future Sight", 65, 0, "Psychic")
+    ]
+},
+{ "Rock", [
+        new Attack("Rock Throw", 50, 0, "Rock"),
+        new Attack("Rock Slide", 60, 0, "Rock"),
+        new Attack("Stone Edge", 65, 0, "Rock")
+    ]
+},
+{ "Earth", [
+        new Attack("Mud-Slap", 50, 0, "Earth"),
+        new Attack("Earthquake", 60, 0, "Earth"),
+        new Attack("Bulldoze", 65, 0, "Earth")
+    ]
+},
+{ "Venom", [
+        new Attack("Poison Sting", 50, 2, "Venom"), // Envenena
+        new Attack("Sludge Bomb", 60, 2, "Venom"), // Envenena
+        new Attack("Venom Shock", 65, 2, "Venom")
+    ]
+},
+{ "Flying", [
+        new Attack("Wing Attack", 50, 0, "Flying"),
+        new Attack("Aerial Ace", 60, 0, "Flying"),
+        new Attack("Sky Attack", 65, 0, "Flying")
+    ]
+}
+
+        
+
 };
 
 
