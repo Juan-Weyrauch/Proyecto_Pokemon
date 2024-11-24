@@ -35,7 +35,7 @@ public interface IPokemon
     /// <summary>
     /// Sets the state of the Pokémon.
     /// </summary>
-    public int State { get; set; }
+    public Estado State { get; set; }
 
     
     
