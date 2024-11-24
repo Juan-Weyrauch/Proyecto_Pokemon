@@ -42,15 +42,61 @@ public static class Printer
     }
 
     /// <summary>
-    /// Recieves the winners name a displays a box indicating the winner.
+    /// Recieves the winner's name and displays a dynamically sized box indicating the winner.
     /// </summary>
-    /// <param name="winner"></param>
+    /// <param name="winner">The name of the winner.</param>
     public static void DisplayWinner(string winner)
     {
         Console.Clear();
-        Console.WriteLine( "╔══════════════════════════════════╗");
-        Console.WriteLine($"║    The winner is {winner}!!\t║");
-        Console.WriteLine( "╚══════════════════════════════════╝");
+
+        // Construir el mensaje
+        string message = $"The winner is {winner}!!";
+
+        // Calcular el ancho del cuadro basado en la longitud del mensaje
+        int boxWidth = message.Length + 4; // Añadir espacio para bordes y padding
+
+        // Crear las líneas del cuadro
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        string centeredMessage = $"║ {message.PadRight(boxWidth - 4)} ║";
+
+        // Imprimir el cuadro
+        Console.WriteLine(topBorder);
+        Console.WriteLine(centeredMessage);
+        Console.WriteLine(bottomBorder);
+    }
+    /// <summary>
+    /// Displays a summary of an attack, including the attacker, the attack used, the damage dealt, 
+    /// and the remaining health of the Pokémon that received the attack.
+    /// </summary>
+    /// <param name="attacker">The Pokémon that performed the attack.</param>
+    /// <param name="attack">The attack used by the attacker.</param>
+    /// <param name="receiver">The Pokémon that received the attack.</param>
+    /// <param name="damage">The damage dealt to the receiver.</param>
+    public static void AttackSummary(IPokemon attacker, IAttack attack, IPokemon receiver, int damage)
+    {
+        ArgumentNullException.ThrowIfNull(attacker);
+        ArgumentNullException.ThrowIfNull(attack);
+        ArgumentNullException.ThrowIfNull(receiver);
+
+        // Construir las líneas del mensaje
+        string line1 = $"{attacker.Name} used {attack.Name}!";
+        string line2 = $"It dealt {damage} damage.";
+        string line3 = $"{receiver.Name} has {receiver.Health} HP remaining.";
+
+        // Calcular el ancho del cuadro basado en el texto más largo
+        int boxWidth = Math.Max(line1.Length, Math.Max(line2.Length, line3.Length)) + 4; // Espacio para bordes y padding
+
+        // Crear bordes del cuadro
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Mostrar el cuadro con los detalles del ataque
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
     }
 
     /// <summary>
@@ -280,37 +326,66 @@ public static class Printer
 
 
     /// <summary>
-    /// Show the attacks of each Pokémon, displaying if they are special, the damage they deal, and their effectiveness.
-    /// </summary>
-    /// <param name="attacker">The Pokémon whose attacks will be displayed.</param>
-    /// <param name="receiver">The Pokémon that will receive the attack.</param>
-    public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
+/// Show the attacks of each Pokémon, displaying if they are special, the damage they deal, and their effectiveness.
+/// </summary>
+/// <param name="attacker">The Pokémon whose attacks will be displayed.</param>
+/// <param name="receiver">The Pokémon that will receive the attack.</param>
+public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
+{
+    ArgumentNullException.ThrowIfNull(attacker);
+
+    // Obtener el texto más largo de la lista de ataques para calcular el ancho dinámico
+    string header = $"Attacks of {attacker.Name}";
+    int maxAttackNameLength = attacker.AtackList.Max(a => a.Name.Length);
+    int maxTypeLength = attacker.AtackList.Max(a => a.Type.Length);
+    int maxEffectivenessLength = "Effectiveness (against opponent): ".Length;
+
+    // Calcular el ancho del cuadro (considera los datos más largos)
+    int boxWidth = Math.Max(header.Length, maxAttackNameLength + maxTypeLength + 30);
+    boxWidth = Math.Max(boxWidth, maxEffectivenessLength + 4); // Asegura que también incluya Effectiveness
+
+    // Crear bordes
+    string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+    string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+    // Mostrar encabezado
+    Console.Clear();
+    Console.WriteLine(topBorder);
+    Console.WriteLine($"║ {header.PadRight(boxWidth - 4)} ║");
+    Console.WriteLine(bottomBorder);
+
+    int i = 1;
+
+    // Iterar por cada ataque en la lista de ataques del atacante
+    foreach (IAttack attack in attacker.AtackList)
     {
-        ArgumentNullException.ThrowIfNull(attacker);
-        // Display header box for the Pokémon's attacks
-        Console.WriteLine("╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║     Attacks of {attacker.Name,-20}\t║");
-        Console.WriteLine("╚═══════════════════════════════════════╝");
+        double effectiveness = Calculator.CheckEffectiveness(attack, receiver);
 
-        int i = 1;
-        // Iterate through each attack in the Pokémon's attack list
-        foreach (IAttack attack in attacker.AtackList)
-        {
-            double special = Calculator.CheckEffectiveness(attack, receiver);
-            
-            // Display each attack's details in a box format.
-            Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine($"║  Attack {i, -29} ║");
-            Console.WriteLine($"║  Name: {attack.Name,-31}║");
-            Console.WriteLine($"║  Damage: {attack.Damage,-29}║");
-            Console.WriteLine($"║  Type: {attack.Type,-31}║");
-            Console.WriteLine($"║  Effectiveness (against opponent): {special,-3}║");
-            Console.WriteLine("╚═══════════════════════════════════════╝");
-            i++;
-        }
+        // Construir líneas para mostrar la información del ataque
+        string attackInfo = $"Attack {i}: {attack.Name}";
+        string damageInfo = $"Damage: {attack.Damage}";
+        string typeInfo = $"Type: {attack.Type}";
+        string effectivenessInfo = $"Effectiveness (against opponent): {effectiveness:F1}";
 
-        Console.WriteLine(); // Extra line for spacing
+        // Actualizar bordes dinámicos según el contenido más largo
+        boxWidth = Math.Max(boxWidth, Math.Max(attackInfo.Length, Math.Max(damageInfo.Length, Math.Max(typeInfo.Length, effectivenessInfo.Length))) + 4);
+        topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Mostrar recuadro del ataque
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {attackInfo.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {damageInfo.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {typeInfo.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {effectivenessInfo.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+
+        i++;
     }
+
+    Console.WriteLine(); // Línea adicional para separar del siguiente contenido
+}
+
 
 
     /// <summary>
@@ -387,56 +462,94 @@ public static class Printer
     }
     
     /// <summary>
-    /// Shows the player that it's Pokémon has been defeated and that it needs to change the current one.
+    /// Shows the player that its Pokémon has been defeated and that it needs to change the current one.
     /// </summary>
-    /// <param name="player"></param>
+    /// <param name="player">The player whose Pokémon has been defeated.</param>
     public static void ForceSwitchMessage(IPlayer player)
     {
         ArgumentNullException.ThrowIfNull(player);
 
         IPokemon pokemon = player.SelectedPokemon;
-        // Display message that current Pokémon has been defeated:
-        Console.WriteLine("╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║     {player.Name} your pokemon {pokemon.Name, -10} Has been defeated!\t║");
-        Console.WriteLine($"║     Please pick another one from your list! \t║");
-        Console.WriteLine("╚═══════════════════════════════════════╝");
+
+        // Construir las líneas del mensaje
+        string line1 = $"{player.Name}, your Pokémon {pokemon.Name} has been defeated!";
+        string line2 = "Please pick another one from your list!";
+
+        // Calcular el ancho del cuadro basado en el texto más largo
+        int boxWidth = Math.Max(line1.Length, line2.Length) + 4; // Espacio para bordes y padding
+
+        // Crear bordes del cuadro
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Mostrar el cuadro con el mensaje
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
     }
 
 
+
     /// <summary>
-    /// Asks the player for confirmation.
+    /// Asks the player for confirmation to change their Pokémon.
     /// </summary>
-    /// <param name="player"></param>
+    /// <param name="player">The player being asked.</param>
     public static void SwitchQuestion(IPlayer player)
-    { 
+    {
         ArgumentNullException.ThrowIfNull(player);
-        
-        //Lets us ask player if it wants to change the Pokémon or cancel the action.
+
+        // Construir las líneas del mensaje
         IPokemon pokemon = player.SelectedPokemon;
-        Console.WriteLine("╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║     {player.Name} want to change your pokemon {pokemon.Name}\t║");
-        Console.WriteLine($"║     1) Yes 2) No \t║");
-        Console.WriteLine("╚═══════════════════════════════════════╝");
+        string line1 = $"{player.Name}, do you want to change your Pokémon {pokemon.Name}?";
+        string line2 = "1) Yes   2) No";
+
+        // Calcular el ancho del cuadro basado en el texto más largo
+        int boxWidth = Math.Max(line1.Length, line2.Length) + 4; // Espacio para bordes y padding
+
+        // Crear bordes del cuadro
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Mostrar el cuadro con el mensaje
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
     }
+
     /// <summary>
-    /// Asks the player for confirmation.
+    /// Asks the player for confirmation after switching Pokémon.
     /// </summary>
-    /// <param name="player"></param>
-    /// <param name="option"></param>
+    /// <param name="player">The player whose Pokémon has been switched.</param>
+    /// <param name="option">The confirmation option (e.g., 0 for success).</param>
     public static void SwitchConfirmation(IPlayer player, int option)
     {
         ArgumentNullException.ThrowIfNull(player);
-        
+
         if (option == 0)
         {
             IPokemon pokemon = player.SelectedPokemon;
-            // Display message that shows that you are about to change the :
-            Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine($"║     {player.Name} your selected pokemon  Has been changed!\t║");
-            Console.WriteLine($"║     now is {pokemon.Name,-10} \t                            ║");
-            Console.WriteLine("╚═══════════════════════════════════════╝");
+
+            // Construir las líneas del mensaje
+            string line1 = $"{player.Name}, your selected Pokémon has been changed!";
+            string line2 = $"Now it is {pokemon.Name}.";
+
+            // Calcular el ancho del cuadro basado en el texto más largo
+            int boxWidth = Math.Max(line1.Length, line2.Length) + 4; // Espacio para bordes y padding
+
+            // Crear bordes del cuadro
+            string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+            string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+            // Mostrar el cuadro con el mensaje
+            Console.WriteLine(topBorder);
+            Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine(bottomBorder);
         }
     }
+
     /// <summary>
     /// Lets the player see that the action has been canceled.
     /// </summary>
