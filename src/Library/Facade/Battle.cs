@@ -131,7 +131,7 @@ namespace Library.Facade
 
             // Calcular si el ataque es crítico
             bool isCritical = attack.IsCritical();
-            int damage = isCritical ? (int)(attack.Damage * 1.5) : attack.Damage;
+            int damage = isCritical ? (int)(attack.Damage * 1.2) : attack.Damage;
 
             if (isCritical)
             {

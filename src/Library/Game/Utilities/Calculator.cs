@@ -204,11 +204,15 @@ public static class Calculator
     // ================================== DO DAMAGE / INFRINGE DAMAGE SECTION ==================================
 
     /// <summary>
-    /// This class is responsible for:
-    ///     1) Determining the effectiveness of the attack used.
+    /// Aplica daño a un Pokémon receptor basado en un ataque.
+    /// Calcula la efectividad del ataque y ajusta el daño en consecuencia.
     /// </summary>
-    /// <param name="attack"></param>
-    /// <param name="rival"></param>
+    /// <param name="attack">El ataque utilizado.</param>
+    /// <param name="receiver">El Pokémon que recibe el daño.</param>
+    /// <param name="damageOverride">
+    /// Daño personalizado a aplicar. Si se omite, se calcula el daño
+    /// basado en la efectividad del ataque.
+    /// </param>
     public static void InfringeDamage(IAttack attack, IPokemon receiver, int damageOverride = -1)
     {
         // Primero, verificamos la efectividad del ataque
