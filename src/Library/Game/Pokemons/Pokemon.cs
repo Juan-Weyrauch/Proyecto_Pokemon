@@ -82,6 +82,14 @@ public class Pokemon : IPokemon
         return new Pokemon(this.Name, this.Defense, this.Type, this.AtackList);
     }
 
-
+    /// <summary>
+    /// Disminuye la salud del Pokémon por la cantidad de daño recibido.
+    /// Si la salud se vuelve negativa, se ajusta a 0.
+    /// </summary>
+    public void DecreaseHealth(int damage)
+    {
+        Health -= damage;
+        if (Health < 0) Health = 0; // Asegurarse de que la salud no sea negativa.
+    }
 
 }

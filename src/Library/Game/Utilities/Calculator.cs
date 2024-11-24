@@ -209,21 +209,23 @@ public static class Calculator
     /// </summary>
     /// <param name="attack"></param>
     /// <param name="rival"></param>
-    public static void InfringeDamage(IAttack attack, IPokemon rival)
+    public static void InfringeDamage(IAttack attack, IPokemon receiver, int damageOverride = -1)
     {
-        //We've got the attack and the rival Pokémon, now we check for effectiveness (yes, again, the first one was for display of the Attacks)
-        double effectiveness = CheckEffectiveness(attack, rival);
-        int damage = (int)(attack.Damage * effectiveness); // By Typecasting the variable,
+        // Primero, verificamos la efectividad del ataque
+        double effectiveness = CheckEffectiveness(attack, receiver);
+        int damage = damageOverride == -1 ? (int)(attack.Damage * effectiveness) : damageOverride;
 
-        // we ensure we don't get a double.
+        // Aplicamos el daño al receptor
+        receiver.DecreaseHealth(damage);
 
+        // Mostramos el mensaje de daño recibido
+        Console.WriteLine($"{receiver.Name} recibió {damage} puntos de daño.");
 
-        DoDamage(damage, rival);
-
-        // Display the effectiveness to the user
+        // Mostramos la efectividad del ataque
         Printer.Effectiveness((int)effectiveness, attack);
-
     }
+
+
 
     /// <summary>
     /// This method calculates the damage and applies it to the rival's Pokémon.

@@ -71,50 +71,47 @@
             Starts the program and asks the player for the initial input
             </summary>
         </member>
-        <member name="T:Library.Game.Attacks.Attack">
-            <summary>
-            These are the attacks.
-            </summary>
-            <remarks>
-            Primary constructor.
-            </remarks>
-            <param name="name"></param>
-            <param name="damage"></param>
-            <param name="special"></param>
-            <param name="type"></param>
-        </member>
-        <member name="M:Library.Game.Attacks.Attack.#ctor(System.String,System.Int32,System.Int32,System.String)">
-            <summary>
-            These are the attacks.
-            </summary>
-            <remarks>
-            Primary constructor.
-            </remarks>
-            <param name="name"></param>
-            <param name="damage"></param>
-            <param name="special"></param>
-            <param name="type"></param>
-        </member>
         <member name="P:Library.Game.Attacks.Attack.Name">
             <summary>
-            Name of the attack.
+            Obtiene o establece el nombre del ataque.
             </summary>
         </member>
         <member name="P:Library.Game.Attacks.Attack.Damage">
             <summary>
-            Damage to the attack.
+            Obtiene o establece el daño base que causa el ataque.
             </summary>
         </member>
-        <member name="P:Library.Game.Attacks.Attack.Special">
+        <member name="P:Library.Game.Attacks.Attack.State">
             <summary>
-            Check if the attack is special or not.
+            Obtiene o establece el estado que puede infligir el ataque al objetivo.
             </summary>
         </member>
         <member name="P:Library.Game.Attacks.Attack.Type">
             <summary>
-            Sets the type of the attack.
-            We use this to check for effectiveness against other Pokémon types.
+            Obtiene o establece el tipo elemental del ataque (por ejemplo, Fuego, Agua, etc.).
             </summary>
+        </member>
+        <member name="P:Library.Game.Attacks.Attack.Special">
+            <summary>
+            Check if the attack is special or not
+            </summary>
+        </member>
+        <member name="P:Library.Game.Attacks.Attack.Accuracy">
+            <summary>
+            Obtiene o establece la precisión del ataque, representada como un porcentaje de éxito (0-100).
+            </summary>
+        </member>
+        <member name="M:Library.Game.Attacks.Attack.#ctor(System.String,System.Int32,System.Int32,System.String,System.Int32)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Library.Game.Attacks.Attack"/> con los valores especificados.
+            </summary>
+        </member>
+        <member name="M:Library.Game.Attacks.Attack.IsCritical">
+            <summary>
+            Calcula si el ataque es crítico.
+            Un ataque es crítico con una probabilidad de 10%.
+            </summary>
+            <returns>True si el ataque es crítico, de lo contrario False.</returns>
         </member>
         <member name="T:Library.Game.Attacks.AttackGenerator">
             <summary>
@@ -152,6 +149,18 @@
             <summary>
             Sets the type of the attack.
             We use this to check for effectiveness against other Pokémon types.
+            </summary>
+        </member>
+        <member name="M:Library.Game.Attacks.IAttack.IsCritical">
+            <summary>
+            Determina si el ataque es crítico.
+            Un ataque es crítico con una probabilidad de 10%.
+            </summary>
+        </member>
+        <member name="P:Library.Game.Attacks.IAttack.Accuracy">
+            <summary>
+            Obtiene o establece la precisión del ataque.
+            Representa el porcentaje de acierto del ataque (0-100).
             </summary>
         </member>
         <member name="T:Library.Game.Items.Item">
@@ -434,6 +443,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Library.Game.Pokemons.IPokemon.DecreaseHealth(System.Int32)">
+            <summary>
+            Método para reducir la salud del Pokémon.
+            </summary>
+        </member>
         <member name="T:Library.Game.Pokemons.Pokemon">
             <summary>
             Pokémon class.
@@ -496,6 +510,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Library.Game.Pokemons.Pokemon.DecreaseHealth(System.Int32)">
+            <summary>
+            Disminuye la salud del Pokémon por la cantidad de daño recibido.
+            Si la salud se vuelve negativa, se ajusta a 0.
+            </summary>
+        </member>
         <member name="T:Library.Game.Utilities.Calculator">
             <summary>
             This class has the responsibilities of making calculations, these being:
@@ -544,7 +564,7 @@
             <param name="player"></param>
             <returns>True if the player has Pokémon, False if not</returns>
         </member>
-        <member name="M:Library.Game.Utilities.Calculator.InfringeDamage(Library.Game.Attacks.IAttack,Library.Game.Pokemons.IPokemon)">
+        <member name="M:Library.Game.Utilities.Calculator.InfringeDamage(Library.Game.Attacks.IAttack,Library.Game.Pokemons.IPokemon,System.Int32)">
             <summary>
             This class is responsible for:
                 1) Determining the effectiveness of the attack used.
