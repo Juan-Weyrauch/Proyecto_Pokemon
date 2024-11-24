@@ -126,6 +126,7 @@ namespace Library.Facade
             if (random.Next(1, 101) > attack.Accuracy)
             {
                 Console.WriteLine($"{attacker.Name} falló el ataque {attack.Name}.");
+                Console.ReadLine();
                 return; // Salir si falla
             }
 
@@ -136,6 +137,7 @@ namespace Library.Facade
             if (isCritical)
             {
                 Console.WriteLine($"¡Golpe crítico! {attacker.Name} infligió daño extra.");
+                Console.ReadLine();
             }
 
             // Aplicar daño al Pokémon rival
