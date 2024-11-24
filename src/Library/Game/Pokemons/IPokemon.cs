@@ -52,6 +52,7 @@ namespace Library.Game.Pokemons
         /// <returns>The attack at the specified index.</returns>
         IAttack GetAttack(int index);
 
+        public void CambiarEstado(Estado nuevoEstado);
         /// <summary>
         /// Clones the Pokémon so that there can exist multiple instances of the same.
         /// </summary>

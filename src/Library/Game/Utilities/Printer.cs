@@ -447,6 +447,27 @@ public static class Printer
         Console.ReadKey();
         Console.Clear();
     }
+    public static void ImprimirCambioEstado(string nombrePokemon, int estado)
+    {
+        switch (estado)
+        {   
+            case 0:
+                Console.WriteLine($"{nombrePokemon} ha cambiado su estado a normal.");
+                break;
+            case 1:
+                Console.WriteLine($"{nombrePokemon} está quemado y recibe daño residual.");
+                break;
+            case 2:
+                Console.WriteLine($"{nombrePokemon} está envenenado y recibe daño residual.");
+                break;
+            case 3:
+                Console.WriteLine($"{nombrePokemon} está paralizado y no puede atacar.");
+                break;
+            case 4:
+                Console.WriteLine($"{nombrePokemon} está dormido y pierde el turno.");
+                break;
+        }
+    }
 
     /// <summary>
     /// This a method to print the list of items from each player, this make possible that

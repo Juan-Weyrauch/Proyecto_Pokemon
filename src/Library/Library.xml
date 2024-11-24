@@ -4,60 +4,6 @@
         <name>Library</name>
     </assembly>
     <members>
-        <member name="T:Library.Facade.Battle">
-            <summary>
-            Static class responsible for managing the battle between two players.
-            It includes turn selection, displaying the current player's options, 
-            and delegating actions to the appropriate methods.
-            
-            You’re not re-creating the values; you’re simply accessing them as part of Battle.StartBattle. 
-            When you pass player1 and player2 to Battle, you’re passing the references to these Player objects. 
-            This means that Battle is using the same player instances created in Facade—it’s not making new copies of them.
-            </summary>
-        </member>
-        <member name="M:Library.Facade.Battle.StartBattle">
-            <summary>
-            Starts the battle by selecting the turn order and guiding each player's actions.
-            </summary>
-        </member>
-        <member name="M:Library.Facade.Battle.PlayerAction(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
-            <summary>
-            Handles the selected action for the current player's turn.
-            </summary>
-            <param name="player">The current player whose turn is being handled.</param>
-            <param name="rival">The opposing player in the battle.</param>
-        </member>
-        <member name="M:Library.Facade.Battle.AttackList(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
-            <summary>
-            This method is responsible for:
-            1) Showing the available attacks to the player.
-            2) Calling the damage Calculator and storing that int.
-            3) Inflicting damage to the opponent's selected Pokémon.
-            </summary>
-            <param name="player">The player performing the attack.</param>
-            <param name="rival">The opposing player who is receiving the attack.</param>
-        </member>
-        <member name="M:Library.Facade.Battle.VoluntarySwitchPokemon(Library.Game.Players.IPlayer)">
-            <summary>
-            Method that allows the player to voluntarily change their selected Pokémon during their turn.
-            </summary>
-            <param name="player">The player attempting to switch their Pokémon.</param>
-            <returns>Returns a boolean indicating whether the Pokémon was successfully switched.</returns>
-        </member>
-        <member name="M:Library.Facade.Battle.ForceSwitchPokemon(Library.Game.Players.IPlayer)">
-            <summary>
-            Method that allows the player to change their Pokémon, forced by the defeat of the current Pokémon.
-            </summary>
-            <param name="player">The player who needs to switch their defeated Pokémon.</param>
-        </member>
-        <member name="M:Library.Facade.Battle.UseItemAux(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
-            <summary>
-            Method that allows the player to use an item during their turn. 
-            Depending on the item, the player may use it on a Pokémon from their team or the cemetery.
-            </summary>
-            <param name="player">The player using the item.</param>
-            <param name="rival">The opposing player in the battle.</param>
-        </member>
         <member name="T:Library.Facade.Facade">
             <summary>
             Responsable for:
@@ -71,7 +17,7 @@
             Starts the program and asks the player for the initial input
             </summary>
         </member>
-        <member name="T:Library.Game.Attacks.AttackList">
+        <member name="T:Library.Game.Attacks.Attack">
             <summary>
             These are the attacks.
             </summary>
@@ -83,7 +29,7 @@
             <param name="special"></param>
             <param name="type"></param>
         </member>
-        <member name="M:Library.Game.Attacks.AttackList.#ctor(System.String,System.Int32,System.Int32,System.String)">
+        <member name="M:Library.Game.Attacks.Attack.#ctor(System.String,System.Int32,System.Int32,System.String)">
             <summary>
             These are the attacks.
             </summary>
@@ -95,22 +41,22 @@
             <param name="special"></param>
             <param name="type"></param>
         </member>
-        <member name="P:Library.Game.Attacks.AttackList.Name">
+        <member name="P:Library.Game.Attacks.Attack.Name">
             <summary>
             Name of the attack.
             </summary>
         </member>
-        <member name="P:Library.Game.Attacks.AttackList.Damage">
+        <member name="P:Library.Game.Attacks.Attack.Damage">
             <summary>
             Damage to the attack.
             </summary>
         </member>
-        <member name="P:Library.Game.Attacks.AttackList.Special">
+        <member name="P:Library.Game.Attacks.Attack.Special">
             <summary>
             Check if the attack is special or not.
             </summary>
         </member>
-        <member name="P:Library.Game.Attacks.AttackList.Type">
+        <member name="P:Library.Game.Attacks.Attack.Type">
             <summary>
             Sets the type of the attack.
             We use this to check for effectiveness against other Pokémon types.
@@ -383,7 +329,7 @@
         </member>
         <member name="T:Library.Game.Pokemons.IPokemon">
             <summary>
-            Interface for Pokémon 
+            Interface for Pokémon.
             </summary>
         </member>
         <member name="P:Library.Game.Pokemons.IPokemon.Name">
@@ -416,7 +362,7 @@
             Sets the state of the Pokémon.
             </summary>
         </member>
-        <member name="P:Library.Game.Pokemons.IPokemon.AtackList">
+        <member name="P:Library.Game.Pokemons.IPokemon.AttackList">
             <summary>
             A list of all the attacks that the Pokémon has.
             </summary>
@@ -425,76 +371,103 @@
             <summary>
             Returns the attack depending on the index inputted.
             </summary>
-            <param name="index"></param>
-            <returns></returns>
+            <param name="index">The index of the attack in the list.</param>
+            <returns>The attack at the specified index.</returns>
         </member>
-        <member name="M:Library.Game.Pokemons.IPokemon.Clone">
+        <member name="M:Library.Game.Pokemons.IPokemon.DecreaseHealth(System.Int32)">
             <summary>
-            Clones the attack so that there can exist multiple instances of the same.
+            Clones the Pokémon so that there can exist multiple instances of the same.
             </summary>
-            <returns></returns>
         </member>
         <member name="T:Library.Game.Pokemons.Pokemon">
             <summary>
-            Pokémon class.
+            Represents a Pokémon with various attributes like health, defense, type, status, and attacks.
             </summary>
         </member>
         <member name="P:Library.Game.Pokemons.Pokemon.Name">
             <summary>
-            Name for Pokémon
+            Gets or sets the name of the Pokémon.
             </summary>
         </member>
         <member name="P:Library.Game.Pokemons.Pokemon.Health">
             <summary>
-            Health of the Pokémon
+            Gets or sets the health of the Pokémon.
             </summary>
         </member>
         <member name="P:Library.Game.Pokemons.Pokemon.Defense">
             <summary>
-            The Pokémon must have a defense status
+            Gets or sets the defense value of the Pokémon.
             </summary>
         </member>
         <member name="P:Library.Game.Pokemons.Pokemon.Type">
             <summary>
-            Sets the type of the Pokémon
+            Gets or sets the type of the Pokémon (e.g., Fire, Water).
             </summary>
         </member>
         <member name="P:Library.Game.Pokemons.Pokemon.State">
             <summary>
-            Sets the state of the Pokémon (1,2,3,4).
+            Gets or sets the state of the Pokémon (e.g., Normal, Burned, Poisoned, etc.).
             </summary>
         </member>
-        <member name="P:Library.Game.Pokemons.Pokemon.AtackList">
+        <member name="P:Library.Game.Pokemons.Pokemon.TurnosDormido">
             <summary>
-            A list of all the attacks that the Pokémon has 
+            Gets or sets the number of turns the Pokémon remains asleep.
+            </summary>
+        </member>
+        <member name="P:Library.Game.Pokemons.Pokemon.AttackList">
+            <summary>
+            Gets the list of all the attacks that the Pokémon has.
+            </summary>
+        </member>
+        <member name="P:Library.Game.Pokemons.Pokemon.InitialHealth">
+            <summary>
+            Gets or sets the initial health of the Pokémon.
+            </summary>
+        </member>
+        <member name="P:Library.Game.Pokemons.Pokemon.EnBatalla">
+            <summary>
+            Gets or sets a value indicating whether the Pokémon is currently in battle.
             </summary>
         </member>
         <member name="M:Library.Game.Pokemons.Pokemon.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.List{Library.Game.Attacks.IAttack})">
             <summary>
-            Constructor for the class Pokémon.
+            Initializes a new instance of the Pokémon class with the given attributes.
             </summary>
-            <param name="name"></param>
-            <param name="defense"></param>
-            <param name="type"></param>
-            <param name="atacks"></param>
-        </member>
-        <member name="M:Library.Game.Pokemons.Pokemon.GetAttack(System.Int32)">
-            <summary>
-            Returns the attack selected by the player
-            </summary>
-            <param name="index"></param>
-            <returns></returns>
-        </member>
-        <member name="P:Library.Game.Pokemons.Pokemon.InitialHealth">
-            <summary>
-            Initial health of the Pokémon.
-            </summary>
+            <param name="name">The name of the Pokémon.</param>
+            <param name="defense">The defense value of the Pokémon.</param>
+            <param name="type">The type of the Pokémon.</param>
+            <param name="attack">The list of attacks that the Pokémon has.</param>
         </member>
         <member name="M:Library.Game.Pokemons.Pokemon.Clone">
             <summary>
-            Clones the Pokémon so that there can be  multiple instances of the same.
+            Creates a deep clone of the Pokémon, including cloned attacks.
             </summary>
-            <returns></returns>
+            <returns>A new instance of the <see cref="T:Library.Game.Pokemons.IPokemon"/> with the same properties as the original.</returns>
+        </member>
+        <member name="M:Library.Game.Pokemons.Pokemon.GetAttack(System.Int32)">
+            <summary>
+            Returns the attack at the specified index from the Pokémon's attack list.
+            </summary>
+            <param name="index">The index of the attack in the list.</param>
+            <returns>The <see cref="T:Library.Game.Attacks.IAttack"/> at the specified index.</returns>
+        </member>
+        <member name="M:Library.Game.Pokemons.Pokemon.DecreaseHealth(System.Int32)">
+            <summary>
+            Decreases the Pokémon's health by the specified amount after calculation.
+            If the health drops below 0, it is set to 0.
+            </summary>
+            <param name="valueAfterCalculation">The amount by which to decrease the health.</param>
+        </member>
+        <member name="M:Library.Game.Pokemons.Pokemon.CambiarEstado(Library.Game.Pokemons.Estado)">
+            <summary>
+            Changes the Pokémon's state to the specified new state.
+            </summary>
+            <param name="nuevoEstado">The new state to apply to the Pokémon.</param>
+        </member>
+        <member name="T:Library.Game.Pokemons.Estado">
+            <summary>
+            Enum representing different states of a Pokémon.
+            </summary>
         </member>
         <member name="T:Library.Game.Utilities.Calculator">
             <summary>
