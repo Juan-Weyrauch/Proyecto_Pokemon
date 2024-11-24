@@ -30,4 +30,5 @@ public interface IAttack
     /// We use this to check for effectiveness against other Pokémon types.
     /// </summary>
     string Type { get; set; }
+    public IAttack Clone();
 }

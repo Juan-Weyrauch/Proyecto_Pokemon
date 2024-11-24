@@ -32,4 +32,9 @@ public class Attack(string name, int damage, int special, string type) : IAttack
     /// We use this to check for effectiveness against other Pokémon types.
     /// </summary>
     public string Type { get; set; } = type;
+    // We use this to clone attack and returns, this is the clone system.
+    public IAttack Clone()
+    {
+        return new Attack(Name, Damage, Special, Type);
+    }
 }
