@@ -1,3 +1,4 @@
+using Library.Game.Players;
 using Library.Game.Pokemons;
 
 namespace Library.Game.Items;
@@ -27,5 +28,5 @@ public abstract class Item
     /// Aplica el efecto del objeto en el Pokémon especificado.
     /// </summary>
     /// <param name="pokemon">El Pokémon en el que se usará el objeto.</param>
-    public abstract void Use(IPokemon pokemon);
+    public abstract void Use(IPlayer jugador, int index);
 }
