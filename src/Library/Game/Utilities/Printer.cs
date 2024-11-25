@@ -42,28 +42,61 @@ public static class Printer
     }
 
     /// <summary>
-    /// Recieves the winners name a displays a box indicating the winner.
+    /// Recieves the winner's name and displays a box indicating the winner.
     /// </summary>
-    /// <param name="winner"></param>
+    /// <param name="winner">Name of the winner.</param>
     public static void DisplayWinner(string winner)
     {
         Console.Clear();
-        Console.WriteLine( "╔══════════════════════════════════╗");
-        Console.WriteLine($"║    The winner is {winner}!!\t║");
-        Console.WriteLine( "╚══════════════════════════════════╝");
+
+        // Calculate the box width based on the length of the winner message
+        int winnerMessageLength = $"The winner is {winner}!!".Length;
+        int boxWidth = winnerMessageLength + 4; // Add space for borders and padding
+
+        // Construction of the top and bottom borders for the box
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Create the message with the winner's name, ensuring it's centered
+        string winnerMessage = $"The winner is {winner}!!";
+        string centeredMessage = $"║ {winnerMessage.PadRight(boxWidth - 4)} ║"; // Adjust padding based on box width
+
+        // Print the box
+        Console.WriteLine(topBorder);
+        Console.WriteLine(centeredMessage);
+        Console.WriteLine(bottomBorder);
     }
+
 
     /// <summary>
     /// Sends a sign if the index is out of range.
     /// </summary>
-    /// <param name="min"></param>
-    /// <param name="max"></param>
+    /// <param name="min">Minimum acceptable value.</param>
+    /// <param name="max">Maximum acceptable value.</param>
     public static void IndexOutOfRange(int min, int max)
     {
-        Console.WriteLine($"╔═════════════════════════════════════╗");
-        Console.WriteLine($"║    El valor debe ser mayor que {min}    ║");
-        Console.WriteLine($"║            y menor que {max}            ║");
-        Console.WriteLine($"╚═════════════════════════════════════╝");
+        Console.Clear();
+
+        // Messages to display
+        string firstMessage = $"El valor debe ser mayor que {min}";
+        string secondMessage = $"y menor que {max}";
+
+        // Calculate the box width based on the longest message
+        int boxWidth = Math.Max(firstMessage.Length, secondMessage.Length) + 4; // Add space for borders and padding
+
+        // Construct the top and bottom borders for the box
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Format each message to be centered within the box
+        string centeredFirstMessage = $"║ {firstMessage.PadRight(boxWidth - 4)} ║";
+        string centeredSecondMessage = $"║ {secondMessage.PadRight(boxWidth - 4)} ║";
+
+        // Print the box
+        Console.WriteLine(topBorder);
+        Console.WriteLine(centeredFirstMessage);
+        Console.WriteLine(centeredSecondMessage);
+        Console.WriteLine(bottomBorder);
     }
 
     /// <summary>
@@ -80,29 +113,25 @@ public static class Printer
     /// Shows a box specifying who has to play
     /// </summary>
     /// <param name="name">Name of the player whose turn it is.</param>
-    public static void YourTurn(string name)
-    {
-        Console.Clear();
+   public static void YourTurn(string name)
+{
+    ArgumentNullException.ThrowIfNull(name);
 
-    
-        // Calculate the box width based on the length of the player's name
-        int playerMessageLength = $"Your turn Player {name}".Length;
-        int boxWidth = playerMessageLength + 4; // Add space for borders and padding
+    Console.Clear();
 
-        // Construction of the top and bottom borders for the box
-        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
-        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+    string message = $"Your turn Player {name}";
 
-        // Create the message with the player's name, ensuring it's centered
-        string playerMessage = $"Your turn Player {name}";
-        string centeredMessage = $"║ {playerMessage.PadRight(boxWidth - 4)} ║"; // Adjust padding based on box width
+    // Calcular el ancho del cuadro basado en la longitud del mensaje
+    int boxWidth = message.Length + 4;
 
-        // Print the box
-        Console.WriteLine(topBorder);
-        Console.WriteLine(centeredMessage);
-        Console.WriteLine(bottomBorder);
+    string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+    string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
 
-    }
+    Console.WriteLine(topBorder);
+    Console.WriteLine($"║ {message.PadRight(boxWidth - 4)} ║");
+    Console.WriteLine(bottomBorder);
+}
+
 
 
     /// <summary>
@@ -158,17 +187,30 @@ public static class Printer
     /// </summary>
     /// <param name="index">The index of the Pokémon.</param>
     /// <param name="name">The name of the Pokémon.</param>
-    /// <param name="life"></param>
+    /// <param name="life">The life points of the Pokémon.</param>
     /// <returns>An array of strings, each representing a line in the box format.</returns>
     private static string[] FormatPokemonBox(int index, string name, int life)
     {
-        string boxTop = "╔════════════════════════════╗";
-        string boxBottom = "╚════════════════════════════╝";
-        string indexLine = $"║  Number: {index,-18}║"; // Aligns the index within the box
-        string nameLine = $"║  Name: {name,-20}║"; // Aligns the name within the box
-        string lifeLine = $"║  Life: {life,-20}║"; // Aligns the name within the box
+        // Messages to display
+        string indexMessage = $"Number: {index}";
+        string nameMessage = $"Name: {name}";
+        string lifeMessage = $"Life: {life}";
 
-        return [boxTop, indexLine, nameLine, lifeLine ,boxBottom];
+        // Determine the maximum message length to set box width
+        int maxMessageLength = Math.Max(indexMessage.Length, Math.Max(nameMessage.Length, lifeMessage.Length));
+        int boxWidth = maxMessageLength + 4; // Add space for borders and padding
+
+        // Construct the top and bottom borders of the box
+        string boxTop = $"╔{new string('═', boxWidth - 2)}╗";
+        string boxBottom = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Format each line, centering the messages
+        string indexLine = $"║ {indexMessage.PadRight(boxWidth - 4)} ║";
+        string nameLine = $"║ {nameMessage.PadRight(boxWidth - 4)} ║";
+        string lifeLine = $"║ {lifeMessage.PadRight(boxWidth - 4)} ║";
+
+        // Return the formatted box as an array of strings
+        return new string[] { boxTop, indexLine, nameLine, lifeLine, boxBottom };
     }
 
     /// <summary>
@@ -279,38 +321,66 @@ public static class Printer
     }
 
 
-    /// <summary>
-    /// Show the attacks of each Pokémon, displaying if they are special, the damage they deal, and their effectiveness.
-    /// </summary>
-    /// <param name="attacker">The Pokémon whose attacks will be displayed.</param>
-    /// <param name="receiver">The Pokémon that will receive the attack.</param>
-    public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
+   /// <summary>
+/// Show the attacks of each Pokémon, displaying if they are special, the damage they deal, and their effectiveness.
+/// </summary>
+/// <param name="attacker">The Pokémon whose attacks will be displayed.</param>
+/// <param name="receiver">The Pokémon that will receive the attack.</param>
+public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
+{
+    ArgumentNullException.ThrowIfNull(attacker);
+
+    // Header message for the attacker's attacks
+    string headerMessage = $"Attacks of {attacker.Name}";
+    int headerWidth = headerMessage.Length + 4;
+
+    // Display the header box dynamically sized
+    string headerTop = $"╔{new string('═', headerWidth - 2)}╗";
+    string headerBottom = $"╚{new string('═', headerWidth - 2)}╝";
+    Console.WriteLine(headerTop);
+    Console.WriteLine($"║ {headerMessage.PadRight(headerWidth - 4)} ║");
+    Console.WriteLine(headerBottom);
+
+    int i = 1;
+
+    // Iterate through each attack in the Pokémon's attack list
+    foreach (IAttack attack in attacker.AtackList)
     {
-        ArgumentNullException.ThrowIfNull(attacker);
-        // Display header box for the Pokémon's attacks
-        Console.WriteLine("╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║     Attacks of {attacker.Name,-20}\t║");
-        Console.WriteLine("╚═══════════════════════════════════════╝");
+        // Calculate effectiveness
+        double effectiveness = Calculator.CheckEffectiveness(attack, receiver);
 
-        int i = 1;
-        // Iterate through each attack in the Pokémon's attack list
-        foreach (IAttack attack in attacker.AtackList)
-        {
-            double special = Calculator.CheckEffectiveness(attack, receiver);
-            
-            // Display each attack's details in a box format.
-            Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine($"║  Attack {i, -29} ║");
-            Console.WriteLine($"║  Name: {attack.Name,-31}║");
-            Console.WriteLine($"║  Damage: {attack.Damage,-29}║");
-            Console.WriteLine($"║  Type: {attack.Type,-31}║");
-            Console.WriteLine($"║  Effectiveness (against opponent): {special,-3}║");
-            Console.WriteLine("╚═══════════════════════════════════════╝");
-            i++;
-        }
+        // Format attack details
+        string attackIndex = $"Attack {i}";
+        string attackName = $"Name: {attack.Name}";
+        string attackDamage = $"Damage: {attack.Damage}";
+        string attackType = $"Type: {attack.Type}";
+        string attackEffectiveness = $"Effectiveness: {effectiveness}";
 
-        Console.WriteLine(); // Extra line for spacing
+        // Determine the maximum width of the content
+        int boxWidth = Math.Max(
+            Math.Max(attackIndex.Length, attackName.Length),
+            Math.Max(attackDamage.Length, Math.Max(attackType.Length, attackEffectiveness.Length))
+        ) + 4;
+
+        // Build the top and bottom borders for the box
+        string boxTop = $"╔{new string('═', boxWidth - 2)}╗";
+        string boxBottom = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Display the attack details in a dynamically sized box
+        Console.WriteLine(boxTop);
+        Console.WriteLine($"║ {attackIndex.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {attackName.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {attackDamage.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {attackType.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {attackEffectiveness.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(boxBottom);
+
+        i++;
     }
+
+    Console.WriteLine(); // Extra line for spacing
+}
+
 
 
     /// <summary>
@@ -387,56 +457,105 @@ public static class Printer
     }
     
     /// <summary>
-    /// Shows the player that it's Pokémon has been defeated and that it needs to change the current one.
+    /// Shows the player that their Pokémon has been defeated and that they need to change the current one.
     /// </summary>
-    /// <param name="player"></param>
+    /// <param name="player">The player whose Pokémon has been defeated.</param>
     public static void ForceSwitchMessage(IPlayer player)
     {
         ArgumentNullException.ThrowIfNull(player);
 
         IPokemon pokemon = player.SelectedPokemon;
-        // Display message that current Pokémon has been defeated:
-        Console.WriteLine("╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║     {player.Name} your pokemon {pokemon.Name, -10} Has been defeated!\t║");
-        Console.WriteLine($"║     Please pick another one from your list! \t║");
-        Console.WriteLine("╚═══════════════════════════════════════╝");
-    }
 
+        // Messages to display
+        string firstMessage = $"{player.Name}, your Pokémon {pokemon.Name} has been defeated!";
+        string secondMessage = "Please pick another one from your list!";
+
+        // Determine the maximum message length to set box width
+        int boxWidth = Math.Max(firstMessage.Length, secondMessage.Length) + 4; // Add space for borders and padding
+
+        // Construct the top and bottom borders for the box
+        string boxTop = $"╔{new string('═', boxWidth - 2)}╗";
+        string boxBottom = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Format each line, ensuring they are padded to match the box width
+        string formattedFirstMessage = $"║ {firstMessage.PadRight(boxWidth - 4)} ║";
+        string formattedSecondMessage = $"║ {secondMessage.PadRight(boxWidth - 4)} ║";
+
+        // Print the dynamically sized box
+        Console.WriteLine(boxTop);
+        Console.WriteLine(formattedFirstMessage);
+        Console.WriteLine(formattedSecondMessage);
+        Console.WriteLine(boxBottom);
+    }
 
     /// <summary>
     /// Asks the player for confirmation.
     /// </summary>
-    /// <param name="player"></param>
+    /// <param name="player">The player to confirm the Pokémon switch.</param>
     public static void SwitchQuestion(IPlayer player)
     { 
         ArgumentNullException.ThrowIfNull(player);
-        
-        //Lets us ask player if it wants to change the Pokémon or cancel the action.
+
         IPokemon pokemon = player.SelectedPokemon;
-        Console.WriteLine("╔═══════════════════════════════════════╗");
-        Console.WriteLine($"║     {player.Name} want to change your pokemon {pokemon.Name}\t║");
-        Console.WriteLine($"║     1) Yes 2) No \t║");
-        Console.WriteLine("╚═══════════════════════════════════════╝");
+
+        // Messages to display
+        string firstMessage = $"{player.Name}, do you want to change your Pokémon {pokemon.Name}?";
+        string secondMessage = "1) Yes  2) No";
+
+        // Determine the maximum message length to set box width
+        int boxWidth = Math.Max(firstMessage.Length, secondMessage.Length) + 4; // Add space for borders and padding
+
+        // Construct the top and bottom borders for the box
+        string boxTop = $"╔{new string('═', boxWidth - 2)}╗";
+        string boxBottom = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Format each line, ensuring they are padded to match the box width
+        string formattedFirstMessage = $"║ {firstMessage.PadRight(boxWidth - 4)} ║";
+        string formattedSecondMessage = $"║ {secondMessage.PadRight(boxWidth - 4)} ║";
+
+        // Print the dynamically sized box
+        Console.WriteLine(boxTop);
+        Console.WriteLine(formattedFirstMessage);
+        Console.WriteLine(formattedSecondMessage);
+        Console.WriteLine(boxBottom);
     }
+
     /// <summary>
     /// Asks the player for confirmation.
     /// </summary>
-    /// <param name="player"></param>
-    /// <param name="option"></param>
+    /// <param name="player">The player being asked for confirmation.</param>
+    /// <param name="option">The option selected by the player.</param>
     public static void SwitchConfirmation(IPlayer player, int option)
     {
         ArgumentNullException.ThrowIfNull(player);
-        
+
         if (option == 0)
         {
             IPokemon pokemon = player.SelectedPokemon;
-            // Display message that shows that you are about to change the :
-            Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine($"║     {player.Name} your selected pokemon  Has been changed!\t║");
-            Console.WriteLine($"║     now is {pokemon.Name,-10} \t                            ║");
-            Console.WriteLine("╚═══════════════════════════════════════╝");
+
+            // Messages to display
+            string firstMessage = $"{player.Name}, your selected Pokémon has been changed!";
+            string secondMessage = $"Now it is {pokemon.Name}.";
+
+            // Determine the maximum message length to set box width
+            int boxWidth = Math.Max(firstMessage.Length, secondMessage.Length) + 4; // Add space for borders and padding
+
+            // Construct the top and bottom borders for the box
+            string boxTop = $"╔{new string('═', boxWidth - 2)}╗";
+            string boxBottom = $"╚{new string('═', boxWidth - 2)}╝";
+
+            // Format each line, ensuring they are padded to match the box width
+            string formattedFirstMessage = $"║ {firstMessage.PadRight(boxWidth - 4)} ║";
+            string formattedSecondMessage = $"║ {secondMessage.PadRight(boxWidth - 4)} ║";
+
+            // Print the dynamically sized box
+            Console.WriteLine(boxTop);
+            Console.WriteLine(formattedFirstMessage);
+            Console.WriteLine(formattedSecondMessage);
+            Console.WriteLine(boxBottom);
         }
     }
+
     /// <summary>
     /// Lets the player see that the action has been canceled.
     /// </summary>
@@ -483,7 +602,35 @@ public static class Printer
             Console.WriteLine("You don't have any items.");
         }
     }
+    /// <summary>
+    /// Displays a summary of the attack performed during the battle.
+    /// </summary>
+    /// <param name="attacker">The Pokémon that performed the attack.</param>
+    /// <param name="attack">The attack used by the Pokémon.</param>
+    /// <param name="receiver">The Pokémon that received the attack.</param>
+    /// <param name="damage">The amount of damage inflicted.</param>
+    public static void AttackSummary(IPokemon attacker, IAttack attack, IPokemon receiver, int damage)
+    {
+        // Calculate the width dynamically based on the longest line
+        if (attacker != null && receiver != null && attack != null)
+        {
+            string line1 = $"{attacker.Name} used {attack.Name}!";
+            string line2 = $"It dealt {damage} damage.";
+            string line3 = $"{receiver.Name} has {receiver.Health} HP remaining.";
 
+            int boxWidth = Math.Max(line1.Length, Math.Max(line2.Length, line3.Length)) + 4;
 
+            // Create borders
+            string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+            string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+            // Print attack summary
+            Console.WriteLine(topBorder);
+            Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine(bottomBorder);
+        }
+    }
 
 }
