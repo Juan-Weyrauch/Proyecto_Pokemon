@@ -215,18 +215,19 @@ public static class Calculator
         ArgumentNullException.ThrowIfNull(receiver);
         ArgumentNullException.ThrowIfNull(attacker);
 
-        // Obtener la efectividad del ataque contra el tipo del receptor
+        // Calcular efectividad y daño
         double effectiveness = CheckEffectiveness(attack, receiver);
-
-        // Calcular el daño total
         int rawDamage = attack.Damage;
         int adjustedDamage = (int)(rawDamage * effectiveness);
         int actualDamage = Math.Max(adjustedDamage - receiver.Defense, 0);
 
-        // Aplicar daño al receptor
+        // Aplicar daño
         receiver.Health = Math.Max(receiver.Health - actualDamage, 0);
 
-        // Mostrar un resumen del ataque
+        // Llamada a Printer.AttackSummary
         Printer.AttackSummary(attacker, attack, receiver, actualDamage);
     }
+
+
+
 }

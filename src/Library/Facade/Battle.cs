@@ -114,7 +114,7 @@ namespace Library.Facade
             IPokemon attacker = player.SelectedPokemon;
             IPokemon receiver = rival.SelectedPokemon;
 
-            // Mostrar los ataques disponibles
+            // Mostrar ataques disponibles
             Printer.ShowAttacks(attacker, receiver);
 
             // Permitir al jugador elegir un ataque
@@ -123,13 +123,14 @@ namespace Library.Facade
             // Obtener el ataque seleccionado
             IAttack attack = attacker.GetAttack(attackInput - 1);
 
-            // Calcular e infligir el daño al Pokémon rival
+            // Llamar a Calculator para infligir daño
             Calculator.InfringeDamage(attack, receiver, attacker);
 
             // Mostrar la vida actual de ambos Pokémon
             Printer.ShowSelectedPokemon(attacker, player.Name);
             Printer.ShowSelectedPokemon(receiver, rival.Name);
         }
+
 
 
         /// <summary>

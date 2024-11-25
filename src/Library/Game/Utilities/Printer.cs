@@ -602,33 +602,32 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
             Console.WriteLine("You don't have any items.");
         }
     }
+    /// <summary>
+    /// Displays a summary of the attack performed during the battle.
+    /// </summary>
+    /// <param name="attacker">The Pokémon that performed the attack.</param>
+    /// <param name="attack">The attack used by the Pokémon.</param>
+    /// <param name="receiver">The Pokémon that received the attack.</param>
+    /// <param name="damage">The amount of damage inflicted.</param>
     public static void AttackSummary(IPokemon attacker, IAttack attack, IPokemon receiver, int damage)
     {
-        ArgumentNullException.ThrowIfNull(attacker);
-        ArgumentNullException.ThrowIfNull(attack);
-        ArgumentNullException.ThrowIfNull(receiver);
-
-        // Líneas de resumen del ataque
+        // Calculate the width dynamically based on the longest line
         string line1 = $"{attacker.Name} used {attack.Name}!";
         string line2 = $"It dealt {damage} damage.";
         string line3 = $"{receiver.Name} has {receiver.Health} HP remaining.";
 
-        // Calcular el ancho del cuadro basado en la línea más larga
         int boxWidth = Math.Max(line1.Length, Math.Max(line2.Length, line3.Length)) + 4;
 
-        // Crear las líneas del cuadro
+        // Create borders
         string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
         string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
 
-        // Imprimir el resumen del ataque
+        // Print attack summary
         Console.WriteLine(topBorder);
         Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
         Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
         Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
         Console.WriteLine(bottomBorder);
     }
-
-
-
 
 }
