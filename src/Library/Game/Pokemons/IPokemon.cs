@@ -32,17 +32,22 @@ public interface IPokemon
     /// </summary>
     string Type { get; set; }
     
-    /// <summary>
-    /// Sets the state of the Pokémon.
-    /// </summary>
-    public int State { get; set; }
-
-    
     
     /// <summary>
     /// A list of all the attacks that the Pokémon has.
     /// </summary>
     List<IAttack> AtackList { get; }
+    
+ 
+    /// <summary>
+    /// Ammount of turns the Pokémon will be sleeping.
+    /// </summary>
+    public int SleepTurns { get; }
+    
+    /// <summary>
+    /// The current state of the pokemon.
+    /// </summary>
+    public SpecialEffect State { get; set; }
 
 
     /// <summary>
@@ -62,4 +67,20 @@ public interface IPokemon
     /// Método para reducir la salud del Pokémon.
     /// </summary>
     void DecreaseHealth(int damage); // Método para reducir la salud
+
+    /// <summary>
+    /// Applies the desired effect. (should it be a method of Pokémon? idk, it processes its own state)
+    /// </summary>
+    void ProcessTurnEffects();
+
+    /// <summary>
+    /// Resets the status of the Pokémon. (for ex. when a total cure potion is used)
+    /// </summary>
+    void ResetStatus();
+
+    /// <summary>
+    /// Applies the effect to the pokemon.
+    /// </summary>
+    /// <param name="effect"></param>
+    void ApplyStatusEffect(SpecialEffect effect);
 }

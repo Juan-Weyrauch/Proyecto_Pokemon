@@ -13,6 +13,7 @@ namespace Library.Game.Utilities;
 /// </summary>
 public static class Calculator
 {
+    private static readonly Random Random = new();
 // Table of attacks.
     private static readonly
         Dictionary<string, (List<string> Weaknesses, List<string> Resistances, List<string> Immunities)>
@@ -124,7 +125,7 @@ public static class Calculator
         }
         else
         {
-            throw new NoNullAllowedException("Attack or Pokemon was null.");
+            throw new NoNullAllowedException("AttackList or Pokemon was null.");
         }
 
     }
@@ -178,8 +179,7 @@ public static class Calculator
     public static int FirstTurnSelection()
     {
         //Always starts the player 1? Should it be random?
-        Random random = new Random();
-        return random.Next(1, 2);
+        return Random.Next(1, 2);
         //Returns a random number to set a starter player.
     }
 

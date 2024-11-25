@@ -81,14 +81,8 @@ public static class Facade
         Player player1 = Player.Player1;
         Player player2 = Player.Player2;
 
-        // Mostrar los Pokémon iniciales de ambos jugadores
-        Printer.ShowSelectedPokemon(player1.SelectedPokemon, player1.Name);
-        Printer.ShowSelectedPokemon(player2.SelectedPokemon, player2.Name);
-
-
         // Iniciar la batalla
         Battle.StartBattle();
-
     }
 
 
