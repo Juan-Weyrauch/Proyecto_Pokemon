@@ -205,7 +205,7 @@
             El nombre del item.
             </summary>
         </member>
-        <member name="M:Library.Game.Items.Item.Use(Library.Game.Pokemons.IPokemon)">
+        <member name="M:Library.Game.Items.Item.Use(Library.Game.Players.IPlayer,System.Int32)">
             <summary>
             Aplica el efecto del objeto en el Pokémon especificado.
             </summary>
@@ -221,7 +221,7 @@
             Constructor of revive.
             </summary>
         </member>
-        <member name="M:Library.Game.Items.RevivePotion.Use(Library.Game.Pokemons.IPokemon)">
+        <member name="M:Library.Game.Items.RevivePotion.Use(Library.Game.Players.IPlayer,System.Int32)">
             <summary>
             Let select the pokemon to utilize the effect of the potion
             </summary>
@@ -237,7 +237,7 @@
             Constructor of the Potion
             </summary>
         </member>
-        <member name="M:Library.Game.Items.SuperPotion.Use(Library.Game.Pokemons.IPokemon)">
+        <member name="M:Library.Game.Items.SuperPotion.Use(Library.Game.Players.IPlayer,System.Int32)">
             <summary>
             The constructor for the class.
             </summary>
@@ -252,7 +252,7 @@
             This is the constructor of the class that let us cure a Pokémon 
             </summary>
         </member>
-        <member name="M:Library.Game.Items.TotalCure.Use(Library.Game.Pokemons.IPokemon)">
+        <member name="M:Library.Game.Items.TotalCure.Use(Library.Game.Players.IPlayer,System.Int32)">
             <summary>
             The function to use the Pokémon and use the total cure potion.
             </summary>

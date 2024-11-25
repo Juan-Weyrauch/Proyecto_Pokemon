@@ -36,7 +36,9 @@ public static class Battle
             if (currentPlayer.SelectedPokemon.Health <= 0)
             {
                 Printer.ForceSwitchMessage(currentPlayer);
+               
                 ForceSwitchPokemon(currentPlayer);
+                
             }
 
             if (!Calculator.HasActivePokemon(opposingPlayer))
@@ -306,8 +308,8 @@ public static class Battle
             {
                 Printer.ShowInventory(player.Pokemons);
                 Console.WriteLine($"Which Pokémon do you want to use {item.Name} on?");
-                int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Pokemons.Count);
-                item.Use(player.Pokemons[pokemonChoice - 1]); // Use the item on the selected Pokémon
+                int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Pokemons.Count) -1;
+                item.Use(player,pokemonChoice); // Use the item on the selected Pokémon
                 player.RemoveItem(itemSelection);
             }
             // If it's a revive potion, use it on a Pokémon in the cemetery
@@ -317,8 +319,8 @@ public static class Battle
                 {
                     Printer.ShowInventory(player.Cementerio);
                     Console.WriteLine($"Which Pokémon do you want to revive with {item.Name}?");
-                    int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Cementerio.Count);
-                    item.Use(player.Cementerio[pokemonChoice - 1]); // Revive the selected Pokémon
+                    int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Cementerio.Count) -1;
+                    item.Use(player, pokemonChoice); // Revive the selected Pokémon
                     player.RemoveItem(itemSelection);
                 }
                 else

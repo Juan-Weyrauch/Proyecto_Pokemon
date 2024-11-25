@@ -1,3 +1,4 @@
+using Library.Game.Players;
 using Library.Game.Pokemons;
 
 namespace Library.Game.Items;
@@ -16,12 +17,16 @@ public class TotalCure : Item
     {
         Name = "Total Cure";
     }
-    
+
     /// <summary>
     /// The function to use the Pokémon and use the total cure potion.
     /// </summary>
-    public override void Use(IPokemon pokemon)
+    public override void Use(IPlayer player, int index)
     {
-        pokemon?.ResetStatus();
+        if (player != null)
+        {
+            IPokemon pokemon = player.Pokemons[index];
+            pokemon?.ResetStatus();
+        }
     }
 }

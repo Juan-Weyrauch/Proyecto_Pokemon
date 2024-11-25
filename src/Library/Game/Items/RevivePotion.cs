@@ -1,3 +1,4 @@
+using Library.Game.Players;
 using Library.Game.Pokemons;
 namespace Library.Game.Items
 
@@ -19,11 +20,16 @@ namespace Library.Game.Items
         /// Let select the pokemon to utilize the effect of the potion
         /// </summary>
         /// <param name="pokemon"> Pokemon selected by the player</param>
-        public override void Use(IPokemon pokemon)
+        public override void Use(IPlayer player, int index)
         {
-            if (pokemon != null && pokemon.Health == 0) // Only revive if the Pokémon is fainted.
+            if (player != null)
             {
-                pokemon.Health = pokemon.InitialHealth / 2; // Revives the Pokémon with half its initial health.
+                IPokemon pokemon = player.Cementerio[index];
+                if (pokemon != null && pokemon.Health == 0) // Only revive if the Pokémon is fainted.
+                {
+                    pokemon.Health = pokemon.InitialHealth / 2;
+                    player.CarryToTeam(pokemon);// Revives the Pokémon with half its initial health.
+                }
             }
         }
     }
