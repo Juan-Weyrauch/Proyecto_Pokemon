@@ -300,15 +300,17 @@ public static class Printer
     public static void ShowSelectedPokemon(IPokemon pokemon, string name)
     {
         ArgumentNullException.ThrowIfNull(pokemon);
-        // Calculate the width based on the longest line
+
+        // Define lines with Pokémon details
         string line1 = $"This is your pokemon {name}!";
         string line2 = $"Name: {pokemon.Name}";
         string line3 = $"Life: {pokemon.Health}/100";
+        string line4 = $"Status: {pokemon.State}"; // New line for Pokémon's status
 
-        // Find the longest line
-        int boxWidth = Math.Max(Math.Max(line1.Length, line2.Length), line3.Length) + 4; // Adding 4 for padding/borders
+        // Find the longest line for box width calculation
+        int boxWidth = Math.Max(Math.Max(Math.Max(line1.Length, line2.Length), line3.Length), line4.Length) + 4; // Adding 4 for padding/borders
 
-        // Create the top and bottom borders based on the calculated box width
+        // Create the top and bottom borders
         string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
         string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
 
@@ -317,12 +319,14 @@ public static class Printer
         Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
         Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
         Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line4.PadRight(boxWidth - 4)} ║"); // Include the new line
         Console.WriteLine(bottomBorder);
     }
 
 
-   /// <summary>
-/// Show the attacks of each Pokémon, displaying if they are special, the damage they deal, and their effectiveness.
+
+/// <summary>
+/// Show the attacks of each Pokémon, displaying their name, damage, type, effectiveness, and special effect.
 /// </summary>
 /// <param name="attacker">The Pokémon whose attacks will be displayed.</param>
 /// <param name="receiver">The Pokémon that will receive the attack.</param>
@@ -355,11 +359,14 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         string attackDamage = $"Damage: {attack.Damage}";
         string attackType = $"Type: {attack.Type}";
         string attackEffectiveness = $"Effectiveness: {effectiveness}";
+        string specialEffect = $"Special Effect: {attack.Special}";
 
         // Determine the maximum width of the content
         int boxWidth = Math.Max(
             Math.Max(attackIndex.Length, attackName.Length),
-            Math.Max(attackDamage.Length, Math.Max(attackType.Length, attackEffectiveness.Length))
+            Math.Max(attackDamage.Length, Math.Max(
+                Math.Max(attackType.Length, attackEffectiveness.Length), 
+                specialEffect.Length))
         ) + 4;
 
         // Build the top and bottom borders for the box
@@ -373,6 +380,7 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         Console.WriteLine($"║ {attackDamage.PadRight(boxWidth - 4)} ║");
         Console.WriteLine($"║ {attackType.PadRight(boxWidth - 4)} ║");
         Console.WriteLine($"║ {attackEffectiveness.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {specialEffect.PadRight(boxWidth - 4)} ║");
         Console.WriteLine(boxBottom);
 
         i++;
@@ -482,6 +490,7 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         string formattedSecondMessage = $"║ {secondMessage.PadRight(boxWidth - 4)} ║";
 
         // Print the dynamically sized box
+        Console.Clear();
         Console.WriteLine(boxTop);
         Console.WriteLine(formattedFirstMessage);
         Console.WriteLine(formattedSecondMessage);
@@ -632,5 +641,65 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
             Console.WriteLine(bottomBorder);
         }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pokemon"></param>
+    public static void CantAttackBecauseOfStatus (IPokemon pokemon)
+    {
+        if (pokemon == null)
+            return;
+
+        // Message content
+        string line1 = $"{pokemon.Name} can't attack!";
+        string line2 = $"Reason: It is {pokemon.State}.";
+
+        // Calculate box width dynamically
+        int boxWidth = Math.Max(line1.Length, line2.Length) + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Print status message
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
+
+    /// <summary>
+    /// Displays the effect and the life that the pokemon looses.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="effect"></param>
+    /// <param name="losedHealth"></param>
+    public static void DisplayEffect(string name, SpecialEffect effect, int losedHealth)
+    {
+        // Calculate the width dynamically based on the longest line
+        if (name == null) return;
+        
+        string line1 = $"{name} is {effect}ed";
+        string line2 = $"It lost {losedHealth} HP!";
+        string line3 = $"Go retaliate!";
+        // should be using switch but..
+        if (effect == SpecialEffect.Sleep) { line1 = $"{name} is Asleep"; }
+
+        int boxWidth = Math.Max(line1.Length, Math.Max(line2.Length, line3.Length)) + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Print attack summary
+        Console.Clear();
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
+
 
 }

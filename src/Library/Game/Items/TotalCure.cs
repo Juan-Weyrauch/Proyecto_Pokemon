@@ -10,29 +10,18 @@ public class TotalCure : Item
     
     
     /// <summary>
-    /// This is the constructor of the class that let us cure a pokemon 
+    /// This is the constructor of the class that let us cure a Pokémon 
     /// </summary>
     public TotalCure()
     {
         Name = "Total Cure";
     }
-
     
-    /// <inheritdoc />
-
-
     /// <summary>
-    /// The function to use the pokemon and use the total cure potion..
+    /// The function to use the Pokémon and use the total cure potion.
     /// </summary>
-
     public override void Use(IPokemon pokemon)
     {
-        if (pokemon != null)
-        {
-          
-            pokemon.State = 0;
-        }
-       
+        pokemon?.ResetStatus();
     }
-    
 }
