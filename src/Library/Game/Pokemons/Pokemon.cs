@@ -26,13 +26,7 @@ public class Pokemon : IPokemon
     /// Sets the type of the Pokémon
     /// </summary>
     public string Type { get; set; }
-
-    /// <summary>
-    /// Sets the state of the Pokémon (1,2,3,4).
-    /// </summary>
-    public int State { get; set; }
-
-
+    
     /// <summary>
     /// A list of all the attacks that the Pokémon has 
     /// </summary>
@@ -43,10 +37,19 @@ public class Pokemon : IPokemon
     /// </summary>
     public int InitialHealth { get; set; }
 
+    /// <inheritdoc />
     public bool IsAsleep { get; private set; }
+
+    /// <inheritdoc />
     public int SleepTurns { get; private set; }
+
+    /// <inheritdoc />
     public bool IsParalyzed { get; private set; }
+
+    /// <inheritdoc />
     public bool IsPoisoned { get; private set; }
+
+    /// <inheritdoc />
     public bool IsBurned { get; private set; }
 
 
@@ -152,6 +155,11 @@ public class Pokemon : IPokemon
         IsParalyzed = false;
         IsPoisoned = false;
         IsBurned = false;
+    }
+
+    public SpecialEffect GetState()
+    {
+        return SpecialEffect.Sleep;
     }
     
 }

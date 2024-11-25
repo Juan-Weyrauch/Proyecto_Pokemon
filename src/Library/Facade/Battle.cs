@@ -27,10 +27,13 @@ namespace Library.Facade
 
             while (Calculator.HasActivePokemon(currentPlayer) && Calculator.HasActivePokemon(opposingPlayer))
             {
+                // Apply turn-based effects on both players' Pokémon.
+                currentPlayer.SelectedPokemon.ProcessTurnEffects();
+                opposingPlayer.SelectedPokemon.ProcessTurnEffects();
+
                 if (currentPlayer.SelectedPokemon.Health <= 0)
                 {
                     Printer.ForceSwitchMessage(currentPlayer);
-                    currentPlayer.CarryToCementerio();
                     ForceSwitchPokemon(currentPlayer);
                 }
 
@@ -40,9 +43,7 @@ namespace Library.Facade
                     break;
                 }
 
-                // Execute player action if no Pokémon switch
                 PlayerAction(currentPlayer, opposingPlayer);
-                // Switch turns
                 (currentPlayer, opposingPlayer) = (opposingPlayer, currentPlayer);
             }
         }
@@ -55,12 +56,23 @@ namespace Library.Facade
         private static void PlayerAction(IPlayer player, IPlayer rival)
         {
             // method that checks if the Pokémon can fight or not.
-            Battle.StateValidation(player);
+            IPokemon pokemon = player.SelectedPokemon;
+
+            // Validate the state before allowing any actions.
+            if (!StateValidation(player))
+            {
+                Console.WriteLine("Skipping turn due to status effect.");
+                Console.ReadLine(); // Pause for player to read.
+                return; // End the turn without further actions.
+            }
+
 
             if (player.SelectedPokemon.Health <= 0)
             {
-                // Safety check to ensure a defeated Pokémon is not used
-                Printer.ForceSwitchMessage(player);
+                player.CarryToCementerio(); // Move the defeated Pokémon to the cemetery before switching
+                Printer.ForceSwitchMessage(player); // Warn the player that it must change its Pokémon
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadLine();
                 ForceSwitchPokemon(player);
                 return;
             }
@@ -105,8 +117,41 @@ namespace Library.Facade
 
         private static bool StateValidation(IPlayer player)
         {
-            
+            IPokemon pokemon = player.SelectedPokemon;
+
+            switch ((SpecialEffect)pokemon.State)
+            {
+                case SpecialEffect.None:
+                    return true; // The Pokémon can act normally.
+
+                case SpecialEffect.Sleep:
+                    if (pokemon.IsAsleep)
+                    {
+                        Console.WriteLine($"{pokemon.Name} is asleep and cannot act.");
+                        pokemon.ProcessTurnEffects(); // Decrease sleep turns.
+                        return false;
+                    }
+                    break;
+
+                case SpecialEffect.Paralyze:
+                    Random random = new Random();
+                    bool canAct = random.Next(0, 2) == 0; // 50% chance to act.
+                    if (!canAct)
+                    {
+                        Console.WriteLine($"{pokemon.Name} is paralyzed and cannot act.");
+                    }
+                    return canAct;
+
+                case SpecialEffect.Poison:
+                case SpecialEffect.Burn:
+                    // These effects reduce health but do not prevent actions.
+                    pokemon.ProcessTurnEffects();
+                    return true;
+            }
+
+            return true; // Default case (should not be reached).
         }
+
 
 
     /// <summary>
@@ -208,22 +253,29 @@ namespace Library.Facade
             // Notify that the Pokémon was defeated and the player must switch it
             Printer.ForceSwitchMessage(player);
 
-            // Move the defeated Pokémon to the cemetery before switching
-            player.CarryToCementerio(); // Removes the Pokémon from the team and adds it to the cemetery
 
-            List<IPokemon> pokemons = player.Pokemons;
+            while (true)
+            {
+                Printer.ShowInventory(player.Pokemons);
+                int selectedIndex = Calculator.ValidateSelectionInGivenRange(1, player.Pokemons.Count) - 1;
+                IPokemon selectedPokemon = player.Pokemons[selectedIndex];
 
+                if (selectedPokemon.Health > 0)
+                {
+                    player.SwitchPokemon(selectedIndex);
+                    Console.WriteLine($"{player.Name} switched to {selectedPokemon.Name}.");
+                    Console.ReadLine();
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("You cannot select a fainted Pokémon. Please choose another.");
+                }
+            }
             Printer.ShowInventory(player.Pokemons);
-
-            // Ask for Pokémon input
-            int selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
-            // Switch to the selected Pokémon
-            player.SwitchPokemon(selectedPokemon - 1);
-
-            // Confirm the Pokémon switch
-            Printer.SwitchConfirmation(player, 0);
             Console.WriteLine("Press any key to continue...");
             Console.ReadLine();
+
         }
 
         /// <summary>
