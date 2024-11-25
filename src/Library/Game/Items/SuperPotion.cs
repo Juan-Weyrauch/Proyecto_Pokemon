@@ -1,3 +1,4 @@
+using Library.Game.Players;
 using Library.Game.Pokemons;
 
 namespace Library.Game.Items;
@@ -22,10 +23,11 @@ public class SuperPotion : Item
     /// The constructor for the class.
     /// </summary>
 
-    public override void Use(IPokemon pokemon)
+    public override void Use(IPlayer player, int index)
     {
-        if (pokemon != null)
+        if (player != null)
         {
+            IPokemon pokemon = player.Pokemons[index];
             pokemon.Health = pokemon.Health + 70;
             if (pokemon.Health > 100)
             {

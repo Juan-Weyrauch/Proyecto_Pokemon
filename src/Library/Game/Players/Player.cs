@@ -170,6 +170,15 @@ namespace Library.Game.Players
             }
         }
 
+        public void CarryToTeam(IPokemon pokemon)
+        {
+            if (!Pokemons.Contains(pokemon))
+            {
+                Pokemons.Add(pokemon);
+                Cementerio.Remove(pokemon);
+            }
+        }
+
         /// <summary>
         /// Retrieves an item from the player's inventory based on the given index.
         /// </summary>
