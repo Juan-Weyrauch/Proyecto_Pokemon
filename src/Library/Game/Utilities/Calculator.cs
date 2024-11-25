@@ -226,6 +226,7 @@ public static class Calculator
 
         // Llamada a Printer.AttackSummary
         Printer.AttackSummary(attacker, attack, receiver, actualDamage);
+        Console.ReadLine();
     }
 
 
