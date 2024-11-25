@@ -633,4 +633,32 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pokemon"></param>
+    public static void CantAttackBecauseOfStatus (IPokemon pokemon)
+    {
+        if (pokemon == null)
+            return;
+
+        // Message content
+        string line1 = $"{pokemon.Name} can't attack!";
+        string line2 = $"Reason: It is {pokemon.State}.";
+
+        // Calculate box width dynamically
+        int boxWidth = Math.Max(line1.Length, line2.Length) + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Print status message
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
+
+
 }

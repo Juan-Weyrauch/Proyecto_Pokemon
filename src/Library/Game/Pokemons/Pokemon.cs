@@ -143,5 +143,4 @@ public class Pokemon : IPokemon
         State = SpecialEffect.None;
         SleepTurns = 0;
     }
-    
 }

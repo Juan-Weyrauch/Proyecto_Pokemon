@@ -77,4 +77,10 @@ public interface IPokemon
     /// Resets the status of the Pokémon. (for ex. when a total cure potion is used)
     /// </summary>
     void ResetStatus();
+
+    /// <summary>
+    /// Applies the effect to the pokemon.
+    /// </summary>
+    /// <param name="effect"></param>
+    void ApplyStatusEffect(SpecialEffect effect);
 }
