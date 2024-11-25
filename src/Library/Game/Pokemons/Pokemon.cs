@@ -1,4 +1,5 @@
 using Library.Game.Attacks;
+using Library.Game.Utilities;
 
 namespace Library.Game.Pokemons;
 
@@ -126,10 +127,24 @@ public class Pokemon : IPokemon
                 if (SleepTurns <= 0) State = SpecialEffect.None;
                 break;
             case SpecialEffect.Poison:
+                int auxHealth = Health;
                 Health -= (int)(0.05 * InitialHealth);
+                if (Health < 0) Health = 0;
+                auxHealth -= Health;
+                
+                Printer.DisplayEffect(this.Name, this.State, auxHealth);
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
                 break;
             case SpecialEffect.Burn:
+                auxHealth = Health;
                 Health -= (int)(0.10 * InitialHealth);
+                if (Health < 0) Health = 0;
+                auxHealth -= Health;
+
+                Printer.DisplayEffect(this.Name, this.State, auxHealth);
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
                 break;
             // Add cases for other states if needed
         }

@@ -131,15 +131,17 @@ public static class Battle
                 return true; // The Pokémon can act normally.
 
             case SpecialEffect.Sleep:
-                    Console.WriteLine($"{pokemon.Name} is asleep and cannot act.");
                     pokemon.ProcessTurnEffects(); // Decrease sleep turns.
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadLine();
                     return false;
 
             case SpecialEffect.Paralyze:
                 bool canAttack = Random.Next(0, 2) == 0; // 50% chance to act.
                 if (!canAttack)
                 {
-                    Console.WriteLine($"{pokemon.Name} is paralyzed and cannot attack.");
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadLine();
                 }
                 return canAttack;
     
@@ -193,15 +195,14 @@ public static class Battle
         // Check if the attack has a special effect and apply it
         if (attack.Special != SpecialEffect.None)
         {
-            if (Random.Next(1, 101) <= 30) // 30% chance to apply the effect
-            {
-                Console.WriteLine($"{receiver.Name} is affected by {attack.Name}'s special effect!");
-                receiver.ApplyStatusEffect(attack.Special);
-            }
+            Console.WriteLine($"{receiver.Name} is affected by {attack.Name}'s special effect!");
+            receiver.ApplyStatusEffect(attack.Special);
         }
-
+        Console.Clear();
         Printer.ShowSelectedPokemon(attacker, player.Name);
         Printer.ShowSelectedPokemon(receiver, rival.Name);
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadLine();
     }
 
 

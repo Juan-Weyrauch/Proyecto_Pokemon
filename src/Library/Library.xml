@@ -807,7 +807,7 @@
         </member>
         <member name="M:Library.Game.Utilities.Printer.ShowAttacks(Library.Game.Pokemons.IPokemon,Library.Game.Pokemons.IPokemon)">
             <summary>
-            Show the attacks of each Pokémon, displaying if they are special, the damage they deal, and their effectiveness.
+            Show the attacks of each Pokémon, displaying their name, damage, type, effectiveness, and special effect.
             </summary>
             <param name="attacker">The Pokémon whose attacks will be displayed.</param>
             <param name="receiver">The Pokémon that will receive the attack.</param>
@@ -875,6 +875,14 @@
             
             </summary>
             <param name="pokemon"></param>
+        </member>
+        <member name="M:Library.Game.Utilities.Printer.DisplayEffect(System.String,Library.Game.Pokemons.SpecialEffect,System.Int32)">
+            <summary>
+            Displays the effect and the life that the pokemon looses.
+            </summary>
+            <param name="name"></param>
+            <param name="effect"></param>
+            <param name="losedHealth"></param>
         </member>
     </members>
 </doc>
