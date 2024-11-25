@@ -57,4 +57,9 @@ public interface IPokemon
     /// </summary>
     /// <returns></returns>
     public IPokemon Clone();
+    
+    /// <summary>
+    /// Método para reducir la salud del Pokémon.
+    /// </summary>
+    void DecreaseHealth(int damage); // Método para reducir la salud
 }
