@@ -205,11 +205,10 @@ public static class Calculator
 
     /// <summary>
     /// This class is responsible for:
-    ///    Reduce the life of the receiver Pokémon based on the attacker Pokémon attack.
+    ///     1) Determining the effectiveness of the attack used.
     /// </summary>
-    /// <param name="receiver"></param>
-    /// <param name="attacker"></param>
     /// <param name="attack"></param>
+    /// <param name="rival"></param>
     public static void InfringeDamage(IAttack attack, IPokemon receiver, IPokemon attacker)
     {
         ArgumentNullException.ThrowIfNull(attack);
@@ -229,7 +228,6 @@ public static class Calculator
         Printer.AttackSummary(attacker, attack, receiver, actualDamage);
         Console.ReadLine();
     }
-
 
 
 }
