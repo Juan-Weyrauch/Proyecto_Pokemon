@@ -54,6 +54,8 @@ namespace Library.Game.Players
         /// </summary>
         void CarryToCementerio();
 
+        public void CarryToTeam(IPokemon pokemon);
+
         /// <summary>
         /// Retrieves the item from the player's item list based on the provided index.
         /// </summary>

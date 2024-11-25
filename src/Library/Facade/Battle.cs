@@ -253,6 +253,7 @@ namespace Library.Facade
                         Console.WriteLine($"Which Pokémon do you want to revive with {item.Name}?");
                         int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Cementerio.Count);
                         item.Use(player.Cementerio[pokemonChoice - 1]); // Revive the selected Pokémon
+                        player.CarryToTeam(player.Cementerio[pokemonChoice - 1]);
                         player.RemoveItem(itemSelection);
                     }
                     else
