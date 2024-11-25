@@ -125,7 +125,7 @@ namespace Library.Facade
                     return true; // The Pokémon can act normally.
 
                 case SpecialEffect.Sleep:
-                    if (pokemon.IsAsleep)
+                    if (pokemon.State == SpecialEffect.Sleep)
                     {
                         Console.WriteLine($"{pokemon.Name} is asleep and cannot act.");
                         pokemon.ProcessTurnEffects(); // Decrease sleep turns.

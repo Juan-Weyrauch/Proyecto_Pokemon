@@ -38,26 +38,16 @@ public interface IPokemon
     /// </summary>
     List<IAttack> AtackList { get; }
     
-    /// <summary>
-    /// Sleep state.
-    /// </summary>
-    public bool IsAsleep { get; }
+ 
     /// <summary>
     /// Ammount of turns the Pokémon will be sleeping.
     /// </summary>
     public int SleepTurns { get; }
+    
     /// <summary>
-    /// Paralyzed state.
+    /// The current state of the pokemon.
     /// </summary>
-    public bool IsParalyzed { get; }
-    /// <summary>
-    /// Poisoned state.
-    /// </summary>
-    public bool IsPoisoned { get; }
-    /// <summary>
-    /// Burnt state.
-    /// </summary>
-    public bool IsBurned { get; }
+    public SpecialEffect State { get; set; }
 
 
     /// <summary>

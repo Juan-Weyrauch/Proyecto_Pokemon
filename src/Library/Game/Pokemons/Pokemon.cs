@@ -38,19 +38,11 @@ public class Pokemon : IPokemon
     public int InitialHealth { get; set; }
 
     /// <inheritdoc />
-    public bool IsAsleep { get; private set; }
+    public SpecialEffect State { get; set; }
 
     /// <inheritdoc />
     public int SleepTurns { get; private set; }
-
-    /// <inheritdoc />
-    public bool IsParalyzed { get; private set; }
-
-    /// <inheritdoc />
-    public bool IsPoisoned { get; private set; }
-
-    /// <inheritdoc />
-    public bool IsBurned { get; private set; }
+    
 
 
     /// <summary>
@@ -68,6 +60,7 @@ public class Pokemon : IPokemon
         Defense = defense;
         Type = type;
         AtackList = atacks;
+        State = SpecialEffect.None;
     }
 
     /// <summary>
@@ -105,21 +98,18 @@ public class Pokemon : IPokemon
     /// <param name="effect"></param>
     public void ApplyStatusEffect(SpecialEffect effect)
     {
-        if (IsAsleep || IsParalyzed || IsPoisoned || IsBurned) return; // Already affected by a status effect
+        if (State != SpecialEffect.None) return; // Already affected by a status
+        State = effect;
+
         switch (effect)
         {
             case SpecialEffect.Sleep:
-                IsAsleep = true;
                 SleepTurns = new Random().Next(1, 5);
                 break;
-            case SpecialEffect.Paralyze:
-                IsParalyzed = true;
-                break;
             case SpecialEffect.Poison:
-                IsPoisoned = true;
-                break;
             case SpecialEffect.Burn:
-                IsBurned = true;
+            case SpecialEffect.Paralyze:
+                // Apply other effects
                 break;
         }
     }
@@ -129,20 +119,19 @@ public class Pokemon : IPokemon
     /// </summary>
     public void ProcessTurnEffects()
     {
-        if (IsAsleep)
+        switch (State)
         {
-            SleepTurns--;
-            if (SleepTurns <= 0) IsAsleep = false;
-        }
-
-        if (IsPoisoned)
-        {
-            Health -= (int)(0.05 * InitialHealth); // 5% of total HP
-        }
-
-        if (IsBurned)
-        {
-            Health -= (int)(0.10 * InitialHealth); // 10% of total HP
+            case SpecialEffect.Sleep:
+                SleepTurns--;
+                if (SleepTurns <= 0) State = SpecialEffect.None;
+                break;
+            case SpecialEffect.Poison:
+                Health -= (int)(0.05 * InitialHealth);
+                break;
+            case SpecialEffect.Burn:
+                Health -= (int)(0.10 * InitialHealth);
+                break;
+            // Add cases for other states if needed
         }
     }
 
@@ -151,15 +140,8 @@ public class Pokemon : IPokemon
     /// </summary>
     public void ResetStatus()
     {
-        IsAsleep = false;
-        IsParalyzed = false;
-        IsPoisoned = false;
-        IsBurned = false;
-    }
-
-    public SpecialEffect GetState()
-    {
-        return SpecialEffect.Sleep;
+        State = SpecialEffect.None;
+        SleepTurns = 0;
     }
     
 }
