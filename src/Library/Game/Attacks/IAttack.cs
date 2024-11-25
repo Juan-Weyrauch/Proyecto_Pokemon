@@ -1,3 +1,5 @@
+using Library.Game.Pokemons;
+
 namespace Library.Game.Attacks;
 
 /// <summary>
@@ -20,9 +22,9 @@ public interface IAttack
 
 
     /// <summary>
-    /// Check if the attack is special or not
+    /// Specifies the special effect of the attack, if any.
     /// </summary>
-    int Special { get; set; }
+    public SpecialEffect Special { get; set; }
 
 
     /// <summary>

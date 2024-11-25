@@ -1,3 +1,5 @@
+using Library.Game.Pokemons;
+
 namespace Library.Game.Attacks;
 
 public class Attack : IAttack
@@ -22,10 +24,11 @@ public class Attack : IAttack
     /// </summary>
     public string Type { get; set; }
     
+    
     /// <summary>
-    /// Check if the attack is special or not
+    /// Specifies the special effect of the attack, if any.
     /// </summary>
-    public int Special { get; set; }
+    public SpecialEffect Special { get; set; }
     
     /// <summary>
     /// Obtiene o establece la precisión del ataque, representada como un porcentaje de éxito (0-100).
@@ -35,11 +38,11 @@ public class Attack : IAttack
     /// <summary>
     /// Inicializa una nueva instancia de la clase <see cref="Attack"/> con los valores especificados.
     /// </summary>
-    public Attack(string name, int damage, int state, string type, int accuracy)
+    public Attack(string name, int damage, SpecialEffect special, string type, int accuracy)
     {
         Name = name;
         Damage = damage;
-        State = state;
+        Special = special;
         Type = type;
         Accuracy = accuracy;
     }
