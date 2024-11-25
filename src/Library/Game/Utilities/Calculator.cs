@@ -190,8 +190,8 @@ public static class Calculator
     /// <returns>True if the player has Pokémon, False if not</returns>
     public static bool HasActivePokemon(IPlayer player)
     {
-        if (player == null) return false;   
-        
+        if (player == null) return false;
+
         if (player.Pokemons.Count == 0)
         {
             return false;
@@ -209,31 +209,24 @@ public static class Calculator
     /// </summary>
     /// <param name="attack"></param>
     /// <param name="rival"></param>
-    public static void InfringeDamage(IAttack attack, IPokemon rival)
+    public static void InfringeDamage(IAttack attack, IPokemon receiver, IPokemon attacker)
     {
-        //We've got the attack and the rival Pokémon, now we check for effectiveness (yes, again, the first one was for display of the Attacks)
-        double effectiveness = CheckEffectiveness(attack, rival);
-        int damage = (int)(attack.Damage * effectiveness); // By Typecasting the variable,
+        ArgumentNullException.ThrowIfNull(attack);
+        ArgumentNullException.ThrowIfNull(receiver);
+        ArgumentNullException.ThrowIfNull(attacker);
 
-        // we ensure we don't get a double.
+        // Obtener la efectividad del ataque contra el tipo del receptor
+        double effectiveness = CheckEffectiveness(attack, receiver);
 
+        // Calcular el daño total
+        int rawDamage = attack.Damage;
+        int adjustedDamage = (int)(rawDamage * effectiveness);
+        int actualDamage = Math.Max(adjustedDamage - receiver.Defense, 0);
 
-        DoDamage(damage, rival);
+        // Aplicar daño al receptor
+        receiver.Health = Math.Max(receiver.Health - actualDamage, 0);
 
-        // Display the effectiveness to the user
-        Printer.Effectiveness((int)effectiveness, attack);
-
-    }
-
-    /// <summary>
-    /// This method calculates the damage and applies it to the rival's Pokémon.
-    /// </summary>
-    /// <param name="damage">The amount of damage inflicted.</param>
-    /// <param name="pokemon">The Pokémon receiving the damage.</param>
-    private static void DoDamage(int damage, IPokemon pokemon)
-    {
-        int actualDamage = Math.Max(damage - pokemon.Defense, 0); // Ensure no negative damage
-        pokemon.Health = Math.Max(pokemon.Health - actualDamage, 0); // Ensure health doesn't go below 0
-        
+        // Mostrar un resumen del ataque
+        Printer.AttackSummary(attacker, attack, receiver, actualDamage);
     }
 }
