@@ -612,22 +612,25 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
     public static void AttackSummary(IPokemon attacker, IAttack attack, IPokemon receiver, int damage)
     {
         // Calculate the width dynamically based on the longest line
-        string line1 = $"{attacker.Name} used {attack.Name}!";
-        string line2 = $"It dealt {damage} damage.";
-        string line3 = $"{receiver.Name} has {receiver.Health} HP remaining.";
+        if (attacker != null && receiver != null && attack != null)
+        {
+            string line1 = $"{attacker.Name} used {attack.Name}!";
+            string line2 = $"It dealt {damage} damage.";
+            string line3 = $"{receiver.Name} has {receiver.Health} HP remaining.";
 
-        int boxWidth = Math.Max(line1.Length, Math.Max(line2.Length, line3.Length)) + 4;
+            int boxWidth = Math.Max(line1.Length, Math.Max(line2.Length, line3.Length)) + 4;
 
-        // Create borders
-        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
-        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+            // Create borders
+            string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+            string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
 
-        // Print attack summary
-        Console.WriteLine(topBorder);
-        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
-        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
-        Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
-        Console.WriteLine(bottomBorder);
+            // Print attack summary
+            Console.WriteLine(topBorder);
+            Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
+            Console.WriteLine(bottomBorder);
+        }
     }
 
 }

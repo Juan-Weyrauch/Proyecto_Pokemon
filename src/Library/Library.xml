@@ -547,10 +547,11 @@
         <member name="M:Library.Game.Utilities.Calculator.InfringeDamage(Library.Game.Attacks.IAttack,Library.Game.Pokemons.IPokemon,Library.Game.Pokemons.IPokemon)">
             <summary>
             This class is responsible for:
-                1) Determining the effectiveness of the attack used.
+               Reduce the life of the receiver Pokémon based on the attacker Pokémon attack.
             </summary>
+            <param name="receiver"></param>
+            <param name="attacker"></param>
             <param name="attack"></param>
-            <param name="rival"></param>
         </member>
         <member name="T:Library.Game.Utilities.Catalogue">
             <summary>
