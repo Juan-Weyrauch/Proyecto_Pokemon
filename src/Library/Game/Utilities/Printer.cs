@@ -490,6 +490,7 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         string formattedSecondMessage = $"║ {secondMessage.PadRight(boxWidth - 4)} ║";
 
         // Print the dynamically sized box
+        Console.Clear();
         Console.WriteLine(boxTop);
         Console.WriteLine(formattedFirstMessage);
         Console.WriteLine(formattedSecondMessage);

@@ -57,12 +57,18 @@ public static class Battle
     /// <param name="rival">The opposing player in the battle.</param>
     private static void PlayerAction(IPlayer player, IPlayer rival)
     {
+        Console.Clear();
+        Printer.ShowSelectedPokemon(player.SelectedPokemon, player.Name);
+        Printer.ShowSelectedPokemon(rival.SelectedPokemon, rival.Name);
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadLine();
 
         // Validate the state before allowing any actions.
         if (!StateValidation(player))
         {
             IPokemon pokemon = player.SelectedPokemon;
             Printer.CantAttackBecauseOfStatus(pokemon);
+            Console.Clear();
             Console.WriteLine("Skipping turn due to status effect.");
             Console.ReadLine(); // Pause for player to read.
             return; // End the turn without further actions.
@@ -198,11 +204,7 @@ public static class Battle
             Console.WriteLine($"{receiver.Name} is affected by {attack.Name}'s special effect!");
             receiver.ApplyStatusEffect(attack.Special);
         }
-        Console.Clear();
-        Printer.ShowSelectedPokemon(attacker, player.Name);
-        Printer.ShowSelectedPokemon(receiver, rival.Name);
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadLine();
+
     }
 
 
