@@ -114,11 +114,13 @@ namespace Library.Facade
             IPokemon attacker = player.SelectedPokemon;
             IPokemon receiver = rival.SelectedPokemon;
 
-            // Mostrar los ataques disponibles
+            // 1) Display the available attacks
             Printer.ShowAttacks(attacker, receiver);
 
-            // Elegir el ataque
+            // Let the player pick one
             int attackInput = Calculator.ValidateSelectionInGivenRange(1, 4);
+
+            // We get the attack of the Pokémon
             IAttack attack = attacker.GetAttack(attackInput - 1);
 
             // Calcular si el ataque impacta según su precisión
@@ -141,15 +143,12 @@ namespace Library.Facade
             }
 
             // Aplicar daño al Pokémon rival
-            Calculator.InfringeDamage(attack, receiver, damage);
+            Calculator.InfringeDamage(attack, receiver, attacker);
 
             // Mostrar la salud actualizada
             Printer.ShowSelectedPokemon(attacker, player.Name);
             Printer.ShowSelectedPokemon(receiver, rival.Name);
         }
-
-
-
 
         /// <summary>
         /// Method that allows the player to voluntarily change their selected Pokémon during their turn.
