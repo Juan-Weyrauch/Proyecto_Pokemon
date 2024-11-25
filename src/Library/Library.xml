@@ -9,10 +9,6 @@
             Static class responsible for managing the battle between two players.
             It includes turn selection, displaying the current player's options, 
             and delegating actions to the appropriate methods.
-            
-            You’re not re-creating the values; you’re simply accessing them as part of Battle.StartBattle. 
-            When you pass player1 and player2 to Battle, you’re passing the references to these Player objects. 
-            This means that Battle is using the same player instances created in Facade—it’s not making new copies of them.
             </summary>
         </member>
         <member name="M:Library.Facade.Battle.StartBattle">
@@ -24,39 +20,26 @@
             <summary>
             Handles the selected action for the current player's turn.
             </summary>
-            <param name="player">The current player whose turn is being handled.</param>
-            <param name="rival">The opposing player in the battle.</param>
         </member>
         <member name="M:Library.Facade.Battle.Attack(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
             <summary>
-            This method is responsible for:
-            1) Showing the available attacks to the player.
-            2) Calling the damage Calculator and storing that int.
-            3) Inflicting damage to the opponent's selected Pokémon.
+            Executes an attack from the current player to the opposing player.
             </summary>
-            <param name="player">The player performing the attack.</param>
-            <param name="rival">The opposing player who is receiving the attack.</param>
         </member>
         <member name="M:Library.Facade.Battle.VoluntarySwitchPokemon(Library.Game.Players.IPlayer)">
             <summary>
-            Method that allows the player to voluntarily change their selected Pokémon during their turn.
+            Allows the player to voluntarily switch their Pokémon.
             </summary>
-            <param name="player">The player attempting to switch their Pokémon.</param>
-            <returns>Returns a boolean indicating whether the Pokémon was successfully switched.</returns>
         </member>
         <member name="M:Library.Facade.Battle.ForceSwitchPokemon(Library.Game.Players.IPlayer)">
             <summary>
-            Method that allows the player to change their Pokémon, forced by the defeat of the current Pokémon.
+            Forces the player to switch their Pokémon if the current one is defeated.
             </summary>
-            <param name="player">The player who needs to switch their defeated Pokémon.</param>
         </member>
         <member name="M:Library.Facade.Battle.UseItemAux(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
             <summary>
-            Method that allows the player to use an item during their turn. 
-            Depending on the item, the player may use it on a Pokémon from their team or the cemetery.
+            Allows the player to use an item during their turn.
             </summary>
-            <param name="player">The player using the item.</param>
-            <param name="rival">The opposing player in the battle.</param>
         </member>
         <member name="T:Library.Facade.Facade">
             <summary>
