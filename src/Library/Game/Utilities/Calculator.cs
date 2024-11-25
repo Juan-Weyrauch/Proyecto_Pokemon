@@ -13,108 +13,158 @@ namespace Library.Game.Utilities;
 /// </summary>
 public static class Calculator
 {
-    // Tabla de efectividad de tipos
-    private static readonly Dictionary<string, (List<string> Weaknesses, List<string> Resistances, List<string> Immunities)> EffectivenessTable =
-        new Dictionary<string, (List<string>, List<string>, List<string>)>
-        {
-            { "Bug", (["Fire", "Rock", "Flying"], ["Grass", "Fighting", "Ground"], []) },
-            { "Dragon", (["Dragon", "Ice", "Fairy"], ["Electric", "Fire", "Water", "Grass"], []) },
-            { "Electric", (["Ground"], ["Flying", "Steel", "Electric"], []) },
-            { "Fire", (["Water", "Rock", "Ground"], ["Bug", "Grass", "Ice", "Steel"], []) },
-            { "Flying", (["Electric", "Ice", "Rock"], ["Bug", "Fighting", "Grass"], []) },
-            { "Ghost", (["Ghost", "Dark"], ["Poison", "Bug"], ["Normal", "Fighting"]) },
-            { "Grass", (["Fire", "Ice", "Poison", "Flying", "Bug"], ["Water", "Electric", "Grass", "Ground"], []) },
-            { "Ground", (["Water", "Grass", "Ice"], ["Poison", "Rock"], ["Electric"]) },
-            { "Ice", (["Fire", "Fighting", "Rock", "Steel"], ["Ice"], []) },
-            { "Normal", (["Fighting"], [], ["Ghost"]) },
-            { "Poison", (["Ground", "Psychic"], ["Grass", "Fighting", "Poison", "Bug", "Fairy"], []) },
-            { "Psychic", (["Bug", "Ghost", "Dark"], ["Fighting", "Psychic"], []) },
-            { "Rock", (["Water", "Grass", "Fighting", "Ground", "Steel"], ["Normal", "Fire", "Poison", "Flying"], []) },
-            { "Steel", (["Fire", "Fighting", "Ground"], ["Normal", "Grass", "Ice", "Flying", "Psychic", "Bug", "Rock", "Dragon", "Steel", "Fairy"], []) },
-            { "Water", (["Electric", "Grass"], ["Fire", "Water", "Ice", "Steel"], []) }
-        };
-
+// Table of attacks.
+    private static readonly
+        Dictionary<string, (List<string> Weaknesses, List<string> Resistances, List<string> Immunities)>
+        EffectivenessTable =
+            new Dictionary<string, (List<string>, List<string>, List<string>)>
+            {
+                {
+                    "Water",
+                    (["Electric", "Plant"], ["Water", "Fire", "Ice"],
+                        [])
+                },
+                {
+                    "Bug",
+                    (["Fire", "Rock", "Flying", "Venom"],
+                        ["Fight", "Plant", "Earth"], [])
+                },
+                {
+                    "Dragon",
+                    (["Dragon", "Ice"],
+                        ["Water", "Electric", "Fire", "Plant"], [])
+                },
+                {
+                    "Electric",
+                    (["Earth"], ["Flying"], ["Electric"])
+                },
+                {
+                    "Ghost",
+                    (["Ghost"], ["Venom", "Fight"],
+                        ["Normal"])
+                },
+                {
+                    "Fire",
+                    (["Water", "Rock", "Earth"], ["Bug", "Fire", "Plant"],
+                        [])
+                },
+                {
+                    "Ice",
+                    (["Fire", "Fight", "Rock"], ["Ice"], [])
+                },
+                {
+                    "Fight",
+                    (["Psychic", "Flying", "Bug", "Rock"], [],
+                        [])
+                },
+                { "Normal", (["Fight"], [], ["Ghost"]) },
+                {
+                    "Plant",
+                    (["Bug", "Fire", "Ice", "Venom", "Flying"],
+                        ["Water", "Electric", "Plant", "Earth"], [])
+                },
+                {
+                    "Psychic",
+                    (["Bug", "Fight", "Ghost"], [], [])
+                },
+                {
+                    "Rock",
+                    (["Water", "Fight", "Plant", "Earth"],
+                        ["Fire", "Normal", "Venom", "Flying"], [])
+                },
+                {
+                    "Earth",
+                    (["Water", "Ice", "Plant"], ["Electric"],
+                        [])
+                },
+                {
+                    "Venom",
+                    (["Psychic", "Earth"], ["Bug", "Plant", "Venom"],
+                        [])
+                },
+                {
+                    "Flying",
+                    (["Electric", "Ice", "Rock"], ["Bug", "Fight", "Plant"],
+                        [])
+                }
+            };
 
     /// <summary>
-    /// This method calculates the damage and applies it to the rival's Pokémon.
+    /// Method that returns the numeric percentage of boost (or not) that the attack has on the opponent. 
     /// </summary>
-    /// <param name="attack">The attack being used.</param>
-    /// <param name="receiver">The Pokémon receiving the attack.</param>
-    public static void InfringeDamage(IAttack attack, IPokemon receiver, IPokemon attacker)
+    /// <param name="attackType"></param>
+    /// <param name="pokemonType"></param>
+    /// <returns></returns>
+    private static double GetEffectivenessMultiplier(string attackType, string pokemonType)
     {
-        ArgumentNullException.ThrowIfNull(attack);
-        ArgumentNullException.ThrowIfNull(receiver);
-        ArgumentNullException.ThrowIfNull(attacker);
+        if (!EffectivenessTable.ContainsKey(attackType)) return 1.0;
 
-        // Obtener la efectividad del ataque contra el tipo del receptor
-        double effectiveness = CheckEffectiveness(attack, receiver);
+        //using var because: (yes, thanks).
+        var (weaknesses, resistances, immunities) = EffectivenessTable[pokemonType];
 
-        // Calcular el daño total
-        int rawDamage = attack.Damage;
-        int adjustedDamage = (int)(rawDamage * effectiveness);
-        int actualDamage = Math.Max(adjustedDamage - receiver.Defense, 0);
+        if (immunities.Contains(attackType)) return 0.0;
+        if (weaknesses.Contains(attackType)) return 2.0;
+        if (resistances.Contains(attackType)) return 0.5;
 
-        // Aplicar daño al receptor
-        receiver.Health = Math.Max(receiver.Health - actualDamage, 0);
-
-        // Mostrar un resumen del ataque
-        Printer.AttackSummary(attacker, attack, receiver, actualDamage);
+        return 1.0; // Daño normal si no hay modificaciones
     }
 
-
-
     /// <summary>
-    /// Checks the effectiveness of an attack against a Pokémon's type.
+    /// Checks for effectiveness in the attack received.
+    /// It compares the attack type to the Pokémon type and returns a double value for the effectiveness.
     /// </summary>
-    /// <param name="attack">The attack being used.</param>
-    /// <param name="pokemon">The Pokémon receiving the attack.</param>
-    /// <returns>A multiplier for the damage based on effectiveness.</returns>
+    /// <param name="attack"></param>
+    /// <param name="pokemon"></param>
+    /// <returns></returns>
     public static double CheckEffectiveness(IAttack attack, IPokemon pokemon)
     {
-        ArgumentNullException.ThrowIfNull(attack);
-        ArgumentNullException.ThrowIfNull(pokemon);
-
-        if (!EffectivenessTable.ContainsKey(attack.Type))
+        if (attack != null && pokemon != null)
         {
-            Console.WriteLine($"Warning: Type '{attack.Type}' not found in EffectivenessTable. Defaulting to 1.0.");
-            return 1.0; // Si el tipo no está definido, devuelve daño normal.
+            return (GetEffectivenessMultiplier(attack.Type, pokemon.Type));
+        }
+        else
+        {
+            throw new NoNullAllowedException("Attack or Pokemon was null.");
         }
 
-        var (weaknesses, resistances, immunities) = EffectivenessTable[pokemon.Type];
-
-        if (immunities.Contains(attack.Type))
-            return 0.0;
-        if (weaknesses.Contains(attack.Type))
-            return 2.0;
-        if (resistances.Contains(attack.Type))
-            return 0.5;
-
-        return 1.0; // Daño normal si no hay modificaciones.
     }
 
-
     /// <summary>
-    /// Validates that a number is within a given range and ensures the input is an integer.
+    /// Function to validate that a number is in between two given values and checks if the input is an integer.
+    /// This function also reads the number inputted, this is so that the 'asking'
+    /// and the 'validation' can happen in the same line.
     /// </summary>
-    /// <param name="min">Minimum value in range.</param>
-    /// <param name="max">Maximum value in range.</param>
-    /// <returns>The validated integer input.</returns>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <returns></returns>
     public static int ValidateSelectionInGivenRange(int min, int max)
     {
+
         int number = 0;
         bool isValid = false;
 
+        // Loop until we get a valid integer within the range
         while (!isValid)
         {
+            //Printer.IndexOutOfRange(min, max);
             string input = Console.ReadLine();
 
-            if (int.TryParse(input, out number) && number >= min && number <= max)
+            // Check if input is a valid integer
+            if (int.TryParse(input, out number))
             {
-                isValid = true;
+                // Check if the integer is within the specified range
+                if (number >= min && number <= max)
+                {
+                    isValid = true; // Input is valid, exit the loop
+                }
+                else
+                {
+                    Printer.IndexOutOfRange(min, max); // Print range error message
+                }
             }
             else
             {
-                Console.WriteLine($"Please enter a number between {min} and {max}.");
+                Console.WriteLine("Please enter a numeric value!");
             }
         }
 
@@ -122,14 +172,68 @@ public static class Calculator
     }
 
     /// <summary>
-    /// Checks if a player has any active Pokémon remaining.
+    /// Sets randomly the first player.
     /// </summary>
-    /// <param name="player">The player being checked.</param>
-    /// <returns>True if the player has active Pokémon, false otherwise.</returns>
+    /// <returns>integer 1 or 2</returns>
+    public static int FirstTurnSelection()
+    {
+        //Always starts the player 1? Should it be random?
+        Random random = new Random();
+        return random.Next(1, 2);
+        //Returns a random number to set a starter player.
+    }
+
+    /// <summary>
+    /// This method checks if the player has any active Pokémon.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns>True if the player has Pokémon, False if not</returns>
     public static bool HasActivePokemon(IPlayer player)
     {
-        ArgumentNullException.ThrowIfNull(player);
+        if (player == null) return false;   
+        
+        if (player.Pokemons.Count == 0)
+        {
+            return false;
+        }
+        else return true;
 
-        return player.Pokemons.Any(pokemon => pokemon.Health > 0);
+    }
+
+
+    // ================================== DO DAMAGE / INFRINGE DAMAGE SECTION ==================================
+
+    /// <summary>
+    /// This class is responsible for:
+    ///     1) Determining the effectiveness of the attack used.
+    /// </summary>
+    /// <param name="attack"></param>
+    /// <param name="rival"></param>
+    public static void InfringeDamage(IAttack attack, IPokemon rival)
+    {
+        //We've got the attack and the rival Pokémon, now we check for effectiveness (yes, again, the first one was for display of the Attacks)
+        double effectiveness = CheckEffectiveness(attack, rival);
+        int damage = (int)(attack.Damage * effectiveness); // By Typecasting the variable,
+
+        // we ensure we don't get a double.
+
+
+        DoDamage(damage, rival);
+
+        // Display the effectiveness to the user
+        Printer.Effectiveness((int)effectiveness, attack);
+
+    }
+
+    /// <summary>
+    /// This method calculates the damage and applies it to the rival's Pokémon.
+    /// </summary>
+    /// <param name="damage">The amount of damage inflicted.</param>
+    /// <param name="pokemon">The Pokémon receiving the damage.</param>
+    private static void DoDamage(int damage, IPokemon pokemon)
+    {
+        int actualDamage = Math.Max(damage - pokemon.Defense, 0); // Ensure no negative damage
+        pokemon.Health = Math.Max(pokemon.Health - actualDamage, 0); // Ensure health doesn't go below 0
+        
     }
 }
