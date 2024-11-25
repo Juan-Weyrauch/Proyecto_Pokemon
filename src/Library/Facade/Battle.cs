@@ -1,21 +1,24 @@
-
 using Library.Game.Attacks;
 using Library.Game.Items;
 using Library.Game.Players;
 using Library.Game.Pokemons;
 using Library.Game.Utilities;
 
-
 namespace Library.Facade
 {
     /// <summary>
-    /// Proporciona la lógica principal para gestionar las batallas Pokémon entre dos jugadores.
-    /// Contiene métodos para iniciar la batalla, gestionar acciones de los jugadores y aplicar efectos de estado.
+    /// Static class responsible for managing the battle between two players.
+    /// It includes turn selection, displaying the current player's options, 
+    /// and delegating actions to the appropriate methods.
+    /// 
+    /// You’re not re-creating the values; you’re simply accessing them as part of Battle.StartBattle. 
+    /// When you pass player1 and player2 to Battle, you’re passing the references to these Player objects. 
+    /// This means that Battle is using the same player instances created in Facade—it’s not making new copies of them.
     /// </summary>
     public static class Battle
     {
         /// <summary>
-        /// Inicia una batalla entre dos jugadores, alternando turnos hasta que uno pierda.
+        /// Starts the battle by selecting the turn order and guiding each player's actions.
         /// </summary>
         public static void StartBattle()
         {
@@ -24,7 +27,6 @@ namespace Library.Facade
 
             while (Calculator.HasActivePokemon(currentPlayer) && Calculator.HasActivePokemon(opposingPlayer))
             {
-                // Check if the current player's Pokémon is fainted
                 if (currentPlayer.SelectedPokemon.Health <= 0)
                 {
                     Printer.ForceSwitchMessage(currentPlayer);
@@ -32,42 +34,32 @@ namespace Library.Facade
                     ForceSwitchPokemon(currentPlayer);
                 }
 
-                // Execute player action if no Pokémon switch
-                PlayerAction(currentPlayer, opposingPlayer);
-
                 if (!Calculator.HasActivePokemon(opposingPlayer))
                 {
                     Printer.DisplayWinner(currentPlayer.Name);
                     break;
                 }
 
+                // Execute player action if no Pokémon switch
+                PlayerAction(currentPlayer, opposingPlayer);
                 // Switch turns
                 (currentPlayer, opposingPlayer) = (opposingPlayer, currentPlayer);
             }
         }
 
         /// <summary>
-        /// Gestiona las acciones de un jugador durante su turno en la batalla.
-        /// Aplica efectos de estado, verifica el estado del Pokémon seleccionado y permite al jugador realizar una acción.
+        /// Handles the selected action for the current player's turn.
         /// </summary>
-        /// <param name="player">El jugador que está tomando su turno.</param>
-        /// <param name="rival">El jugador rival que será afectado por las acciones del jugador actual.</param>
+        /// <param name="player">The current player whose turn is being handled.</param>
+        /// <param name="rival">The opposing player in the battle.</param>
         private static void PlayerAction(IPlayer player, IPlayer rival)
         {
-            // Apply status effects before action
-            bool feedback = AplicarEfectos(player.SelectedPokemon); //If something changed on the pokemon.
-            
-            // If the turn is skipped, exit early
-            if (feedback)
-            {
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadLine();
-                return; // Skip the turn if paralyzed or asleep
-            }
+            // method that checks if the Pokémon can fight or not.
+            Battle.StateValidation(player);
 
-            // Ensure the player isn't trying to use a fainted Pokémon
             if (player.SelectedPokemon.Health <= 0)
             {
+                // Safety check to ensure a defeated Pokémon is not used
                 Printer.ForceSwitchMessage(player);
                 ForceSwitchPokemon(player);
                 return;
@@ -84,13 +76,13 @@ namespace Library.Facade
 
                 switch (choice)
                 {
-                    case 1: // AttackList
+                    case 1: // Attack
                         Attack(player, rival);
                         repeatTurn = false; // Ends the turn
                         break;
 
                     case 2: // Use item
-                        UseItem(player, rival);
+                        UseItemAux(player, rival);
                         repeatTurn = false; // Ends the turn
                         break;
 
@@ -111,31 +103,136 @@ namespace Library.Facade
             }
         }
 
+        private static bool StateValidation(IPlayer player)
+        {
+            
+        }
+
+
+    /// <summary>
+        /// This method is responsible for:
+        /// 1) Showing the available attacks to the player.
+        /// 2) Calling the damage Calculator and storing that int.
+        /// 3) Inflicting damage to the opponent's selected Pokémon.
+        /// </summary>
+        /// <param name="player">The player performing the attack.</param>
+        /// <param name="rival">The opposing player who is receiving the attack.</param>
         private static void Attack(IPlayer player, IPlayer rival)
         {
             IPokemon attacker = player.SelectedPokemon;
             IPokemon receiver = rival.SelectedPokemon;
 
-            // Show the available attacks
+            // 1) Display the available attacks
             Printer.ShowAttacks(attacker, receiver);
 
             // Let the player pick one
             int attackInput = Calculator.ValidateSelectionInGivenRange(1, 4);
 
-            // Get the attack selected by the player
+            // We get the attack of the Pokémon
             IAttack attack = attacker.GetAttack(attackInput - 1);
-            receiver.CambiarEstado(attack.State);
-            
 
-            // Apply the attack on the rival's Pokémon
-            Calculator.InfringeDamage(attack, receiver);
+            // Calcular si el ataque impacta según su precisión
+            Random random = new Random();
+            if (random.Next(1, 101) > attack.Accuracy)
+            {
+                Console.WriteLine($"{attacker.Name} falló el ataque {attack.Name}.");
+                Console.ReadLine();
+                return; // Salir si falla
+            }
 
-            // Show the updated health of both Pokémon
+            // Calcular si el ataque es crítico
+            bool isCritical = attack.IsCritical();
+            int damage = isCritical ? (int)(attack.Damage * 1.2) : attack.Damage;
+
+            if (isCritical)
+            {
+                Console.WriteLine($"¡Golpe crítico! {attacker.Name} infligió daño extra.");
+                Console.ReadLine();
+            }
+
+            // Aplicar daño al Pokémon rival
+            Calculator.InfringeDamage(attack, receiver, attacker);
+
+            // Mostrar la salud actualizada
             Printer.ShowSelectedPokemon(attacker, player.Name);
             Printer.ShowSelectedPokemon(receiver, rival.Name);
         }
 
-        private static void UseItem(IPlayer player, IPlayer rival)
+        /// <summary>
+        /// Method that allows the player to voluntarily change their selected Pokémon during their turn.
+        /// </summary>
+        /// <param name="player">The player attempting to switch their Pokémon.</param>
+        /// <returns>Returns a boolean indicating whether the Pokémon was successfully switched.</returns>
+        private static bool VoluntarySwitchPokemon(IPlayer player)
+        {
+            List<IPokemon> pokemons = player.Pokemons;
+
+            // Show the option to change Pokémon
+            Printer.SwitchQuestion(player);
+
+            int option = Calculator.ValidateSelectionInGivenRange(1, 2);
+            if (option == 2) // The player cancels the switch
+            {
+                Printer.CancelSwitchMessage();
+                return false; // Pokémon won't be changed
+            }
+
+            Console.Clear();
+
+            // Show inventory to choose a Pokémon
+            Printer.ShowInventory(pokemons);
+
+            // Validate that the selected Pokémon is not fainted
+            int selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
+            player.SwitchPokemon(selectedPokemon - 1);
+
+            // Confirm the switch
+            Printer.SwitchConfirmation(player, 0);
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadLine();
+            Console.Clear();
+
+            Printer.ShowSelectedPokemon(player.SelectedPokemon, player.Name);
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadLine();
+            return true; // Pokémon switched successfully
+        }
+
+        /// <summary>
+        /// Method that allows the player to change their Pokémon, forced by the defeat of the current Pokémon.
+        /// </summary>
+        /// <param name="player">The player who needs to switch their defeated Pokémon.</param>
+        private static void ForceSwitchPokemon(IPlayer player)
+        {
+            // Notify that the Pokémon was defeated and the player must switch it
+            Printer.ForceSwitchMessage(player);
+
+            // Move the defeated Pokémon to the cemetery before switching
+            player.CarryToCementerio(); // Removes the Pokémon from the team and adds it to the cemetery
+
+            List<IPokemon> pokemons = player.Pokemons;
+
+            Printer.ShowInventory(player.Pokemons);
+
+            // Ask for Pokémon input
+            int selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
+            // Switch to the selected Pokémon
+            player.SwitchPokemon(selectedPokemon - 1);
+
+            // Confirm the Pokémon switch
+            Printer.SwitchConfirmation(player, 0);
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Method that allows the player to use an item during their turn. 
+        /// Depending on the item, the player may use it on a Pokémon from their team or the cemetery.
+        /// </summary>
+        /// <param name="player">The player using the item.</param>
+        /// <param name="rival">The opposing player in the battle.</param>
+        private static void UseItemAux(IPlayer player, IPlayer rival)
         {
             // Show the player's available items
             Printer.PrintearItems(player.Items);
@@ -174,130 +271,5 @@ namespace Library.Facade
                 }
             }
         }
-
-        private static bool VoluntarySwitchPokemon(IPlayer player)
-        {
-            List<IPokemon> pokemons = player.Pokemons;
-
-            // Show the option to change Pokémon
-            Printer.SwitchQuestion(player);
-
-            int option = Calculator.ValidateSelectionInGivenRange(1, 2);
-            if (option == 2) // The player cancels the switch
-            {
-                Printer.CancelSwitchMessage();
-                return false; // Pokémon won't be changed
-            }
-
-            Console.Clear();
-
-            // Show inventory to choose a Pokémon
-            Printer.ShowInventory(pokemons);
-
-            // Validate that the selected Pokémon is not fainted
-            int selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
-            player.SwitchPokemon(selectedPokemon - 1);
-
-            // Confirm the switch
-            Printer.SwitchConfirmation(player, 0);
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadLine();
-            Console.Clear();
-
-            Printer.ShowSelectedPokemon(player.SelectedPokemon, player.Name);
-
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadLine();
-            return true; // Pokémon switched successfully
-        }
-
-        private static void ForceSwitchPokemon(IPlayer player)
-        {
-            // Notify that the Pokémon was defeated and the player must switch it
-            Printer.ForceSwitchMessage(player);
-
-            // Move the defeated Pokémon to the cemetery before switching
-            player.CarryToCementerio(); // Removes the Pokémon from the team and adds it to the cemetery
-
-            List<IPokemon> pokemons = player.Pokemons;
-
-            Printer.ShowInventory(player.Pokemons);
-
-            // Ask for Pokémon input
-            int selectedPokemon = Calculator.ValidateSelectionInGivenRange(1, pokemons.Count);
-            // Switch to the selected Pokémon
-            player.SwitchPokemon(selectedPokemon - 1);
-
-            // Confirm the Pokémon switch
-            Printer.SwitchConfirmation(player, 0);
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadLine();
-        }
-
-    /// <summary>
-    /// Aplica los efectos del estado actual de un Pokémon, como parálisis, sueño, quemaduras o envenenamiento.
-    /// Actualiza la salud del Pokémon o determina si pierde el turno debido al estado.
-    /// </summary>
-    /// <param name="pokemon">El Pokémon al que se aplicarán los efectos del estado.</param>
-    /// <returns>
-    /// Un valor booleano que indica si el Pokémon pierde el turno debido a su estado actual.
-    /// <c>true</c> si el turno es omitido (por parálisis o sueño), <c>false</c> en caso contrario.
-    /// </returns>
-    private static bool AplicarEfectos(IPokemon pokemon)
-    {
-    Random random = new Random();
-
-    switch (pokemon.State)
-    {
-        case Estado.Paralizado:
-            Printer.ImprimirCambioEstado(pokemon.Name, 3); // Print "Paralized" state change message
-            if (random.NextDouble() < 0.5) // 50% chance to be unable to attack
-            {
-             
-                return true; // Skip the turn if paralyzed
-            }
-           
-            break;
-
-        case Estado.Dormido:
-            Printer.ImprimirCambioEstado(pokemon.Name, 4); // Print "Asleep" state change message
-            if (pokemon.TurnosDormido > 0)
-            {
-                
-                pokemon.DecreaseTurnosDormido(); // Reduce sleep turns
-                return true; // Skip the turn if still asleep
-            }
-            else
-            {
-                // Pokémon may wake up with a 25% chance
-                if (random.NextDouble() < 0.25)
-                {
-                    Console.WriteLine($"{pokemon.Name} woke up early.");
-                    pokemon.CambiarEstado(Estado.Normal); // Set to normal state
-                    
-                }
-                else
-                {
-                    Console.WriteLine($"{pokemon.Name} is still asleep.");
-                    return true;
-                }
-            }
-            break;
-
-        case Estado.Quemado:
-            Printer.ImprimirCambioEstado(pokemon.Name, 1); // Print "Burned" state change message
-            pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.10)); // Apply burn damage (10% of initial health)
-            
-            break;
-
-        case Estado.Envenenado:
-            Printer.ImprimirCambioEstado(pokemon.Name, 2); // Print "Poisoned" state change message
-            pokemon.DecreaseHealth((int)(pokemon.InitialHealth * 0.05)); // Apply poison damage (5% of initial health)
-            
-            break;
-    }
-
-    return false; // No state effect to skip the turn
-}
     }
 }

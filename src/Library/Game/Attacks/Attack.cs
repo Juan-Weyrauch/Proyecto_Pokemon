@@ -1,46 +1,57 @@
-using Library.Game.Pokemons;
-
 namespace Library.Game.Attacks;
 
-/// <summary>
-/// These are the attacks. Class that let us create attacks and understand how we need to
-///manipulate the system for this.
-/// </summary>
-/// <remarks>
-/// Primary constructor.
-/// </remarks>
-/// <param name="name"></param>
-/// <param name="damage"></param>
-/// <param name="state"></param>
-/// <param name="type"></param>
-    public class Attack(string name, int damage, Estado state, string type) : IAttack
+public class Attack : IAttack
 {
     /// <summary>
-    /// Name of the attack.
+    /// Obtiene o establece el nombre del ataque.
     /// </summary>
-    public string Name { get; set; } = name;
+    public string Name { get; set; }
 
     /// <summary>
-    /// Damage to the attack.
+    /// Obtiene o establece el daño base que causa el ataque.
     /// </summary>
-    public int Damage { get; set; } = damage;
+    public int Damage { get; set; }
 
     /// <summary>
-    /// Check if the attack is special or not.
+    /// Obtiene o establece el estado que puede infligir el ataque al objetivo.
     /// </summary>
-    public Estado State { get; set; } = state;
+    public int State { get; set; }
 
     /// <summary>
-    /// Sets the type of the attack.
-    /// We use this to check for effectiveness against other Pokémon types.
+    /// Obtiene o establece el tipo elemental del ataque (por ejemplo, Fuego, Agua, etc.).
     /// </summary>
-    public string Type { get; set; } = type;
+    public string Type { get; set; }
     
-    ///<summary>
-    /// We use this to clone attack and returns, this is the clone system.
-    ///</summary>
-    public IAttack Clone()
+    /// <summary>
+    /// Check if the attack is special or not
+    /// </summary>
+    public int Special { get; set; }
+    
+    /// <summary>
+    /// Obtiene o establece la precisión del ataque, representada como un porcentaje de éxito (0-100).
+    /// </summary>
+    public int Accuracy { get; set; }
+
+    /// <summary>
+    /// Inicializa una nueva instancia de la clase <see cref="Attack"/> con los valores especificados.
+    /// </summary>
+    public Attack(string name, int damage, int state, string type, int accuracy)
     {
-        return new Attack(Name, Damage, State, Type);
+        Name = name;
+        Damage = damage;
+        State = state;
+        Type = type;
+        Accuracy = accuracy;
+    }
+
+    /// <summary>
+    /// Calcula si el ataque es crítico.
+    /// Un ataque es crítico con una probabilidad de 10%.
+    /// </summary>
+    /// <returns>True si el ataque es crítico, de lo contrario False.</returns>
+    public bool IsCritical()
+    {
+        Random random = new Random();
+        return random.Next(1, 11) == 1; // 10% de probabilidad
     }
 }

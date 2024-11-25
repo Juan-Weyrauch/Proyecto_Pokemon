@@ -1,167 +1,157 @@
-
-
 using Library.Game.Attacks;
 
-namespace Library.Game.Pokemons
+namespace Library.Game.Pokemons;
+
+/// <summary>
+/// Pokémon class.
+/// </summary>
+public class Pokemon : IPokemon
 {
     /// <summary>
-    /// Represents a Pokémon with various attributes like health, defense, type, status, and attacks.
+    /// Name for Pokémon
     /// </summary>
-    public class Pokemon : IPokemon
+    public string Name { get; set; }
+
+    /// <summary>
+    /// Health of the Pokémon
+    /// </summary>
+    public int Health { get; set; }
+
+    /// <summary>
+    /// The Pokémon must have a defense status
+    /// </summary>
+    public int Defense { get; set; }
+
+    /// <summary>
+    /// Sets the type of the Pokémon
+    /// </summary>
+    public string Type { get; set; }
+
+    /// <summary>
+    /// Sets the state of the Pokémon (1,2,3,4).
+    /// </summary>
+    public int State { get; set; }
+
+
+    /// <summary>
+    /// A list of all the attacks that the Pokémon has 
+    /// </summary>
+    public List<IAttack> AtackList { get; }
+
+    /// <summary>
+    /// Initial health of the Pokémon.
+    /// </summary>
+    public int InitialHealth { get; set; }
+
+    public bool IsAsleep { get; private set; }
+    public int SleepTurns { get; private set; }
+    public bool IsParalyzed { get; private set; }
+    public bool IsPoisoned { get; private set; }
+    public bool IsBurned { get; private set; }
+
+
+    /// <summary>
+    /// Constructor for the class Pokémon.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="defense"></param>
+    /// <param name="type"></param>
+    /// <param name="atacks"></param>
+    public Pokemon(string name, int defense, string type, List<IAttack> atacks)
     {
-        /// <summary>
-        /// Gets or sets the name of the Pokémon.
-        /// </summary>
-        public string Name { get; set; }
+        InitialHealth = 100;
+        Name = name;
+        Health = 100;
+        Defense = defense;
+        Type = type;
+        AtackList = atacks;
+    }
 
-        /// <summary>
-        /// Gets or sets the health of the Pokémon.
-        /// </summary>
-        public int Health { get; set; }
+    /// <summary>
+    /// Returns the attack selected by the player
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public IAttack GetAttack(int index)
+    {
+        return AtackList[index];
+    }
 
-        /// <summary>
-        /// Gets or sets the defense value of the Pokémon.
-        /// </summary>
-        public int Defense { get; set; }
+    /// <summary>
+    /// Clones the Pokémon so that there can be  multiple instances of the same.
+    /// </summary>
+    /// <returns></returns>
+    public IPokemon Clone()
+    {
+        return new Pokemon(this.Name, this.Defense, this.Type, this.AtackList);
+    }
 
-        /// <summary>
-        /// Gets or sets the type of the Pokémon (e.g., Fire, Water).
-        /// </summary>
-        public string Type { get; set; }
+    /// <summary>
+    /// Disminuye la salud del Pokémon por la cantidad de daño recibido.
+    /// Si la salud se vuelve negativa, se ajusta a 0.
+    /// </summary>
+    public void DecreaseHealth(int damage)
+    {
+        Health -= damage;
+        if (Health < 0) Health = 0; // Asegurarse de que la salud no sea negativa.
+    }
 
-        /// <summary>
-        /// Gets or sets the state of the Pokémon (e.g., Normal, Burned, Poisoned, etc.).
-        /// </summary>
-        public Estado State { get; set; }
-
-        /// <summary>
-        /// Gets or sets the number of turns the Pokémon remains asleep.
-        /// </summary>
-        public int TurnosDormido { get; private set; }
-
-        /// <summary>
-        /// Gets the list of all the attacks that the Pokémon has.
-        /// </summary>
-        public List<IAttack> AttackList { get; }
-
-        /// <summary>
-        /// Gets or sets the initial health of the Pokémon.
-        /// </summary>
-        public int InitialHealth { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the Pokémon is currently in battle.
-        /// </summary>
-        public bool EnBatalla { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the Pokémon class with the given attributes.
-        /// </summary>
-        /// <param name="name">The name of the Pokémon.</param>
-        /// <param name="defense">The defense value of the Pokémon.</param>
-        /// <param name="type">The type of the Pokémon.</param>
-        /// <param name="attacks">The list of attacks that the Pokémon has.</param>
-        public Pokemon(string name, int defense, string type, List<IAttack> attacks)
+    /// <summary>
+    /// Checks if the Pokémon has any effect applied, if so, it returns, if not, it applies the effect.
+    /// </summary>
+    /// <param name="effect"></param>
+    public void ApplyStatusEffect(SpecialEffect effect)
+    {
+        if (IsAsleep || IsParalyzed || IsPoisoned || IsBurned) return; // Already affected by a status effect
+        switch (effect)
         {
-            InitialHealth = 100;
-            Name = name;
-            Health = 100;
-            Defense = defense;
-            Type = type;
-            AttackList = attacks;
-            TurnosDormido = 0;
-            EnBatalla = false;
-        }
-
-        /// <summary>
-        /// Creates a deep clone of the Pokémon, including cloned attacks.
-        /// </summary>
-        /// <returns>A new instance of the <see cref="IPokemon"/> with the same properties as the original.</returns>
-        public IPokemon Clone()
-        {
-            return new Pokemon(Name, Defense, Type, AttackList.Select(attack => attack.Clone()).ToList())
-            {
-                Health = this.Health,
-                InitialHealth = this.InitialHealth,
-                State = this.State,
-                TurnosDormido = this.TurnosDormido,
-                EnBatalla = this.EnBatalla
-            };
-        }
-
-        /// <summary>
-        /// Returns the attack at the specified index from the Pokémon's attack list.
-        /// </summary>
-        /// <param name="index">The index of the attack in the list.</param>
-        /// <returns>The <see cref="IAttack"/> at the specified index.</returns>
-        public IAttack GetAttack(int index)
-        {
-            return AttackList[index];
-        }
-
-        /// <summary>
-        /// Decreases the Pokémon's health by the specified amount after calculation.
-        /// If the health drops below 0, it is set to 0.
-        /// </summary>
-        /// <param name="valueAfterCalculation">The amount by which to decrease the health.</param>
-        public void DecreaseHealth(int valueAfterCalculation)
-        {
-            Health -= valueAfterCalculation;
-            if (Health < 0) Health = 0;
-        }
-
-        /// <summary>
-        /// Changes the Pokémon's state to the specified new state.
-        /// </summary>
-        /// <param name="nuevoEstado">The new state to apply to the Pokémon.</param>
-        public void CambiarEstado(Estado nuevoEstado)
-        {
-            // Check if the state is actually changing
-           
-                State = nuevoEstado;
-               
-            
-        }
-
-        /// <summary>
-        /// Reduce en 1 el contador de turnos en los que el Pokémon permanece dormido.
-        /// </summary>
-        public void DecreaseTurnosDormido()
-        {
-            TurnosDormido--;
+            case SpecialEffect.Sleep:
+                IsAsleep = true;
+                SleepTurns = new Random().Next(1, 5);
+                break;
+            case SpecialEffect.Paralyze:
+                IsParalyzed = true;
+                break;
+            case SpecialEffect.Poison:
+                IsPoisoned = true;
+                break;
+            case SpecialEffect.Burn:
+                IsBurned = true;
+                break;
         }
     }
 
     /// <summary>
-    /// Enum representing different states of a Pokémon.
+    /// Applies the desired effect. (should it be a method of Pokémon? idk, it processes its own state)
     /// </summary>
-    public enum Estado
+    public void ProcessTurnEffects()
     {
-        /// <summary>
-        /// The Pokémon is in a normal state.
-        /// </summary>
-        Normal = 0,
+        if (IsAsleep)
+        {
+            SleepTurns--;
+            if (SleepTurns <= 0) IsAsleep = false;
+        }
 
-        /// <summary>
-        /// The Pokémon is burned.
-        /// </summary>
-        Quemado = 1,
+        if (IsPoisoned)
+        {
+            Health -= (int)(0.05 * InitialHealth); // 5% of total HP
+        }
 
-        /// <summary>
-        /// The Pokémon is poisoned.
-        /// </summary>
-        Envenenado = 2,
-
-        /// <summary>
-        /// The Pokémon is paralyzed.
-        /// </summary>
-        Paralizado = 3,
-
-        /// <summary>
-        /// The Pokémon is asleep.
-        /// </summary>
-        Dormido = 4
+        if (IsBurned)
+        {
+            Health -= (int)(0.10 * InitialHealth); // 10% of total HP
+        }
     }
+
+    /// <summary>
+    /// Resets the status of the Pokémon. (for ex. when a total cure potion is used)
+    /// </summary>
+    public void ResetStatus()
+    {
+        IsAsleep = false;
+        IsParalyzed = false;
+        IsPoisoned = false;
+        IsBurned = false;
+    }
+    
 }
-
-
