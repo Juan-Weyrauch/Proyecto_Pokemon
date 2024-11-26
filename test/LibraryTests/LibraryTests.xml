@@ -9,5 +9,165 @@
             Tests for the Attack class.
             </summary>
         </member>
+        <member name="T:Library.Tests.ItemsTests">
+            <summary>
+            This class tests the behavior and properties of item objects like TotalCure, SuperPotion, and RevivePotion.
+            </summary>
+        </member>
+        <member name="F:Library.Tests.ItemsTests.totalCure">
+            <summary>
+            Instance of TotalCure used in tests.
+            </summary>
+        </member>
+        <member name="F:Library.Tests.ItemsTests.superPotion">
+            <summary>
+            Instance of SuperPotion used in tests.
+            </summary>
+        </member>
+        <member name="F:Library.Tests.ItemsTests.revivePotion">
+            <summary>
+            Instance of RevivePotion used in tests.
+            </summary>
+        </member>
+        <member name="M:Library.Tests.ItemsTests.Setup">
+            <summary>
+            This method sets up the test environment by initializing instances of TotalCure, SuperPotion, and RevivePotion.
+            </summary>
+        </member>
+        <member name="M:Library.Tests.ItemsTests.TotalCureShouldHaveCorrectProperties">
+            <summary>
+            Tests if TotalCure has the correct Name and RegenValue properties.
+            </summary>
+        </member>
+        <member name="M:Library.Tests.ItemsTests.SuperPotionShouldHaveCorrectProperties">
+            <summary>
+            Tests if SuperPotion has the correct Name and RegenValue properties.
+            </summary>
+        </member>
+        <member name="M:Library.Tests.ItemsTests.RevivePotionShouldHaveCorrectProperties">
+            <summary>
+            Tests if RevivePotion has the correct Name and RegenValue properties.
+            </summary>
+        </member>
+        <member name="T:LibraryTests.PlayerTests">
+            <summary>
+            Tests for the Player class.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PlayerTests.Setup">
+            <summary>
+            Sets up the test environment by initializing mock Pokémon and resetting the player state.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PlayerTests.InitializePlayer1CreatesSingletonInstance">
+            <summary>
+            Tests the initialization of player 1 and checks that the singleton instance is created correctly.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PlayerTests.InitializePlayer1ThrowsExceptionIfAlreadyInitialized">
+            <summary>
+            Tests that an exception is thrown when attempting to initialize player 1 again.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PlayerTests.SwitchPokemonChangesSelectedPokemon">
+            <summary>
+            Tests that the selected Pokémon is correctly switched for player 1.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PlayerTests.CarryToCementerioMovesPokemonToCementerio">
+            <summary>
+            Tests that a Pokémon is moved to the cementerio (graveyard) when it is carried there.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PlayerTests.InitializePlayer2CreatesSingletonInstance">
+            <summary>
+            Tests the initialization of player 2 and checks that the singleton instance is created correctly.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PlayerTests.InitializePlayer2ThrowsExceptionIfAlreadyInitialized">
+            <summary>
+            Tests that an exception is thrown when attempting to initialize player 2 again.
+            </summary>
+        </member>
+        <member name="T:LibraryTests.MockPokemon">
+            <summary>
+            Mock implementation of <see cref="T:Library.Game.Pokemons.IPokemon"/> for testing purposes.
+            </summary>
+        </member>
+        <member name="P:LibraryTests.MockPokemon.Name">
+            <summary>
+            Gets or sets the name of the Pokémon.
+            </summary>
+        </member>
+        <member name="P:LibraryTests.MockPokemon.Health">
+            <summary>
+            Gets or sets the current health of the Pokémon.
+            </summary>
+        </member>
+        <member name="P:LibraryTests.MockPokemon.Defense">
+            <summary>
+            Gets or sets the defense value of the Pokémon.
+            </summary>
+        </member>
+        <member name="P:LibraryTests.MockPokemon.Type">
+            <summary>
+            Gets or sets the type of the Pokémon (e.g., "Fire", "Water").
+            </summary>
+        </member>
+        <member name="P:LibraryTests.MockPokemon.State">
+            <summary>
+            Gets or sets the current state of the Pokémon (e.g., "Normal", "Poisoned").
+            </summary>
+        </member>
+        <member name="P:LibraryTests.MockPokemon.AtackList">
+            <summary>
+            Gets or sets the list of attacks available to the Pokémon.
+            </summary>
+        </member>
+        <member name="P:LibraryTests.MockPokemon.InitialHealth">
+            <summary>
+            Gets or sets the initial health value of the Pokémon (when it was first created).
+            </summary>
+        </member>
+        <member name="M:LibraryTests.MockPokemon.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LibraryTests.MockPokemon"/> class with the specified name.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.MockPokemon.GetAttack(System.Int32)">
+            <summary>
+            Retrieves the attack at the specified index.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.MockPokemon.Clone">
+            <summary>
+            Creates a clone of this <see cref="T:LibraryTests.MockPokemon"/>.
+            </summary>
+        </member>
+        <member name="T:LibraryTests.PokemonTests">
+            <summary>
+            Tests for the <see cref="T:Library.Game.Pokemons.Pokemon"/> class.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests.PokemonCreationAssignsPropertiesCorrectly">
+            <summary>
+            Verifies that the <see cref="T:Library.Game.Pokemons.Pokemon"/> constructor assigns properties correctly.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests.PokemonGetAttackReturnsCorrectAttack">
+            <summary>
+            Verifies that <see cref="M:Library.Game.Pokemons.Pokemon.GetAttack(System.Int32)"/> returns the correct attack based on the index.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests.PokemonCloneCreatesIdenticalPokemon">
+            <summary>
+            Verifies that <see cref="M:Library.Game.Pokemons.Pokemon.Clone"/> creates an identical copy of the Pokémon.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests.PokemonSetPropertiesModifiesValuesCorrectly">
+            <summary>
+            Verifies that setting properties on a <see cref="T:Library.Game.Pokemons.Pokemon"/> modifies the values correctly.
+            </summary>
+        </member>
     </members>
 </doc>

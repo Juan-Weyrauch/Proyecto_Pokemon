@@ -93,7 +93,7 @@ public static class Facade
 
 
 
-    private static void CreatePlayers(string playerName, List<IPokemon> playerPokemons, IPokemon selectedPokemon, int playerIndex)
+    public static void CreatePlayers(string playerName, List<IPokemon> playerPokemons, IPokemon selectedPokemon, int playerIndex)
     {
         if (playerIndex == 0)
         {

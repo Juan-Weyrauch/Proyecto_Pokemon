@@ -1,9 +1,11 @@
-﻿/*
+﻿using Library.Game.Utilities;
+using Library.Game.Pokemons;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using Library.StaticClasses; // Asegúrate de que este es el espacio de nombres correcto
-using Library.Classes; // Asegúrate de que este es el espacio de nombres correcto
+using Library.Game.Attacks;
+
 
 namespace Library.Tests
 {
@@ -11,69 +13,66 @@ namespace Library.Tests
     public class PrinterTests
     {
         private StringWriter _stringWriter;
-        private TextWriter _originalConsoleOutput;
 
         [SetUp]
         public void Setup()
         {
-            // Captura la salida de consola
+            // Redirigir la salida estándar de la consola a un StringWriter
             _stringWriter = new StringWriter();
-            _originalConsoleOutput = Console.Out;
-            Console.SetOut(_stringWriter); // Redirige la salida de consola
+            Console.SetOut(_stringWriter);
         }
 
         [TearDown]
         public void TearDown()
         {
-            // Restaura la salida original de la consola después de cada prueba
-            Console.SetOut(_originalConsoleOutput);
+            // Restaurar la salida estándar de la consola
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
+            _stringWriter.Dispose();
         }
 
         [Test]
-        public void StartPrint_ShouldPrintStartMessage()
+        public void StartPrint_ShouldDisplayWelcomeMessage()
         {
-            // Act: Llama al método que deseas probar
+            // Act
             Printer.StartPrint();
 
-            // Assert: Verifica el contenido de la salida
-            var result = _stringWriter.ToString();
-            Assert.That(result, Does.Contain("Welcome to Pokemon Battle"));
-            Assert.That(result, Does.Contain("1) Start"));
-            Assert.That(result, Does.Contain("2) Leave"));
+            // Assert
+            string output = _stringWriter.ToString();
+            Assert.That(output, Does.Contain("Welcome to Pokemon Battle"), "Expected welcome message to be printed.");
         }
 
         [Test]
-        public void EndPrint_ShouldPrintEndMessage()
+        public void EndPrint_ShouldDisplayThankYouMessage()
         {
             // Act
             Printer.EndPrint();
 
             // Assert
-            var result = _stringWriter.ToString();
-            Assert.That(result, Does.Contain("Thanks for playing!!"));
+            string output = _stringWriter.ToString();
+            Assert.That(output, Does.Contain("Thanks for playing!!"), "Expected thank you message to be printed.");
         }
 
         [Test]
-        public void DisplayWinner_ShouldPrintWinnerMessage()
+        public void DisplayWinner_ShouldShowWinnerName()
         {
             // Act
             Printer.DisplayWinner("Ash");
 
             // Assert
-            var result = _stringWriter.ToString();
-            Assert.That(result, Does.Contain("The winner is Ash!!"));
+            string output = _stringWriter.ToString();
+            Assert.That(output, Does.Contain("The winner is Ash!!"), "Expected winner's name to be printed.");
         }
 
+
         [Test]
-        public void IndexOutOfRange_ShouldPrintIndexErrorMessage()
+        public void YourTurn_ShouldDisplayPlayerTurnMessage()
         {
             // Act
-            Printer.IndexOutOfRange(1, 10);
+            Printer.YourTurn("Ash");
 
             // Assert
-            var result = _stringWriter.ToString();
-            Assert.That(result, Does.Contain("El valor debe ser mayor que 1"));
-            Assert.That(result, Does.Contain("y menor que 10"));
+            string output = _stringWriter.ToString();
+            Assert.That(output, Does.Contain("Your turn Player Ash"), "Expected player's turn message to be printed.");
         }
 
         [Test]
@@ -83,9 +82,37 @@ namespace Library.Tests
             Printer.NameSelection();
 
             // Assert
-            var result = _stringWriter.ToString();
-            Assert.That(result, Does.Contain("Enter your name"));
+            string output = _stringWriter.ToString();
+            Assert.That(output, Does.Contain("Enter your name"), "Expected prompt for player name.");
+        }
+
+        [Test]
+        public void IndexOutOfRange_ShouldDisplayErrorMessage()
+        {
+            // Act
+            Printer.IndexOutOfRange(1, 20);
+
+            // Assert
+            string output = _stringWriter.ToString();
+            Assert.That(output, Does.Contain("El valor debe ser mayor que 1"), "Expected error message to specify lower limit.");
+            Assert.That(output, Does.Contain("y menor que 20"), "Expected error message to specify upper limit.");
+        }
+
+        [Test]
+        public void ShowSelectedPokemon_ShouldDisplayPokemonDetails()
+        {
+            // Arrange
+            var pokemon = new Pokemon("Pikachu", 35, "Electric", new List<IAttack>());
+            pokemon.InitialHealth = 100;
+
+            // Act
+            Printer.ShowSelectedPokemon(pokemon, "Ash");
+
+            // Assert
+            string output = _stringWriter.ToString();
+            Assert.That(output, Does.Contain("This is your pokemon Ash!"), "Expected player's name in message.");
+            Assert.That(output, Does.Contain("Name: Pikachu"), "Expected Pokémon's name in message.");
+            Assert.That(output, Does.Contain("Life: 35/100"), "Expected Pokémon's health details in message.");
         }
     }
 }
-*/
