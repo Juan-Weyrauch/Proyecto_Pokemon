@@ -8,7 +8,7 @@ using System.IO;
 using Library.Game.Items;
 using Library.Game.Utilities;
 
-namespace Library.Tests
+namespace LibraryTests
 {
     [TestFixture]
     public class PrinterTests
@@ -246,7 +246,7 @@ namespace Library.Tests
 
             // Assert
             string output = _stringWriter.ToString();
-            Assert.That(output, Does.Contain("Has decidido no cambiar de Pokémon."), "Expected cancellation message.");
+            Assert.That(output, Does.Contain("Has decidido no cambiar de Pokémon. Continúa con tu turno."), "Expected cancellation message.");
             Assert.That(output, Does.Contain("Presiona cualquier tecla para continuar..."), "Expected continuation prompt.");
         }
         
