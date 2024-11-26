@@ -1,7 +1,6 @@
 ﻿/*
-using System.Collections.Generic;
-using Library.Interfaces;
-using Library.StaticClasses;
+using Library.Game.Pokemons;
+using Library.Game.Utilities;
 using NUnit.Framework;
 
 namespace Library.Tests

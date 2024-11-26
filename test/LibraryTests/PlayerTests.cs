@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using Library.Game.Players;
 using Library.Game.Pokemons;
 using Library.Game.Attacks;
@@ -218,4 +218,3 @@ namespace LibraryTests
         public IPokemon Clone() => new MockPokemon(Name);
     }
 }
-*/
