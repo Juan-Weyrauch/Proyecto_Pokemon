@@ -190,14 +190,14 @@ public static class Calculator
     /// <returns>True if the player has Pokémon, False if not</returns>
     public static bool HasActivePokemon(IPlayer player)
     {
-        if (player == null) return false;
+        ArgumentNullException.ThrowIfNull(player);
+        ArgumentNullException.ThrowIfNull(player.Pokemons);
 
         if (player.Pokemons.Count == 0)
         {
             return false;
         }
-        else return true;
-
+        return true;
     }
 
 
@@ -208,24 +208,66 @@ public static class Calculator
     ///     1) Determining the effectiveness of the attack used.
     /// </summary>
     /// <param name="attack"></param>
-    /// <param name="rival"></param>
+    /// <param name="receiver"></param>
+    /// <param name="attacker"></param>
     public static void InfringeDamage(IAttack attack, IPokemon receiver, IPokemon attacker)
     {
         ArgumentNullException.ThrowIfNull(attack);
         ArgumentNullException.ThrowIfNull(receiver);
         ArgumentNullException.ThrowIfNull(attacker);
+        
+        bool isCritical = attack.IsCritical();
+        int rawDamage = isCritical ? (int)(attack.Damage * 1.2) : attack.Damage;
 
         // Calcular efectividad y daño
         double effectiveness = CheckEffectiveness(attack, receiver);
-        int rawDamage = attack.Damage;
         int adjustedDamage = (int)(rawDamage * effectiveness);
         int actualDamage = Math.Max(adjustedDamage - receiver.Defense, 0);
 
         // Aplicar daño
-        receiver.Health = Math.Max(receiver.Health - actualDamage, 0);
+        receiver.DecreaseHealth(actualDamage);
+
         // Llamada a Printer.AttackSummary
-        Printer.AttackSummary(attacker, attack, receiver, actualDamage);
-        Console.ReadLine();
+        Printer.AttackSummary(attacker, attack, receiver, actualDamage, isCritical);
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns></returns>
+    public static bool StateValidation(IPlayer player)
+    {
+        IPokemon pokemon = player.SelectedPokemon;
+
+        switch (pokemon.State)
+        {
+            case SpecialEffect.None:
+                return true; // The Pokémon can act normally.
+
+            case SpecialEffect.Sleep:
+                pokemon.ProcessTurnEffects(); // Decrease sleep turns.
+                
+                return false;
+
+            case SpecialEffect.Paralyze:
+                bool canAttack = Random.Next(0, 2) == 0; // 50% chance to act.
+                if (!canAttack)
+                {
+                    
+                    return false;
+                }
+
+                return canAttack;
+
+            // these two cases are handled on the Pokémon class.
+            case SpecialEffect.Poison:
+            case SpecialEffect.Burn:
+                // These effects reduce health but do not prevent actions.
+                return true;
+        }
+
+        return true; // Default case (should not be reached).
     }
 
 

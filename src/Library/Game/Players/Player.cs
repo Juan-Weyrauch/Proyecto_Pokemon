@@ -150,11 +150,7 @@ namespace Library.Game.Players
         /// <param name="pokemonChoice">The index of the Pokémon selected by the player.</param>
         public void SwitchPokemon(int pokemonChoice)
         {
-            // Validar que el índice está dentro del rango
-        if (pokemonChoice < 0 || pokemonChoice >= Pokemons.Count)
-        {
-            throw new ArgumentOutOfRangeException(nameof(pokemonChoice), "Pokemon choice is out of range.");
-        }SelectedPokemon = Pokemons[pokemonChoice];
+            SelectedPokemon = Pokemons[pokemonChoice];
         }
 
         /// <summary>
@@ -162,13 +158,15 @@ namespace Library.Game.Players
         /// </summary>
         public void CarryToCementerio()
         {
-            if (!Cementerio.Contains(SelectedPokemon))
-            {
-                Cementerio.Add(SelectedPokemon);
-                Pokemons.Remove(SelectedPokemon);
-            }
+            if (Cementerio.Contains(SelectedPokemon)) return;
+            Cementerio.Add(SelectedPokemon);
+            Pokemons.Remove(SelectedPokemon);
         }
 
+        /// <summary>
+        /// Changes the pokemon to a 'dead' pokemon list.
+        /// </summary>
+        /// <param name="pokemon"></param>
         public void CarryToTeam(IPokemon pokemon)
         {
             if (!Pokemons.Contains(pokemon))
@@ -177,6 +175,7 @@ namespace Library.Game.Players
                 Cementerio.Remove(pokemon);
             }
         }
+        
 
         /// <summary>
         /// Retrieves an item from the player's inventory based on the given index.
@@ -201,12 +200,5 @@ namespace Library.Game.Players
             itemListIndex--; // Adjust for 1-based indexing
             Items[itemListIndex].RemoveAt(0);
         }
-        public static void ResetForTesting()
-        {
-            _player1 = null;
-            _player2 = null;
-        }
     }
-
-    
 }
