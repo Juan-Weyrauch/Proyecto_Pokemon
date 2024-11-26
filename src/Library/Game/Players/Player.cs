@@ -152,8 +152,15 @@ public class Player : IPlayer
     /// </summary>
     public void SwitchPokemon(int pokemonChoice)
     {
+        // Validar que el índice está dentro del rango
+        if (pokemonChoice < 0 || pokemonChoice >= Pokemons.Count)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pokemonChoice), "Pokemon choice is out of range.");
+        }
+    
         SelectedPokemon = Pokemons[pokemonChoice];
     }
+
 
     /// <summary>
     /// Polymorphic method that allows the user to use any item.
