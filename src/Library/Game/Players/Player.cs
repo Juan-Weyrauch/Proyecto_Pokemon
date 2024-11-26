@@ -158,13 +158,15 @@ namespace Library.Game.Players
         /// </summary>
         public void CarryToCementerio()
         {
-            if (!Cementerio.Contains(SelectedPokemon))
-            {
-                Cementerio.Add(SelectedPokemon);
-                Pokemons.Remove(SelectedPokemon);
-            }
+            if (Cementerio.Contains(SelectedPokemon)) return;
+            Cementerio.Add(SelectedPokemon);
+            Pokemons.Remove(SelectedPokemon);
         }
 
+        /// <summary>
+        /// Changes the pokemon to a 'dead' pokemon list.
+        /// </summary>
+        /// <param name="pokemon"></param>
         public void CarryToTeam(IPokemon pokemon)
         {
             if (!Pokemons.Contains(pokemon))
@@ -173,6 +175,7 @@ namespace Library.Game.Players
                 Cementerio.Remove(pokemon);
             }
         }
+        
 
         /// <summary>
         /// Retrieves an item from the player's inventory based on the given index.

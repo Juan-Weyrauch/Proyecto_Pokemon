@@ -65,6 +65,9 @@ public static class Printer
         Console.WriteLine(topBorder);
         Console.WriteLine(centeredMessage);
         Console.WriteLine(bottomBorder);
+        EndPrint();
+        Console.Write("> ");
+        Console.ReadKey();
     }
 
 
@@ -113,128 +116,110 @@ public static class Printer
     /// Shows a box specifying who has to play
     /// </summary>
     /// <param name="name">Name of the player whose turn it is.</param>
-   public static void YourTurn(string name)
-{
-    ArgumentNullException.ThrowIfNull(name);
+    public static void YourTurn(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
 
-    Console.Clear();
+        Console.Clear();
 
-    string message = $"Your turn Player {name}";
+        string message = $"Your turn Player {name}";
 
-    // Calcular el ancho del cuadro basado en la longitud del mensaje
-    int boxWidth = message.Length + 4;
+        // Calcular el ancho del cuadro basado en la longitud del mensaje
+        int boxWidth = message.Length + 4;
 
-    string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
-    string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
 
-    Console.WriteLine(topBorder);
-    Console.WriteLine($"║ {message.PadRight(boxWidth - 4)} ║");
-    Console.WriteLine(bottomBorder);
-}
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {message.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
 
 
 
     /// <summary>
-    /// This method has to show the player all the Pokémon available for selection in a fashion manner.
+    /// Displays the Pokémon catalogue in a formatted grid with equal box sizes and horizontal spacing.
     /// </summary>
     public static void ShowCatalogue(Dictionary<int, IPokemon> pokedex)
     {
         ArgumentNullException.ThrowIfNull(pokedex);
-        
+
+        const int horizontalSpacing = 2; // Space between boxes
+        const int boxWidth = 25; // Fixed box width for uniform size
         int count = 0;
+
         List<string[]> boxes = new List<string[]>();
-        
+
         foreach (var entry in pokedex)
         {
-            // Get the formatted box lines for each Pokémon and add to list
-            boxes.Add(FormatPokemonBox(entry.Key, entry.Value.Name, entry.Value.Health));
+            // Format the Pokémon entry with fixed box size
+            boxes.Add(FormatPokemonBox(entry.Key, entry.Value.Name, entry.Value.Health, boxWidth));
             count++;
 
-            // After every 5 Pokémon, print a new row
+            // After every 5 Pokémon, print a row and clear the box list
             if (count % 5 == 0)
             {
-                PrintRow(boxes);
-                boxes.Clear(); // Clear boxes for the next row
+                PrintRow(boxes, horizontalSpacing);
+                boxes.Clear();
             }
         }
 
-        // Print any remaining boxes if the last row was not complete
+        // Print any remaining boxes if the last row is incomplete
         if (boxes.Count > 0)
         {
-            PrintRow(boxes);
-        }
-
-        // Ensure that each box is properly closed (this will print the bottom border)
-        CloseBoxes(boxes);
-    }
-
-    /// <summary>
-    /// Closes each Pokémon box with the bottom border.
-    /// </summary>
-    /// <param name="boxes">The list of Pokémon box strings to be closed.</param>
-    private static void CloseBoxes(List<string[]> boxes)
-    {
-        foreach (var box in boxes)
-        {
-            // Print the bottom border for each box
-            Console.WriteLine(box[box.Length - 1]); // The last line in each box is the bottom border
+            PrintRow(boxes, horizontalSpacing);
         }
     }
 
-
     /// <summary>
-    /// Formats a Pokémon entry as an array of strings representing each line of the box.
+    /// Formats a Pokémon entry as a fixed-width box.
     /// </summary>
-    /// <param name="index">The index of the Pokémon.</param>
-    /// <param name="name">The name of the Pokémon.</param>
-    /// <param name="life">The life points of the Pokémon.</param>
-    /// <returns>An array of strings, each representing a line in the box format.</returns>
-    private static string[] FormatPokemonBox(int index, string name, int life)
+    private static string[] FormatPokemonBox(int index, string name, int life, int boxWidth)
     {
-        // Messages to display
         string indexMessage = $"Number: {index}";
         string nameMessage = $"Name: {name}";
         string lifeMessage = $"Life: {life}";
 
-        // Determine the maximum message length to set box width
-        int maxMessageLength = Math.Max(indexMessage.Length, Math.Max(nameMessage.Length, lifeMessage.Length));
-        int boxWidth = maxMessageLength + 4; // Add space for borders and padding
-
-        // Construct the top and bottom borders of the box
+        // Top and bottom borders
         string boxTop = $"╔{new string('═', boxWidth - 2)}╗";
         string boxBottom = $"╚{new string('═', boxWidth - 2)}╝";
 
-        // Format each line, centering the messages
+        // Center-align messages and pad them to fit the box width
         string indexLine = $"║ {indexMessage.PadRight(boxWidth - 4)} ║";
         string nameLine = $"║ {nameMessage.PadRight(boxWidth - 4)} ║";
         string lifeLine = $"║ {lifeMessage.PadRight(boxWidth - 4)} ║";
 
-        // Return the formatted box as an array of strings
+        // Return the box as an array of strings
         return new string[] { boxTop, indexLine, nameLine, lifeLine, boxBottom };
     }
 
     /// <summary>
-    /// Prints a row of Pokémon boxes side-by-side without adding extra spaces between boxes.
+    /// Prints a row of Pokémon boxes with horizontal spacing.
     /// </summary>
-    /// <param name="boxes">List of box lines for the row.</param>
-    private static void PrintRow(List<string[]> boxes)
-{
-    // Imprime cada línea de las cajas en secuencia para todas las cajas en la fila
-    for (int i = 0; i < boxes[0].Length; i++)
+    private static void PrintRow(List<string[]> boxes, int spacing)
     {
-        foreach (var box in boxes)
-        {
-            // Imprime cada línea de la caja directamente, sin espacios adicionales
-            Console.Write(box[i]);
-        }
+        string space = new string(' ', spacing);
 
-        // Mueve a la siguiente línea después de imprimir una fila de cajas
-        Console.WriteLine();
+        // Print each line of the boxes row by row
+        for (int i = 0; i < boxes[0].Length; i++)
+        {
+            for (int j = 0; j < boxes.Count; j++)
+            {
+                // Print the line of the current box with spacing
+                Console.Write(boxes[j][i]);
+
+                // Add space between boxes, except after the last one
+                if (j < boxes.Count - 1)
+                {
+                    Console.Write(space);
+                }
+            }
+
+            // Move to the next line
+            Console.WriteLine();
+        }
     }
 
-    // Imprime una línea adicional solo si es necesario (esto se podría eliminar si no es deseado)
-    Console.WriteLine();
-}
 
 
 
@@ -245,9 +230,10 @@ public static class Printer
     /// <param name="name"></param>
     public static void AskForPokemon(int index, string name)
     {
-        Console.Write($"{name}! Pick your Pokemon N°{index }: ");
+        Console.Write($"{name}! Pick your Pokemon N°{index}: ");
         Console.WriteLine("");
     }
+
 
     /// <summary>
     /// Shows the user inventory in a boxed format.
@@ -256,22 +242,26 @@ public static class Printer
     public static void ShowInventory(List<IPokemon> inventory)
     {
         ArgumentNullException.ThrowIfNull(inventory);
-        Console.Clear();
-        PrintInventoryHeader(); // Print the "Your Inventory" header
-        
+    
+        const int horizontalSpacing = 4; // Spacing between boxes
+        const int boxWidth = 20;         // Fixed width for consistent box size
+
+        // Print the "Your Inventory" header
+        PrintInventoryHeader();
+
         int count = 0;
         List<string[]> boxes = new List<string[]>();
 
         foreach (IPokemon pokemon in inventory)
         {
-            // Create and add the formatted box for each Pokémon to the list
-            boxes.Add(FormatPokemonBox(count + 1, pokemon.Name, pokemon.Health));
+            // Create and add the formatted box for each Pokémon
+            boxes.Add(FormatPokemonBox(count + 1, pokemon.Name, pokemon.Health, boxWidth));
             count++;
 
             // Print a row after every 3 Pokémon or when reaching the end of the list
             if (count % 3 == 0 || count == inventory.Count)
             {
-                PrintRow(boxes);
+                PrintRow(boxes, horizontalSpacing);
                 boxes.Clear(); // Clear for the next row
             }
         }
@@ -387,6 +377,8 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
     }
 
     Console.WriteLine(); // Extra line for spacing
+    Console.Write("Select the attack: ");
+    
 }
 
 
@@ -432,6 +424,7 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         Console.WriteLine($"║ {line6.PadRight(boxWidth - 2)} ║");
 
         Console.WriteLine(bottomBorder);
+        Console.Write("Select the action: ");
     }
 
 
@@ -581,36 +574,54 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
     /// we can give this information to the player.
     /// </summary>
     /// <param name="items">List of items of the player.  </param>
-    public static void PrintearItems(List<List<Item>> items)
+    public static void PrintItems(List<List<Item>> items)
     {
         // Check if the items list is null or empty
-        if (items != null && items.Count > 0)
+        if (items == null || items.Count == 0)
         {
-            // Create a table-like header
-            Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine($"║  You have these items:                ║");
-
-            // Loop through each category of items
-            for (int i = 0; i < items.Count; i++)
-            {
-                // Check if the current category has items in it
-                if (items[i].Count > 0)
-                {
-                    // Dynamically display the item category and count
-                    string itemName = items[i].FirstOrDefault()?.Name ?? "Unnamed Item";
-                    Console.WriteLine($"║ {i + 1}) {itemName} x{items[i].Count,-4}    ║");
-                }
-            }
-
-            // Close the table-like border
-            Console.WriteLine("╚═══════════════════════════════════════╝");
-        }
-        else
-        {
-            // If no items are available
             Console.WriteLine("You don't have any items.");
+            return;
         }
+
+        // Prepare the list of lines to display
+        List<string> lines = new List<string>
+        {
+            "You have these items:"
+        };
+
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].Count > 0)
+            {
+                string itemName = items[i].FirstOrDefault()?.Name ?? "Unnamed Item";
+                lines.Add($"{i + 1}) {itemName} x{items[i].Count}");
+            }
+        }
+
+        if (lines.Count == 1)
+        {
+            Console.WriteLine("You don't have any items.");
+            return;
+        }
+
+        // Calculate the box width dynamically
+        int boxWidth = lines.Max(line => line.Length) + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        string emptyLine = $"║{new string(' ', boxWidth - 2)}║";
+
+        // Print the box
+        Console.Clear();
+        Console.WriteLine(topBorder);
+        foreach (string line in lines)
+        {
+            Console.WriteLine($"║ {line.PadRight(boxWidth - 4)} ║");
+        }
+        Console.WriteLine(bottomBorder);
     }
+
     /// <summary>
     /// Displays a summary of the attack performed during the battle.
     /// </summary>
@@ -618,29 +629,40 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
     /// <param name="attack">The attack used by the Pokémon.</param>
     /// <param name="receiver">The Pokémon that received the attack.</param>
     /// <param name="damage">The amount of damage inflicted.</param>
-    public static void AttackSummary(IPokemon attacker, IAttack attack, IPokemon receiver, int damage)
+    /// <param name="critical">Indicates if the attack was critical.</param>
+    public static void AttackSummary(IPokemon attacker, IAttack attack, IPokemon receiver, int damage, bool critical)
     {
-        // Calculate the width dynamically based on the longest line
-        if (attacker != null && receiver != null && attack != null)
+        if (attacker == null || attack == null || receiver == null)
         {
-            string line1 = $"{attacker.Name} used {attack.Name}!";
-            string line2 = $"It dealt {damage} damage.";
-            string line3 = $"{receiver.Name} has {receiver.Health} HP remaining.";
-
-            int boxWidth = Math.Max(line1.Length, Math.Max(line2.Length, line3.Length)) + 4;
-
-            // Create borders
-            string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
-            string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
-
-            // Print attack summary
-            Console.WriteLine(topBorder);
-            Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
-            Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
-            Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
-            Console.WriteLine(bottomBorder);
+            Console.WriteLine("Invalid attack details provided.");
+            return;
         }
+
+        // Prepare the lines for the summary
+        string line1 = $"{attacker.Name} used {attack.Name}!";
+        string line2 = $"It dealt {damage} damage.";
+        string line3 = $"{receiver.Name} has {receiver.Health} HP remaining.";
+        string line4 = critical
+            ? $"{attack.Name} was a critical hit! X1.20 damage!"
+            : "The attack was not a critical hit.";
+
+        // Determine the box width dynamically
+        int boxWidth = Math.Max(line1.Length, Math.Max(line2.Length, Math.Max(line3.Length, line4.Length))) + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Print the attack summary
+        Console.Clear();
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line4.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
     }
+
 
     /// <summary>
     /// 
@@ -698,6 +720,99 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
         Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
         Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
+
+    /// <summary>
+    /// We really needed this
+    /// </summary>
+    public static void PressToContinue()
+    {
+        string line1 = $"Press any key to continue!";
+        int boxWidth = (line1.Length) + 4;
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        // Print 
+        
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+        Console.ReadKey();
+    }
+
+    /// <summary>
+    /// Lets the player know its Pokémon was affected by the attack.
+    /// </summary>
+    /// <param name="attack"></param>
+    /// <param name="receiver"></param>
+    public static void WasAfected(IPokemon receiver, IAttack attack)
+    {
+        ArgumentNullException.ThrowIfNull(attack);
+        ArgumentNullException.ThrowIfNull(receiver);
+        string line1 = $"{receiver.Name} is affected by {attack.Name}'s special effect!";
+        int boxWidth = (line1.Length) + 4;
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        // Print 
+        
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
+    
+    /// <summary>
+    /// Displays a summary of the attack performed during the battle.
+    /// </summary>
+    /// <param name="attacker">The Pokémon that performed the attack.</param>
+    /// <param name="attack">The attack used by the Pokémon.</param>
+    /// <param name="receiver">The Pokémon that received the attack.</param>
+    /// <param name="damage">The amount of damage inflicted.</param>
+    /// <param name="critical">Indicates if the attack was critical.</param>
+    public static void MissedAttack(IAttack attack, string name)
+    {
+        if (attack == null)
+        {
+            Console.WriteLine("Invalid attack details provided.");
+            return;
+        }
+
+        
+        string line1 = $"{name} missed the attack {attack.Name}!";
+        string line2 = $"It dealt 0 damage.";
+
+        // Determine the box width dynamically
+        int boxWidth = Math.Max(line1.Length, line2.Length) + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Print the attack summary
+        Console.Clear();
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
+
+    /// <summary>
+    /// Box that lets the player know it has lost its turn due to the status
+    /// of its Pokémon.
+    /// </summary>
+    public static void SkippingDueToStatus()
+    {
+        string line1 = $"Skipping turn due to status effect.";
+        // Determine the box width dynamically
+        int boxWidth = line1.Length + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        
+        // Print 
+        Console.Clear();
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
         Console.WriteLine(bottomBorder);
     }
 
