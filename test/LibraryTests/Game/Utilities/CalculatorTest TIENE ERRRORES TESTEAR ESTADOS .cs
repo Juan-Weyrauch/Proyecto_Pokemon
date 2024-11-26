@@ -19,22 +19,22 @@ namespace Library.Tests
 
         // Setup runs before each test
         [SetUp]
-        public void Setup()
-        {
-            // Create example attacks
-            _fireAttack = new Attack("Flame Thrower", 90, SpecialEffect.None, "Fire", 100);
-            _electricAttack = new Attack("Thunderbolt", 50, SpecialEffect.None, "Electric", 100);
-            _waterAttack = new Attack("Water Gun", 40, SpecialEffect.None, "Water", 100);
+            public void Setup()
+            {
+                // Create example attacks
+                _fireAttack = new Attack("Flame Thrower", 90, SpecialEffect.None, "Fire", 100);
+                _electricAttack = new Attack("Thunderbolt", 50, SpecialEffect.None, "Electric", 100);
+                _waterAttack = new Attack("Water Gun", 40, SpecialEffect.None, "Water", 100);
 
-            // Create example Pokémon
-            _bulbasaur = new Pokemon("Bulbasaur", 100, "Plant", new List<IAttack> { _waterAttack });
-            _squirtle = new Pokemon("Squirtle", 100, "Water", new List<IAttack> { _waterAttack });
-            _electrode = new Pokemon("Electrode", 100, "Electric", new List<IAttack> { _electricAttack });
+                // Create example Pokémon
+                _bulbasaur = new Pokemon("Bulbasaur", 100, "Plant", new List<IAttack> { _waterAttack });
+                _squirtle = new Pokemon("Squirtle", 100, "Water", new List<IAttack> { _waterAttack });
+                _electrode = new Pokemon("Electrode", 100, "Electric", new List<IAttack> { _electricAttack });
 
-            // Manually initialize players
+                // Manually initialize players
 
-            
-        }
+                
+            }
 
         // TearDown runs after each test
         [TearDown]
@@ -146,30 +146,38 @@ namespace Library.Tests
             // Assert: Player 2 should not have active Pokémon
             Assert.That(result, Is.False, "Player 2 should not have active Pokémon.");
         }
-
         [Test]
         public void ValidateSelectionInGivenRange_ShouldReturnValidNumber_WithinRange()
         {
-            // Arrange: Using valid inputs
-            var mockInput = "5";
+            // Arrange: Usar una entrada válida ("5")
+            var mockInput = "5";  // El valor que simularemos como entrada
             int min = 1;
             int max = 10;
 
-            // Act: Simulate valid input
+            // Redirigir la entrada estándar de Console para que use el mockInput
+            var reader = new StringReader(mockInput);
+            Console.SetIn(reader);
+
+            // Act: Llamar al método que validará la entrada
             int result = Calculator.ValidateSelectionInGivenRange(min, max);
 
-            // Assert: The result should be the same valid input, i.e., 5
-            Assert.That(result, Is.EqualTo(5), "The number should be within the given range.");
+            // Assert: El resultado debe ser igual al valor de entrada ("5")
+            Assert.That(result, Is.EqualTo(5), "El número debería estar dentro del rango especificado.");
         }
+
 
         // Test ValidateSelectionInGivenRange for input less than the min value
         [Test]
         public void ValidateSelectionInGivenRange_ShouldPromptForInput_IfLessThanMin()
         {
             // Arrange: Using input less than the min range
-            var mockInput = "0";
+            string mockInput = "0\n5"; // Primero una entrada inválida (0), luego una válida (5)
             int min = 1;
             int max = 10;
+
+            // Redirigir la entrada estándar para simular la entrada del usuario
+            var reader = new StringReader(mockInput);
+            Console.SetIn(reader);
 
             // Act: Validate input less than min (should retry until valid input is provided)
             int result = Calculator.ValidateSelectionInGivenRange(min, max);
@@ -179,20 +187,26 @@ namespace Library.Tests
         }
 
         // Test ValidateSelectionInGivenRange for input greater than the max value
+        
+       
         [Test]
+        
         public void ValidateSelectionInGivenRange_ShouldPromptForInput_IfGreaterThanMax()
         {
-            // Arrange: Using input greater than the max range
-            var mockInput = "11";
+            // Arrange: Usar entrada fuera del rango, luego una válida
+            var mockInput = "11\n5"; // Primero un valor fuera de rango ("11"), luego un valor válido ("5")
             int min = 1;
             int max = 10;
-            
 
-            // Act: Validate input greater than max (should retry until valid input is provided)
+            // Redirigir Console.ReadLine() para que devuelva los valores que simulamos
+            var reader = new StringReader(mockInput);
+            Console.SetIn(reader);
+
+            // Act: Llamar al método para validar que el valor se corrige después del primer intento fallido
             int result = Calculator.ValidateSelectionInGivenRange(min, max);
 
-            // Assert: The result should be valid and within the range
-            Assert.That(result, Is.InRange(min, max), "The number should be within the given range.");
+            // Assert: El resultado debe ser un valor dentro del rango válido
+            Assert.That(result, Is.InRange(min, max), "El número debería estar dentro del rango especificado.");
         }
 
         // Test ValidateSelectionInGivenRange for invalid (non-numeric) input
@@ -200,10 +214,11 @@ namespace Library.Tests
         public void ValidateSelectionInGivenRange_ShouldPromptForInput_IfNotANumber()
         {
             // Arrange: Using invalid (non-numeric) input
-            var mockInput = "abc";
+            var mockInput = "abc\n5";
             int min = 1;
             int max = 10;
-
+            var reader = new StringReader(mockInput);
+            Console.SetIn(reader);
             // Act: Validate non-numeric input (should prompt user again)
             int result = Calculator.ValidateSelectionInGivenRange(min, max);
 
@@ -265,33 +280,30 @@ public void InfringeDamage_ShouldNotReduceHealthBelowZero()
     Assert.That(_bulbasaur.Health, Is.EqualTo(0), "Health should not go below zero");
 }
 
+
 [Test]
 public void InfringeDamage_ShouldThrowArgumentNullException_WhenAttackIsNull()
 {
-    // Assert
-    Assert.Throws<ArgumentNullException>(() => 
-        Calculator.InfringeDamage(null, _bulbasaur, _electrode), 
-        "Should throw ArgumentNullException when attack is null");
+    var ex = Assert.Throws<ArgumentNullException>(() => 
+        Calculator.InfringeDamage(null, _bulbasaur, _electrode));
+    Assert.That(ex.ParamName, Is.EqualTo("attack"));
 }
 
 [Test]
 public void InfringeDamage_ShouldThrowArgumentNullException_WhenReceiverIsNull()
 {
-    // Assert
-    Assert.Throws<ArgumentNullException>(() => 
-        Calculator.InfringeDamage(_fireAttack, null, _electrode), 
-        "Should throw ArgumentNullException when receiver is null");
+    var ex = Assert.Throws<ArgumentNullException>(() => 
+        Calculator.InfringeDamage(_fireAttack, null, _electrode));
+    Assert.That(ex.ParamName, Is.EqualTo("receiver"));
 }
 
 [Test]
 public void InfringeDamage_ShouldThrowArgumentNullException_WhenAttackerIsNull()
 {
-    // Assert
-    Assert.Throws<ArgumentNullException>(() => 
-        Calculator.InfringeDamage(_fireAttack, _bulbasaur, null), 
-        "Should throw ArgumentNullException when attacker is null");
+    var ex = Assert.Throws<ArgumentNullException>(() => 
+        Calculator.InfringeDamage(_fireAttack, _bulbasaur, null));
+    Assert.That(ex.ParamName, Is.EqualTo("attacker"));
 }
-
 [Test]
 public void InfringeDamage_ShouldCalculateDamageCorrectly_WithResistance()
 {
@@ -313,4 +325,6 @@ public void InfringeDamage_ShouldCalculateDamageCorrectly_WithResistance()
 }
         // Test GetEffectivenessMultiplier for various scenarios
         }
+    
 }
+    
