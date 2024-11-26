@@ -256,7 +256,7 @@ public static class Printer
     public static void ShowInventory(List<IPokemon> inventory)
     {
         ArgumentNullException.ThrowIfNull(inventory);
-        Console.Clear();
+        
         PrintInventoryHeader(); // Print the "Your Inventory" header
         
         int count = 0;
@@ -387,6 +387,8 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
     }
 
     Console.WriteLine(); // Extra line for spacing
+    Console.Write("Select the attack: ");
+    
 }
 
 
@@ -432,6 +434,7 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         Console.WriteLine($"║ {line6.PadRight(boxWidth - 2)} ║");
 
         Console.WriteLine(bottomBorder);
+        Console.Write("Select the action: ");
     }
 
 
@@ -581,36 +584,54 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
     /// we can give this information to the player.
     /// </summary>
     /// <param name="items">List of items of the player.  </param>
-    public static void PrintearItems(List<List<Item>> items)
+    public static void PrintItems(List<List<Item>> items)
     {
         // Check if the items list is null or empty
-        if (items != null && items.Count > 0)
+        if (items == null || items.Count == 0)
         {
-            // Create a table-like header
-            Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine($"║  You have these items:                ║");
-
-            // Loop through each category of items
-            for (int i = 0; i < items.Count; i++)
-            {
-                // Check if the current category has items in it
-                if (items[i].Count > 0)
-                {
-                    // Dynamically display the item category and count
-                    string itemName = items[i].FirstOrDefault()?.Name ?? "Unnamed Item";
-                    Console.WriteLine($"║ {i + 1}) {itemName} x{items[i].Count,-4}    ║");
-                }
-            }
-
-            // Close the table-like border
-            Console.WriteLine("╚═══════════════════════════════════════╝");
-        }
-        else
-        {
-            // If no items are available
             Console.WriteLine("You don't have any items.");
+            return;
         }
+
+        // Prepare the list of lines to display
+        List<string> lines = new List<string>
+        {
+            "You have these items:"
+        };
+
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].Count > 0)
+            {
+                string itemName = items[i].FirstOrDefault()?.Name ?? "Unnamed Item";
+                lines.Add($"{i + 1}) {itemName} x{items[i].Count}");
+            }
+        }
+
+        if (lines.Count == 1)
+        {
+            Console.WriteLine("You don't have any items.");
+            return;
+        }
+
+        // Calculate the box width dynamically
+        int boxWidth = lines.Max(line => line.Length) + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        string emptyLine = $"║{new string(' ', boxWidth - 2)}║";
+
+        // Print the box
+        Console.Clear();
+        Console.WriteLine(topBorder);
+        foreach (string line in lines)
+        {
+            Console.WriteLine($"║ {line.PadRight(boxWidth - 4)} ║");
+        }
+        Console.WriteLine(bottomBorder);
     }
+
     /// <summary>
     /// Displays a summary of the attack performed during the battle.
     /// </summary>
@@ -618,29 +639,40 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
     /// <param name="attack">The attack used by the Pokémon.</param>
     /// <param name="receiver">The Pokémon that received the attack.</param>
     /// <param name="damage">The amount of damage inflicted.</param>
-    public static void AttackSummary(IPokemon attacker, IAttack attack, IPokemon receiver, int damage)
+    /// <param name="critical">Indicates if the attack was critical.</param>
+    public static void AttackSummary(IPokemon attacker, IAttack attack, IPokemon receiver, int damage, bool critical)
     {
-        // Calculate the width dynamically based on the longest line
-        if (attacker != null && receiver != null && attack != null)
+        if (attacker == null || attack == null || receiver == null)
         {
-            string line1 = $"{attacker.Name} used {attack.Name}!";
-            string line2 = $"It dealt {damage} damage.";
-            string line3 = $"{receiver.Name} has {receiver.Health} HP remaining.";
-
-            int boxWidth = Math.Max(line1.Length, Math.Max(line2.Length, line3.Length)) + 4;
-
-            // Create borders
-            string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
-            string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
-
-            // Print attack summary
-            Console.WriteLine(topBorder);
-            Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
-            Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
-            Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
-            Console.WriteLine(bottomBorder);
+            Console.WriteLine("Invalid attack details provided.");
+            return;
         }
+
+        // Prepare the lines for the summary
+        string line1 = $"{attacker.Name} used {attack.Name}!";
+        string line2 = $"It dealt {damage} damage.";
+        string line3 = $"{receiver.Name} has {receiver.Health} HP remaining.";
+        string line4 = critical
+            ? $"{attack.Name} was a critical hit! X1.20 damage!"
+            : "The attack was not a critical hit.";
+
+        // Determine the box width dynamically
+        int boxWidth = Math.Max(line1.Length, Math.Max(line2.Length, Math.Max(line3.Length, line4.Length))) + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Print the attack summary
+        Console.Clear();
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line4.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
     }
+
 
     /// <summary>
     /// 
@@ -698,6 +730,99 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
         Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
         Console.WriteLine($"║ {line3.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
+
+    /// <summary>
+    /// We really needed this
+    /// </summary>
+    public static void PressToContinue()
+    {
+        string line1 = $"Press any key to continue!";
+        int boxWidth = (line1.Length) + 4;
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        // Print 
+        
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+        Console.ReadKey();
+    }
+
+    /// <summary>
+    /// Lets the player know its Pokémon was affected by the attack.
+    /// </summary>
+    /// <param name="attack"></param>
+    /// <param name="receiver"></param>
+    public static void WasAfected(IPokemon receiver, IAttack attack)
+    {
+        ArgumentNullException.ThrowIfNull(attack);
+        ArgumentNullException.ThrowIfNull(receiver);
+        string line1 = $"{receiver.Name} is affected by {attack.Name}'s special effect!";
+        int boxWidth = (line1.Length) + 4;
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        // Print 
+        
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
+    
+    /// <summary>
+    /// Displays a summary of the attack performed during the battle.
+    /// </summary>
+    /// <param name="attacker">The Pokémon that performed the attack.</param>
+    /// <param name="attack">The attack used by the Pokémon.</param>
+    /// <param name="receiver">The Pokémon that received the attack.</param>
+    /// <param name="damage">The amount of damage inflicted.</param>
+    /// <param name="critical">Indicates if the attack was critical.</param>
+    public static void MissedAttack(IAttack attack, string name)
+    {
+        if (attack == null)
+        {
+            Console.WriteLine("Invalid attack details provided.");
+            return;
+        }
+
+        
+        string line1 = $"{name} missed the attack {attack.Name}!";
+        string line2 = $"It dealt 0 damage.";
+
+        // Determine the box width dynamically
+        int boxWidth = Math.Max(line1.Length, line2.Length) + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Print the attack summary
+        Console.Clear();
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
+
+    /// <summary>
+    /// Box that lets the player know it has lost its turn due to the status
+    /// of its Pokémon.
+    /// </summary>
+    public static void SkippingDueToStatus()
+    {
+        string line1 = $"Skipping turn due to status effect.";
+        // Determine the box width dynamically
+        int boxWidth = line1.Length + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        
+        // Print 
+        Console.Clear();
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
         Console.WriteLine(bottomBorder);
     }
 

@@ -70,7 +70,7 @@ public static class Facade
             // Selección del Pokémon inicial
             Printer.ShowInventory(playerPokemons);
             Console.Write("\nPick your starting Pokemon: \n> ");
-            int starterSelection = Calculator.ValidateSelectionInGivenRange(1, 6);
+            int starterSelection = Calculator.ValidateSelectionInGivenRange(1, playerPokemons.Count);
             IPokemon selectedPokemon = playerPokemons[starterSelection - 1];
 
             // Crear jugadores en el sistema

@@ -133,18 +133,17 @@ public class Pokemon : IPokemon
                 auxHealth -= Health;
                 
                 Printer.DisplayEffect(this.Name, this.State, auxHealth);
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
+                Printer.PressToContinue();
                 break;
             case SpecialEffect.Burn:
                 auxHealth = Health;
                 Health -= (int)(0.10 * InitialHealth);
                 if (Health < 0) Health = 0;
                 auxHealth -= Health;
-
+                
                 Printer.DisplayEffect(this.Name, this.State, auxHealth);
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
+                Printer.PressToContinue();
+                
                 break;
             // Add cases for other states if needed
         }

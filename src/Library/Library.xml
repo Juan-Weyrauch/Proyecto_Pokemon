@@ -20,19 +20,17 @@
             Starts the battle by selecting the turn order and guiding each player's actions.
             </summary>
         </member>
+        <member name="M:Library.Facade.Battle.ProcessTurnEffectsForPlayers(Library.Game.Players.Player)">
+            <summary>
+            Process turn-based effects for current players' Pokémon
+            </summary>
+        </member>
         <member name="M:Library.Facade.Battle.PlayerAction(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
             <summary>
             Handles the selected action for the current player's turn.
             </summary>
             <param name="player">The current player whose turn is being handled.</param>
             <param name="rival">The opposing player in the battle.</param>
-        </member>
-        <member name="M:Library.Facade.Battle.StateValidation(Library.Game.Players.IPlayer)">
-            <summary>
-            
-            </summary>
-            <param name="player"></param>
-            <returns></returns>
         </member>
         <member name="M:Library.Facade.Battle.Attack(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
             <summary>
@@ -44,6 +42,14 @@
             <param name="player">The player performing the attack.</param>
             <param name="rival">The opposing player who is receiving the attack.</param>
         </member>
+        <member name="M:Library.Facade.Battle.UseItem(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
+            <summary>
+            Method that allows the player to use an item during their turn. 
+            Depending on the item, the player may use it on a Pokémon from their team or the cemetery.
+            </summary>
+            <param name="player">The player using the item.</param>
+            <param name="rival">The opposing player in the battle.</param>
+        </member>
         <member name="M:Library.Facade.Battle.VoluntarySwitchPokemon(Library.Game.Players.IPlayer)">
             <summary>
             Method that allows the player to voluntarily change their selected Pokémon during their turn.
@@ -51,19 +57,11 @@
             <param name="player">The player attempting to switch their Pokémon.</param>
             <returns>Returns a boolean indicating whether the Pokémon was successfully switched.</returns>
         </member>
-        <member name="M:Library.Facade.Battle.ForceSwitchPokemon(Library.Game.Players.IPlayer)">
+        <member name="M:Library.Facade.Battle.ForceSwitchPokemon(Library.Game.Players.Player)">
             <summary>
             Method that allows the player to change their Pokémon, forced by the defeat of the current Pokémon.
             </summary>
             <param name="player">The player who needs to switch their defeated Pokémon.</param>
-        </member>
-        <member name="M:Library.Facade.Battle.UseItemAux(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
-            <summary>
-            Method that allows the player to use an item during their turn. 
-            Depending on the item, the player may use it on a Pokémon from their team or the cemetery.
-            </summary>
-            <param name="player">The player using the item.</param>
-            <param name="rival">The opposing player in the battle.</param>
         </member>
         <member name="T:Library.Facade.Facade">
             <summary>
@@ -668,7 +666,15 @@
                 1) Determining the effectiveness of the attack used.
             </summary>
             <param name="attack"></param>
-            <param name="rival"></param>
+            <param name="receiver"></param>
+            <param name="attacker"></param>
+        </member>
+        <member name="M:Library.Game.Utilities.Calculator.StateValidation(Library.Game.Players.IPlayer)">
+            <summary>
+            
+            </summary>
+            <param name="player"></param>
+            <returns></returns>
         </member>
         <member name="T:Library.Game.Utilities.Catalogue">
             <summary>
@@ -854,14 +860,14 @@
             Lets the player see that the action has been canceled.
             </summary>
         </member>
-        <member name="M:Library.Game.Utilities.Printer.PrintearItems(System.Collections.Generic.List{System.Collections.Generic.List{Library.Game.Items.Item}})">
+        <member name="M:Library.Game.Utilities.Printer.PrintItems(System.Collections.Generic.List{System.Collections.Generic.List{Library.Game.Items.Item}})">
             <summary>
             This a method to print the list of items from each player, this make possible that
             we can give this information to the player.
             </summary>
             <param name="items">List of items of the player.  </param>
         </member>
-        <member name="M:Library.Game.Utilities.Printer.AttackSummary(Library.Game.Pokemons.IPokemon,Library.Game.Attacks.IAttack,Library.Game.Pokemons.IPokemon,System.Int32)">
+        <member name="M:Library.Game.Utilities.Printer.AttackSummary(Library.Game.Pokemons.IPokemon,Library.Game.Attacks.IAttack,Library.Game.Pokemons.IPokemon,System.Int32,System.Boolean)">
             <summary>
             Displays a summary of the attack performed during the battle.
             </summary>
@@ -869,6 +875,7 @@
             <param name="attack">The attack used by the Pokémon.</param>
             <param name="receiver">The Pokémon that received the attack.</param>
             <param name="damage">The amount of damage inflicted.</param>
+            <param name="critical">Indicates if the attack was critical.</param>
         </member>
         <member name="M:Library.Game.Utilities.Printer.CantAttackBecauseOfStatus(Library.Game.Pokemons.IPokemon)">
             <summary>
@@ -883,6 +890,34 @@
             <param name="name"></param>
             <param name="effect"></param>
             <param name="losedHealth"></param>
+        </member>
+        <member name="M:Library.Game.Utilities.Printer.PressToContinue">
+            <summary>
+            We really needed this
+            </summary>
+        </member>
+        <member name="M:Library.Game.Utilities.Printer.WasAfected(Library.Game.Pokemons.IPokemon,Library.Game.Attacks.IAttack)">
+            <summary>
+            Lets the player know its Pokémon was affected by the attack.
+            </summary>
+            <param name="attack"></param>
+            <param name="receiver"></param>
+        </member>
+        <member name="M:Library.Game.Utilities.Printer.MissedAttack(Library.Game.Attacks.IAttack,System.String)">
+            <summary>
+            Displays a summary of the attack performed during the battle.
+            </summary>
+            <param name="attacker">The Pokémon that performed the attack.</param>
+            <param name="attack">The attack used by the Pokémon.</param>
+            <param name="receiver">The Pokémon that received the attack.</param>
+            <param name="damage">The amount of damage inflicted.</param>
+            <param name="critical">Indicates if the attack was critical.</param>
+        </member>
+        <member name="M:Library.Game.Utilities.Printer.SkippingDueToStatus">
+            <summary>
+            Box that lets the player know it has lost its turn due to the status
+            of its Pokémon.
+            </summary>
         </member>
     </members>
 </doc>
