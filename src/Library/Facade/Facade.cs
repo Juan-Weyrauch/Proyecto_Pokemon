@@ -60,7 +60,7 @@ public static class Facade
             Printer.ShowCatalogue(Catalogue.GetPokedex());
 
             // Selección de los Pokémon del jugador
-            for (int j = 0; j < 6; j++)
+            for (int j = 0; j < 2; j++)
             {
                 Printer.AskForPokemon(j + 1, playerName); // Mostrar mensaje para seleccionar Pokémon
                 int playerSelection = Calculator.ValidateSelectionInGivenRange(1, 20);

@@ -280,11 +280,9 @@ public static class Battle
         
         // se efectúa el cambio
         player.SwitchPokemon(selectedIndex);
+        Printer.SwitchConfirmation(player, 0);
         Console.WriteLine($"{player.Name} switched to {selectedPokemon.Name}.");
         Console.ReadLine();
         
-        // se muestra al usuario el inventario actualizado
-        Printer.ShowInventory(player.Pokemons);
-        Printer.PressToContinue();
     }
 }

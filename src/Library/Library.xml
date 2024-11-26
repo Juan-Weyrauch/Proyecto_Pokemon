@@ -762,29 +762,18 @@
         </member>
         <member name="M:Library.Game.Utilities.Printer.ShowCatalogue(System.Collections.Generic.Dictionary{System.Int32,Library.Game.Pokemons.IPokemon})">
             <summary>
-            This method has to show the player all the Pokémon available for selection in a fashion manner.
+            Displays the Pokémon catalogue in a formatted grid with equal box sizes and horizontal spacing.
             </summary>
         </member>
-        <member name="M:Library.Game.Utilities.Printer.CloseBoxes(System.Collections.Generic.List{System.String[]})">
+        <member name="M:Library.Game.Utilities.Printer.FormatPokemonBox(System.Int32,System.String,System.Int32,System.Int32)">
             <summary>
-            Closes each Pokémon box with the bottom border.
+            Formats a Pokémon entry as a fixed-width box.
             </summary>
-            <param name="boxes">The list of Pokémon box strings to be closed.</param>
         </member>
-        <member name="M:Library.Game.Utilities.Printer.FormatPokemonBox(System.Int32,System.String,System.Int32)">
+        <member name="M:Library.Game.Utilities.Printer.PrintRow(System.Collections.Generic.List{System.String[]},System.Int32)">
             <summary>
-            Formats a Pokémon entry as an array of strings representing each line of the box.
+            Prints a row of Pokémon boxes with horizontal spacing.
             </summary>
-            <param name="index">The index of the Pokémon.</param>
-            <param name="name">The name of the Pokémon.</param>
-            <param name="life">The life points of the Pokémon.</param>
-            <returns>An array of strings, each representing a line in the box format.</returns>
-        </member>
-        <member name="M:Library.Game.Utilities.Printer.PrintRow(System.Collections.Generic.List{System.String[]})">
-            <summary>
-            Prints a row of Pokémon boxes side-by-side without adding extra spaces between boxes.
-            </summary>
-            <param name="boxes">List of box lines for the row.</param>
         </member>
         <member name="M:Library.Game.Utilities.Printer.AskForPokemon(System.Int32,System.String)">
             <summary>
