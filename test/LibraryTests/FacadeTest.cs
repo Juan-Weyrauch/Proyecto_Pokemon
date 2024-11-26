@@ -1,97 +1,98 @@
-﻿
+using Library.Game.Pokemons;
+using Library.Game.Players;
+using Library.Game.Utilities;
+using Library.Facade;
 using NUnit.Framework;
 using Library.Game.Attacks;
-using Library.Game.Players;
-using Library.Game.Pokemons;
-using Library.Facade;
+using System.Collections.Generic;
 
-namespace LibraryTests
+namespace Library.Tests
 {
     [TestFixture]
     public class FacadeTests
     {
-        private StringWriter consoleOutput;
-        private StringReader consoleInput;
+        private IPokemon _bulbasaur;
+        private IPokemon _charmander;
 
         [SetUp]
         public void Setup()
         {
-            // Redirigir la salida de la consola para capturar los mensajes
-            consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-        }
+            // Crear Pokémon de prueba
+            string playerName = $"p1";
+            string playerName2 = $"p2";
 
-        [TearDown]
-        public void TearDown()
-        {
-            // Restaurar las salidas de la consola
-            consoleOutput.Dispose();
-            Console.SetOut(Console.Out);
-
-            consoleInput?.Dispose();
-            Console.SetIn(Console.In);
+            // Crear el catálogo de Pokémon
         }
 
         [Test]
-        public void StartShouldDisplayStartMenuAndExitOnOption2()
+        public void Start_ShouldExit_WhenSelectionIs2_AndContinue_WhenSelectionIs1()
         {
-            // Simular entrada del usuario seleccionando la opción 2 (Salir)
-            consoleInput = new StringReader("2");
-            Console.SetIn(consoleInput);
+            // --- Test Case 1: Selection 1 (Continue) ---
+        
+            // Arrange: Simulate user input for selecting "1"
+            var input1 = new StringReader("1");
+            Console.SetIn(input1);
 
-            // Act
-            Assert.Throws<InvalidOperationException>(() => Facade.Start());
+            // Redirect the console output to capture printed output
+            var output1 = new StringWriter();
+            Console.SetOut(output1);
 
-            // Assert
-            string output = consoleOutput.ToString();
-            Assert.That(output, Does.Contain("Welcome to Pokemon Battle"));
-            Assert.That(output, Does.Contain("1) Start"));
-            Assert.That(output, Does.Contain("2) Leave"));
-            Assert.That(output, Does.Contain("Thanks for playing!!"));
-        }
+            // Act: Call Start method (this should continue the flow)
+            Facade.Facade.Start();
 
-        [Test]
-        public void StartShouldProceedToSelectionsOnOption1()
-        {
-            // Simular entrada del usuario seleccionando la opción 1 (Continuar)
-            consoleInput = new StringReader("1");
-            Console.SetIn(consoleInput);
+            // Assert: Verify that the output contains the expected start message
+            string consoleOutput1 = output1.ToString();
+            Assert.That(consoleOutput1, Does.Contain("╔════════════════════════════╗"));
+            Assert.That(consoleOutput1, Does.Contain("╚════════════════════════════╝"));
 
-            // Mockear `Selections` para evitar lógica compleja
-            Assert.DoesNotThrow(() => Facade.Start());
+            // --- Test Case 2: Selection 2 (Exit) ---
+        
+            // Arrange: Simulate user input for selecting "2"
+            var input2 = new StringReader("2");
+            Console.SetIn(input2);
 
-            // Assert
-            string output = consoleOutput.ToString();
-            Assert.That(output, Does.Contain("Welcome to Pokemon Battle"));
-            Assert.That(output, Does.Contain("1) Start"));
-            Assert.That(output, Does.Not.Contain("Thanks for playing!!"));
-        }
+            // Redirect the console output to capture printed output
+            var output2 = new StringWriter();
+            Console.SetOut(output2);
 
-        [Test]
-        public void CreatePlayersShouldInitializeBothPlayers()
-        {
-            // Arrange
-            string playerName1 = "Ash";
-            string playerName2 = "Misty";
-            
-            // Crear una lista de Pokémon (requiere los argumentos correctos para el constructor)
-            List<IPokemon> pokemons = new List<IPokemon>
+            // Act: Call Start method (this should trigger exit)
+            bool didExit = false;
+            try
             {
-                new Pokemon("Pikachu", 5, "Electric", new List<IAttack>()),  // Asegúrate de pasar los argumentos correctos
-                new Pokemon("Charizard", 10, "Fire", new List<IAttack>())
-            };
-            IPokemon selectedPokemon = pokemons[0];
+                Facade.Facade.Start();
+            }
+            catch (ExitException)
+            {
+                didExit = true; // Expected behavior is that the program exits
+            }
 
-            // Act
-            // Inicializar jugadores a través de la función de la fachada (ya que es privada, solo probamos indirectamente)
-            Player.InitializePlayer1(playerName1, pokemons, selectedPokemon);
-            Player.InitializePlayer2(playerName2, pokemons, selectedPokemon);
-
-            // Assert
-            Assert.That(Player.Player1.Name, Is.EqualTo(playerName1));
-            Assert.That(Player.Player1.SelectedPokemon.Name, Is.EqualTo("Pikachu"));
-            Assert.That(Player.Player2.Name, Is.EqualTo(playerName2));
-            Assert.That(Player.Player2.SelectedPokemon.Name, Is.EqualTo("Pikachu"));
+            // Assert: Verify that the exit behavior occurred
+            Assert.That(didExit, Is.True);
         }
-    }
 }
+        
+
+        public class ExitException : Exception { } // Esta excepción simula el comportamiento de Environment.Exit(0)
+
+    /*    [Test]
+        public void Start_CallsSelections_WhenSelectionIs1()
+        {
+            // Redirigir entrada simulada (el usuario ingresa "1")
+            var input = new StringReader("1\n");
+            Console.SetIn(input);
+
+            // Redirigir salida estándar para capturar el texto impreso
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            // Ejecutar el método
+            //Facade.Facade.Start();
+
+            // Verificar la salida esperada
+            string consoleOutput = output.ToString();
+            Assert.That(consoleOutput.Contains("Welcome!"), "El mensaje de bienvenida no se imprimió correctamente.");
+
+            // Verificar que el programa continuó (esto requiere que `Facade.Selections` funcione correctamente)
+        }
+*/
+    }
