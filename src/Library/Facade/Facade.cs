@@ -35,7 +35,7 @@ public static class Facade
         Facade.Selections();
     }
 
-    private static void Selections()
+    public static void Selections()
     {
         // Crear el catálogo de Pokémon
         Catalogue.CreateCatalogue();

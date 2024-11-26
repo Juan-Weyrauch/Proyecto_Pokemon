@@ -6,7 +6,7 @@
     <members>
         <member name="T:Library.Tests.AttackTests">
             <summary>
-            Tests for the Attack class, with more rigorous property testing.
+            Tests for the Attack class.
             </summary>
         </member>
     </members>
