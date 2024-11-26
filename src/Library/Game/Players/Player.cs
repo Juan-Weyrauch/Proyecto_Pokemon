@@ -2,7 +2,6 @@ using Library.Game.Items;
 using Library.Game.Pokemons;
 
 
-
 namespace Library.Game.Players
 {
     /// <inheritdoc />
@@ -208,4 +207,6 @@ namespace Library.Game.Players
             _player2 = null;
         }
     }
+
+    
 }

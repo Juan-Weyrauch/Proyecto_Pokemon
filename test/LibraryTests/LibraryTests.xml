@@ -74,11 +74,6 @@
             Tests that the selected Pokémon is correctly switched for player 1.
             </summary>
         </member>
-        <member name="M:LibraryTests.PlayerTests.CarryToCementerioMovesPokemonToCementerio">
-            <summary>
-            Tests that a Pokémon is moved to the cementerio (graveyard) when it is carried there.
-            </summary>
-        </member>
         <member name="M:LibraryTests.PlayerTests.InitializePlayer2CreatesSingletonInstance">
             <summary>
             Tests the initialization of player 2 and checks that the singleton instance is created correctly.

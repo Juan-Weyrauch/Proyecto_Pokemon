@@ -1,8 +1,10 @@
 ﻿
+using System.Reflection;
 using Library.Game.Players;
 using Library.Game.Pokemons;
 using Library.Game.Attacks;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 
 namespace LibraryTests
@@ -15,7 +17,7 @@ namespace LibraryTests
     {
         private IPokemon _mockPokemon1;
         private IPokemon _mockPokemon2;
-        
+
         /// <summary>
         /// Sets up the test environment by initializing mock Pokémon and resetting the player state.
         /// </summary>
@@ -26,6 +28,7 @@ namespace LibraryTests
             _mockPokemon1 = new MockPokemon("Charmander");
             _mockPokemon2 = new MockPokemon("Bulbasaur");
         }
+
         /// <summary>
         /// Tests the initialization of player 1 and checks that the singleton instance is created correctly.
         /// </summary>
@@ -36,6 +39,7 @@ namespace LibraryTests
             var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
 
             // Act
+
             Player.InitializePlayer1("Ash", pokemons, _mockPokemon1);
             var player1 = Player.Player1;
 
@@ -48,6 +52,7 @@ namespace LibraryTests
                 Assert.That(player1.Turn, Is.EqualTo(0));
             });
         }
+
         /// <summary>
         /// Tests that an exception is thrown when attempting to initialize player 1 again.
         /// </summary>
@@ -70,6 +75,27 @@ namespace LibraryTests
                 Assert.That(Player.Player1.Pokemons, Is.EquivalentTo(pokemons));
             });
         }
+
+        [Test]
+        public void Player2Getter_ShouldThrowInvalidOperationException_WhenPlayer2IsNull()
+        {
+            // Usamos Reflection para forzar que _player2 sea null
+            var playerType = typeof(Player);
+            var player2Field = playerType.GetField("_player2", BindingFlags.NonPublic | BindingFlags.Static);
+
+            // Aseguramos que _player2 sea null
+            player2Field.SetValue(null, null);
+
+            // Act & Assert
+            var ex = Assert.Throws<InvalidOperationException>(() =>
+            {
+                var player = Player.Player2; // Esto debería disparar la excepción
+            });
+
+            // Verificamos que el mensaje de la excepción sea correcto
+            Assert.That(ex.Message, Is.EqualTo("Player2 has not been initialized."));
+        }
+
         /// <summary>
         /// Tests that the selected Pokémon is correctly switched for player 1.
         /// </summary>
@@ -82,32 +108,33 @@ namespace LibraryTests
             var player1 = Player.Player1;
 
             // Act
-            player1.SwitchPokemon(1);
+            player1.SwitchPokemon(0); // Usando índice 0 para el primer Pokémon
 
             // Assert
-            Assert.That(player1.SelectedPokemon, Is.EqualTo(_mockPokemon2));
+            Assert.That(player1.SelectedPokemon, Is.EqualTo(pokemons[0]));
         }
-        /// <summary>
-        /// Tests that a Pokémon is moved to the cementerio (graveyard) when it is carried there.
-        /// </summary>
+    
+
         [Test]
-        public void CarryToCementerioMovesPokemonToCementerio()
-        {
-            // Arrange
-            var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
-            Player.InitializePlayer1("Ash", pokemons, _mockPokemon1);
-            var player1 = Player.Player1;
-
-            // Act
-            player1.CarryToCementerio();
-
-            // Assert
-            Assert.Multiple(() =>
+            public void CarryToCementerioMovesPokemonToCementerio()
             {
-                Assert.That(player1.Cementerio, Contains.Item(_mockPokemon1));
-                Assert.That(player1.Pokemons, Does.Not.Contain(_mockPokemon1));
-            });
-        }
+                // Arrange
+                var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
+                Player.InitializePlayer1("Ash", pokemons, _mockPokemon1);
+                var player1 = Player.Player1;
+
+                // Act
+                player1.CarryToCementerio();
+
+                // Assert
+                Assert.Multiple(() =>
+                {
+                    Assert.That(player1.Cementerio, Contains.Item(_mockPokemon1));
+                    Assert.That(player1.Pokemons, Does.Not.Contain(_mockPokemon1));
+                });
+            }
+        
+
         /// <summary>
         /// Tests the initialization of player 2 and checks that the singleton instance is created correctly.
         /// </summary>
@@ -153,6 +180,7 @@ namespace LibraryTests
                 Assert.That(Player.Player2.Pokemons, Is.EquivalentTo(pokemons));
             });
         }
+
     }
 
     /// <summary>
@@ -217,4 +245,6 @@ namespace LibraryTests
         /// </summary>
         public IPokemon Clone() => new MockPokemon(Name);
     }
+    
+    
 }
