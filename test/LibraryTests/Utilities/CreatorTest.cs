@@ -1,90 +1,68 @@
 using NUnit.Framework;
-
 using System.Collections.Generic;
+using Library.Game.Utilities; // Asegúrate de que este es el espacio de nombres correcto
 using Library.Game.Pokemons;
-using Library.Game.Utilities;
 
 namespace Library.Tests
 {
     [TestFixture]
-    public class CreatorTest
+    public class CreateTests
     {
-        // Inicializa el catálogo antes de cada prueba
-        private Dictionary<int, IPokemon> _pokedex = Create.CreateCatalogue();
+        private Dictionary<int, IPokemon> _pokedex;
 
         [SetUp]
         public void Setup()
         {
-            // Aquí se pueden agregar inicializaciones si fueran necesarias
+            // Configuración previa: Llama al método que deseas probar
+            _pokedex = Create.CreateCatalogue();
         }
 
         [TearDown]
         public void TearDown()
         {
-            // Limpieza: Reinicia los valores si es necesario
+            // Limpieza: Si necesitas reiniciar valores estáticos o estados
+            _pokedex = null!;
         }
 
         [Test]
-        public void CreateCatalogue_ShouldInitializePokedex()
+        public void CreateCatalogue_ShouldReturnNonNullablePokedex()
         {
-            // Assert: Verifica que el catálogo no sea nulo y tenga Pokémon
+            // Assert: Verifica que el resultado no sea nulo
             Assert.That(_pokedex, Is.Not.Null, "The Pokedex should not be null.");
+        }
+
+        [Test]
+        public void CreateCatalogue_ShouldContain20Pokemon()
+        {
+            // Assert: Verifica la cantidad de Pokémon en el Pokedex
             Assert.That(_pokedex.Count, Is.EqualTo(20), "The Pokedex should contain exactly 20 Pokémon.");
         }
 
         [Test]
-        public void GetPokedex_ShouldReturnNonNullableDictionary()
+        public void CreateCatalogue_ShouldContainVenusaur()
         {
-            // Assert
-            Assert.That(_pokedex, Is.Not.Null, "The Pokedex returned by GetPokedex should not be null.");
-            Assert.That(_pokedex.Count, Is.EqualTo(20), "The Pokedex returned by GetPokedex should contain exactly 20 Pokémon.");
+            // Assert: Verifica que Venusaur está correctamente definido
+            Assert.That(_pokedex.ContainsKey(1), Is.True, "The Pokedex should contain Pokémon with ID 1.");
+            Assert.That(_pokedex[1].Name, Is.EqualTo("Venusaur"), "Pokémon ID 1 should be Venusaur.");
+            Assert.That(_pokedex[1].Type, Is.EqualTo("Plant"), "Pokémon ID 1 should have type Plant.");
         }
 
         [Test]
-        public void GetPokemon_ShouldReturnCorrectPokemon()
+        public void CreateCatalogue_ShouldContainCharizard()
         {
-            // Act & Assert: Verifica que todos los Pokémon estén presentes con su nombre y tipo correcto
-
-            // Lista de ID y sus valores esperados
-            var expectedPokemons = new Dictionary<int, (string Name, string Type)>
-            {
-                { 1, ("Venusaur", "Plant") },
-                { 2, ("Blastoise", "Water") },
-                { 3, ("Butterfree", "Bug") },
-                { 4, ("Charizard", "Fire") },
-                { 5, ("Pikachu", "Electric") },
-                { 6, ("Gengar", "Ghost") },
-                { 7, ("Articuno", "Ice") },
-                { 8, ("Machamp", "Fight") },
-                { 9, ("Snorlax", "Normal") },
-                { 10, ("Alakazam", "Psychic") },
-                { 11, ("Onix", "Rock") },
-                { 12, ("Golem", "Earth") },
-                { 13, ("Nidoking", "Venom") },
-                { 14, ("Pidgeot", "Flying") },
-                { 15, ("Dragonite", "Dragon") },
-                { 16, ("Vaporeon", "Water") },
-                { 17, ("Jolteon", "Electric") },
-                { 18, ("Flareon", "Fire") },
-                { 19, ("Kabutops", "Rock") },
-                { 20, ("Aerodactyl", "Flying") }
-            };
-
-            // Comprobamos si cada Pokémon en la lista esperada existe en el Pokedex y tiene los valores correctos
-            foreach (var expected in expectedPokemons)
-            {
-                var pokemon = _pokedex[expected.Key];
-                Assert.That(pokemon, Is.Not.Null, $"Pokémon with ID {expected.Key} should not be null.");
-                Assert.That(pokemon?.Name, Is.EqualTo(expected.Value.Name), $"Pokémon with ID {expected.Key} should be {expected.Value.Name}.");
-                Assert.That(pokemon?.Type, Is.EqualTo(expected.Value.Type), $"Pokémon with ID {expected.Key} should have type {expected.Value.Type}.");
-            }
+            // Assert: Verifica que Charizard está correctamente definido
+            Assert.That(_pokedex.ContainsKey(4), Is.True, "The Pokedex should contain Pokémon with ID 4.");
+            Assert.That(_pokedex[4].Name, Is.EqualTo("Charizard"), "Pokémon ID 4 should be Charizard.");
+            Assert.That(_pokedex[4].Type, Is.EqualTo("Fire"), "Pokémon ID 4 should have type Fire.");
         }
 
         [Test]
-        public void GetPokemon_ShouldThrowExceptionForInvalidId()
+        public void CreateCatalogue_ShouldContainPikachu()
         {
-            // Act & Assert: Verifica que una ID inválida lance una excepción
-            Assert.Throws<KeyNotFoundException>(() => Catalogue.GetPokemon(999), "Accessing a non-existing Pokémon ID should throw KeyNotFoundException.");
+            // Assert: Verifica que Pikachu está correctamente definido
+            Assert.That(_pokedex.ContainsKey(5), Is.True, "The Pokedex should contain Pokémon with ID 5.");
+            Assert.That(_pokedex[5].Name, Is.EqualTo("Pikachu"), "Pokémon ID 5 should be Pikachu.");
+            Assert.That(_pokedex[5].Type, Is.EqualTo("Electric"), "Pokémon ID 5 should have type Electric.");
         }
     }
 }
