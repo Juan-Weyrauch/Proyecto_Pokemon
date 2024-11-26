@@ -249,5 +249,6 @@ namespace Library.Tests
             Assert.That(output, Does.Contain("Has decidido no cambiar de Pokémon."), "Expected cancellation message.");
             Assert.That(output, Does.Contain("Presiona cualquier tecla para continuar..."), "Expected continuation prompt.");
         }
+        
     }
 }
