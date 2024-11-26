@@ -223,7 +223,6 @@ public static class Calculator
 
         // Aplicar daño
         receiver.Health = Math.Max(receiver.Health - actualDamage, 0);
-
         // Llamada a Printer.AttackSummary
         Printer.AttackSummary(attacker, attack, receiver, actualDamage);
         Console.ReadLine();

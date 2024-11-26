@@ -22,9 +22,9 @@ namespace Library.Tests
         public void Setup()
         {
             // Create example attacks
-            _fireAttack = new Attack("Flame Thrower", 90, SpecialEffect.None, "Fire",100);
-            _electricAttack = new Attack("Thunderbolt", 50, SpecialEffect.None, "Electric",100);
-            _waterAttack = new Attack("Water Gun", 40, SpecialEffect.None, "Water",100);
+            _fireAttack = new Attack("Flame Thrower", 90, SpecialEffect.None, "Fire", 100);
+            _electricAttack = new Attack("Thunderbolt", 50, SpecialEffect.None, "Electric", 100);
+            _waterAttack = new Attack("Water Gun", 40, SpecialEffect.None, "Water", 100);
 
             // Create example Pokémon
             _bulbasaur = new Pokemon("Bulbasaur", 100, "Plant", new List<IAttack> { _waterAttack });
@@ -32,6 +32,7 @@ namespace Library.Tests
             _electrode = new Pokemon("Electrode", 100, "Electric", new List<IAttack> { _electricAttack });
 
             // Manually initialize players
+
             
         }
 
@@ -77,35 +78,35 @@ namespace Library.Tests
         }
 
         // Test if damage is applied correctly considering effectiveness
-       /*[Test]
-        public void InfringeDamage_ShouldApplyCorrectDamageWithEffectiveness()
-        {
-            // Set initial health of Bulbasaur
-            _bulbasaur.Health = 100;
+        /*[Test]
+         public void InfringeDamage_ShouldApplyCorrectDamageWithEffectiveness()
+         {
+             // Set initial health of Bulbasaur
+             _bulbasaur.Health = 100;
 
-            // Act: Apply Fire attack to Bulbasaur (which has a Plant type)
-            Calculator.InfringeDamage(_fireAttack, _bulbasaur,_electrode);
+             // Act: Apply Fire attack to Bulbasaur (which has a Plant type)
+             Calculator.InfringeDamage(_fireAttack, _bulbasaur,_electrode);
 
-            // Assert: Bulbasaur should now have 20 health after taking double damage
-            Assert.That(_bulbasaur.Health, Is.EqualTo(20), "Fire attack should reduce Bulbasaur's health to 20.");
-        }
-*/
+             // Assert: Bulbasaur should now have 20 health after taking double damage
+             Assert.That(_bulbasaur.Health, Is.EqualTo(20), "Fire attack should reduce Bulbasaur's health to 20.");
+         }
+ */
         // Test if health does not go below zero
-     //   [Test]
-    /*    public void InfringeDamage_ShouldNotReduceHealthBelowZero()
-        {
-            // Create a strong attack with excessive damage
-            var strongAttack = new Attack("Fire Blast", 200, SpecialEffect.None, "Fire",100);
+        //   [Test]
+        /*    public void InfringeDamage_ShouldNotReduceHealthBelowZero()
+            {
+                // Create a strong attack with excessive damage
+                var strongAttack = new Attack("Fire Blast", 200, SpecialEffect.None, "Fire",100);
 
-            // Set initial health of Bulbasaur
-            _bulbasaur.Health = 100;
+                // Set initial health of Bulbasaur
+                _bulbasaur.Health = 100;
 
-            // Act: Apply a strong attack to Bulbasaur
-            Calculator.InfringeDamage(strongAttack, _bulbasaur,_squirtle);
+                // Act: Apply a strong attack to Bulbasaur
+                Calculator.InfringeDamage(strongAttack, _bulbasaur,_squirtle);
 
-            // Assert: Health should not drop below zero
-            Assert.That(_bulbasaur.Health, Is.EqualTo(0), "Health should not go below zero.");
-        }*/
+                // Assert: Health should not drop below zero
+                Assert.That(_bulbasaur.Health, Is.EqualTo(0), "Health should not go below zero.");
+            }*/
 
         // Test random player selection for the first turn
         [Test]
@@ -145,6 +146,171 @@ namespace Library.Tests
             // Assert: Player 2 should not have active Pokémon
             Assert.That(result, Is.False, "Player 2 should not have active Pokémon.");
         }
-    }
+
+        [Test]
+        public void ValidateSelectionInGivenRange_ShouldReturnValidNumber_WithinRange()
+        {
+            // Arrange: Using valid inputs
+            var mockInput = "5";
+            int min = 1;
+            int max = 10;
+
+            // Act: Simulate valid input
+            int result = Calculator.ValidateSelectionInGivenRange(min, max);
+
+            // Assert: The result should be the same valid input, i.e., 5
+            Assert.That(result, Is.EqualTo(5), "The number should be within the given range.");
+        }
+
+        // Test ValidateSelectionInGivenRange for input less than the min value
+        [Test]
+        public void ValidateSelectionInGivenRange_ShouldPromptForInput_IfLessThanMin()
+        {
+            // Arrange: Using input less than the min range
+            var mockInput = "0";
+            int min = 1;
+            int max = 10;
+
+            // Act: Validate input less than min (should retry until valid input is provided)
+            int result = Calculator.ValidateSelectionInGivenRange(min, max);
+
+            // Assert: The result should be valid and within the range
+            Assert.That(result, Is.InRange(min, max), "The number should be within the given range.");
+        }
+
+        // Test ValidateSelectionInGivenRange for input greater than the max value
+        [Test]
+        public void ValidateSelectionInGivenRange_ShouldPromptForInput_IfGreaterThanMax()
+        {
+            // Arrange: Using input greater than the max range
+            var mockInput = "11";
+            int min = 1;
+            int max = 10;
+            
+
+            // Act: Validate input greater than max (should retry until valid input is provided)
+            int result = Calculator.ValidateSelectionInGivenRange(min, max);
+
+            // Assert: The result should be valid and within the range
+            Assert.That(result, Is.InRange(min, max), "The number should be within the given range.");
+        }
+
+        // Test ValidateSelectionInGivenRange for invalid (non-numeric) input
+        [Test]
+        public void ValidateSelectionInGivenRange_ShouldPromptForInput_IfNotANumber()
+        {
+            // Arrange: Using invalid (non-numeric) input
+            var mockInput = "abc";
+            int min = 1;
+            int max = 10;
+
+            // Act: Validate non-numeric input (should prompt user again)
+            int result = Calculator.ValidateSelectionInGivenRange(min, max);
+
+            // Assert: The result should be a valid number within the range
+            Assert.That(result, Is.InRange(min, max), "The number should be within the given range.");
+        }
+        [Test]
+        public void InfringeDamage_ShouldCalculateDamageCorrectly_WhenNoDefense()
+        {
+            // Arrange
+            _bulbasaur.Health = 100;
+            _bulbasaur.Defense = 0;
+    
+            // Prepare to simulate console input of "F"
+           
+            Console.SetIn(new StringReader("F"));
+            // Act
+            Calculator.InfringeDamage(_fireAttack, _bulbasaur, _electrode);
+            Console.SetIn(Console.In);
+            // Assert
+            Assert.That(_bulbasaur.Health, Is.EqualTo(0), "Bulbasaur's health should be reduced to 0");
+        }
+
+
+[Test]
+public void InfringeDamage_ShouldReduceDamageBasedOnDefense()
+{
+    // Arrange
+    _bulbasaur.Health = 100;
+    _bulbasaur.Defense = 20;
+    
+    // Fire attack against Bulbasaur (Plant type)
+    // Raw damage: 90
+    // Effectiveness: 2.0
+    // Adjusted damage: 90 * 2.0 = 180
+    // Actual damage: 180 - 20 = 160
+
+    // Act
+    Calculator.InfringeDamage(_fireAttack, _bulbasaur, _electrode);
+
+    // Assert
+    Assert.That(_bulbasaur.Health, Is.EqualTo(0), "Bulbasaur's health should be reduced to 0");
 }
 
+[Test]
+public void InfringeDamage_ShouldNotReduceHealthBelowZero()
+{
+    // Arrange
+    _bulbasaur.Health = 20;
+    _bulbasaur.Defense = 10;
+    
+    // Strong attack
+    var strongAttack = new Attack("Mega Blast", 200, SpecialEffect.None, "Fire", 100);
+
+    // Act
+    Calculator.InfringeDamage(strongAttack, _bulbasaur, _electrode);
+
+    // Assert
+    Assert.That(_bulbasaur.Health, Is.EqualTo(0), "Health should not go below zero");
+}
+
+[Test]
+public void InfringeDamage_ShouldThrowArgumentNullException_WhenAttackIsNull()
+{
+    // Assert
+    Assert.Throws<ArgumentNullException>(() => 
+        Calculator.InfringeDamage(null, _bulbasaur, _electrode), 
+        "Should throw ArgumentNullException when attack is null");
+}
+
+[Test]
+public void InfringeDamage_ShouldThrowArgumentNullException_WhenReceiverIsNull()
+{
+    // Assert
+    Assert.Throws<ArgumentNullException>(() => 
+        Calculator.InfringeDamage(_fireAttack, null, _electrode), 
+        "Should throw ArgumentNullException when receiver is null");
+}
+
+[Test]
+public void InfringeDamage_ShouldThrowArgumentNullException_WhenAttackerIsNull()
+{
+    // Assert
+    Assert.Throws<ArgumentNullException>(() => 
+        Calculator.InfringeDamage(_fireAttack, _bulbasaur, null), 
+        "Should throw ArgumentNullException when attacker is null");
+}
+
+[Test]
+public void InfringeDamage_ShouldCalculateDamageCorrectly_WithResistance()
+{
+    // Arrange
+    _squirtle.Health = 100;
+    _squirtle.Defense = 10;
+    
+    // Fire attack against Squirtle (Water type) with 0.5 effectiveness
+    // Raw damage: 90
+    // Effectiveness: 0.5
+    // Adjusted damage: 90 * 0.5 = 45
+    // Actual damage: 45 - 10 = 35
+
+    // Act
+    Calculator.InfringeDamage(_fireAttack, _squirtle, _electrode);
+
+    // Assert
+    Assert.That(_squirtle.Health, Is.EqualTo(65), "Squirtle's health should be reduced by actual damage");
+}
+        // Test GetEffectivenessMultiplier for various scenarios
+        }
+}
