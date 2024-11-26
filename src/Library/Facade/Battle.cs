@@ -60,6 +60,7 @@ public static class Battle
             // si entra aca es poruqe 1) el pokemon seleccionado no tiene vida y 2) todavía tiene pokemons
             if (currentPlayer.SelectedPokemon.Health == 0)
             {
+                Printer.ForceSwitchMessage(currentPlayer);
                 ForceSwitchPokemon(currentPlayer);
             }
 
@@ -192,7 +193,7 @@ public static class Battle
         Printer.PrintItems(player.Items);
 
         // Ask the player to select an item
-        int itemSelection = Calculator.ValidateSelectionInGivenRange(1, 3); // Assuming 3 types of items
+        int itemSelection = Calculator.ValidateSelectionInGivenRange(1, player.Items.Count); // Assuming 3 types of items
         Item item = player.GetItem(itemSelection); // Call the player's UseItem method
 
         if (item != null)
@@ -283,6 +284,6 @@ public static class Battle
         Printer.SwitchConfirmation(player, 0);
         Console.WriteLine($"{player.Name} switched to {selectedPokemon.Name}.");
         Console.ReadLine();
-        
+
     }
 }
