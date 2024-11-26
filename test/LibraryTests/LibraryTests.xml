@@ -4,5 +4,10 @@
         <name>LibraryTests</name>
     </assembly>
     <members>
+        <member name="T:Library.Tests.AttackTests">
+            <summary>
+            Tests for the Attack class, with more rigorous property testing.
+            </summary>
+        </member>
     </members>
 </doc>
