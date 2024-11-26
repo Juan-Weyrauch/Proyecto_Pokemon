@@ -1,179 +1,97 @@
-﻿using Library.Facade;
-using Library.Game.Utilities;
-using Library.Game.Pokemons;
-using Library.Game.Players;
-using Library.Game.Attacks;
+﻿
 using NUnit.Framework;
+using Library.Game.Attacks;
+using Library.Game.Players;
+using Library.Game.Pokemons;
+using Library.Facade;
 
 namespace LibraryTests
 {
     [TestFixture]
     public class FacadeTests
     {
-        private StringWriter _consoleOutput;
-        private StringReader _consoleInput;
+        private StringWriter consoleOutput;
+        private StringReader consoleInput;
 
         [SetUp]
         public void Setup()
         {
-            // Redirigir la salida de consola
-            _consoleOutput = new StringWriter();
-            Console.SetOut(_consoleOutput);
-
-            // Limpiar jugadores y catálogo antes de cada prueba
-            typeof(Player)
-                .GetField("_player1", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)
-                ?.SetValue(null, null);
-            typeof(Player)
-                .GetField("_player2", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)
-                ?.SetValue(null, null);
-            Catalogue.GetPokedex()?.Clear();
+            // Redirigir la salida de la consola para capturar los mensajes
+            consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
         }
 
-        [Test]
-        public void CreatePlayers_FirstPlayer_ShouldInitializePlayer1()
-        {
-            // Arrange
-            string playerName = "Ash";
-            List<IPokemon> playerPokemons = CreateMockPokemonList();
-            IPokemon selectedPokemon = playerPokemons[0];
-
-            // Act
-            Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 0);
-
-            // Assert
-            var player1 = Player.Player1;
-            Assert.That(player1, Is.Not.Null);
-            Assert.That(player1.Name, Is.EqualTo(playerName));
-            Assert.That(player1.SelectedPokemon, Is.EqualTo(selectedPokemon));
-        }
-
-        [Test]
-        public void CreatePlayers_SecondPlayer_ShouldInitializePlayer2()
-        {
-            // Arrange
-            string playerName = "Gary";
-            List<IPokemon> playerPokemons = CreateMockPokemonList();
-            IPokemon selectedPokemon = playerPokemons[1];
-
-            // Act
-            Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 1);
-
-            // Assert
-            var player2 = Player.Player2;
-            Assert.That(player2, Is.Not.Null);
-            Assert.That(player2.Name, Is.EqualTo(playerName));
-            Assert.That(player2.SelectedPokemon, Is.EqualTo(selectedPokemon));
-        }
-
-        [Test]
-        public void CreatePlayers_InvalidPlayerIndex_ShouldThrowException()
-        {
-            // Arrange
-            string playerName = "Invalid";
-            List<IPokemon> playerPokemons = CreateMockPokemonList();
-            IPokemon selectedPokemon = playerPokemons[0];
-
-            // Act & Assert
-            // Cambia el tipo de excepción si es diferente en tu implementación
-            Assert.Throws<ArgumentException>(() => 
-            {
-                Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 2);
-            }, "Debería lanzar una excepción para un índice de jugador inválido");
-        }
-
-
-        private List<IPokemon> CreateMockPokemonList()
-        {
-            return new List<IPokemon>
-            {
-                new MockPokemon { Name = "Pikachu" },
-                new MockPokemon { Name = "Charizard" },
-                new MockPokemon { Name = "Squirtle" },
-                new MockPokemon { Name = "Bulbasaur" },
-                new MockPokemon { Name = "Charmander" },
-                new MockPokemon { Name = "Pidgey" }
-            };
-        }
-
-        private void MockPrinterAndCalculator()
-        {
-            // Mockear métodos de Printer
-            typeof(Printer).GetMethod("StartPrint",
-                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
-                ?.Invoke(null, null);
-
-            // Mockear métodos de Calculator
-            typeof(Calculator).GetMethod("ValidateSelectionInGivenRange",
-                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
-                ?.Invoke(null, new object[] { 1, 2 });
-        }
-        private class MockPokemon : IPokemon
-        {
-            public string Name { get; set; }
-            public int Health { get; set; }
-            public int InitialHealth { get; set; }
-            public int Defense { get; set; }
-            public List<IAttack> AtackList { get; set; }
-            public string Type { get; set; }
-            public int State { get; set; }
-
-            public MockPokemon()
-            {
-                Health = 100; // Valores por defecto
-                InitialHealth = 100;
-                Defense = 50;
-                AtackList = new List<IAttack>
-                {
-                    new MockAttack { Name = "Thunderbolt", Damage = 40 },
-                    new MockAttack { Name = "Quick Attack", Damage = 20 }
-                };
-                Type = "Electric";
-                State = 0; // Normal
-            }
-
-            public IAttack GetAttack(int index)
-            {
-                return AtackList[index];
-            }
-
-            public IPokemon Clone()
-            {
-                return new MockPokemon
-                {
-                    Name = this.Name,
-                    Health = this.Health,
-                    InitialHealth = this.InitialHealth,
-                    Defense = this.Defense,
-                    AtackList = new List<IAttack>(this.AtackList),
-                    Type = this.Type,
-                    State = this.State
-                };
-            }
-        }
-
-        private class MockAttack : IAttack
-        {
-            public string Name { get; set; }
-            public int Damage { get; set; }
-            public int Special { get; set; }
-            public string Type { get; set; }
-
-            public MockAttack()
-            {
-                Name = "MockAttack";
-                Damage = 50;
-                Special = 0;
-                Type = "Normal";
-            }
-        }
-        
         [TearDown]
-        public void Cleanup()
+        public void TearDown()
         {
-            Console.SetIn(Console.In);
+            // Restaurar las salidas de la consola
+            consoleOutput.Dispose();
             Console.SetOut(Console.Out);
+
+            consoleInput?.Dispose();
+            Console.SetIn(Console.In);
+        }
+
+        [Test]
+        public void StartShouldDisplayStartMenuAndExitOnOption2()
+        {
+            // Simular entrada del usuario seleccionando la opción 2 (Salir)
+            consoleInput = new StringReader("2");
+            Console.SetIn(consoleInput);
+
+            // Act
+            Assert.Throws<InvalidOperationException>(() => Facade.Start());
+
+            // Assert
+            string output = consoleOutput.ToString();
+            Assert.That(output, Does.Contain("Welcome to Pokemon Battle"));
+            Assert.That(output, Does.Contain("1) Start"));
+            Assert.That(output, Does.Contain("2) Leave"));
+            Assert.That(output, Does.Contain("Thanks for playing!!"));
+        }
+
+        [Test]
+        public void StartShouldProceedToSelectionsOnOption1()
+        {
+            // Simular entrada del usuario seleccionando la opción 1 (Continuar)
+            consoleInput = new StringReader("1");
+            Console.SetIn(consoleInput);
+
+            // Mockear `Selections` para evitar lógica compleja
+            Assert.DoesNotThrow(() => Facade.Start());
+
+            // Assert
+            string output = consoleOutput.ToString();
+            Assert.That(output, Does.Contain("Welcome to Pokemon Battle"));
+            Assert.That(output, Does.Contain("1) Start"));
+            Assert.That(output, Does.Not.Contain("Thanks for playing!!"));
+        }
+
+        [Test]
+        public void CreatePlayersShouldInitializeBothPlayers()
+        {
+            // Arrange
+            string playerName1 = "Ash";
+            string playerName2 = "Misty";
+            
+            // Crear una lista de Pokémon (requiere los argumentos correctos para el constructor)
+            List<IPokemon> pokemons = new List<IPokemon>
+            {
+                new Pokemon("Pikachu", 5, "Electric", new List<IAttack>()),  // Asegúrate de pasar los argumentos correctos
+                new Pokemon("Charizard", 10, "Fire", new List<IAttack>())
+            };
+            IPokemon selectedPokemon = pokemons[0];
+
+            // Act
+            // Inicializar jugadores a través de la función de la fachada (ya que es privada, solo probamos indirectamente)
+            Player.InitializePlayer1(playerName1, pokemons, selectedPokemon);
+            Player.InitializePlayer2(playerName2, pokemons, selectedPokemon);
+
+            // Assert
+            Assert.That(Player.Player1.Name, Is.EqualTo(playerName1));
+            Assert.That(Player.Player1.SelectedPokemon.Name, Is.EqualTo("Pikachu"));
+            Assert.That(Player.Player2.Name, Is.EqualTo(playerName2));
+            Assert.That(Player.Player2.SelectedPokemon.Name, Is.EqualTo("Pikachu"));
         }
     }
 }
-

@@ -548,7 +548,7 @@
         <member name="T:Library.Game.Utilities.Catalogue">
             <summary>
             This class receives a created Pokémon and adds it to its catalog.
-            </summary>
+            </summary>      
         </member>
         <member name="F:Library.Game.Utilities.Catalogue._pokedex">
             <summary>
