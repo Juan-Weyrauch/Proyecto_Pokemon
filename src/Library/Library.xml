@@ -360,6 +360,13 @@
             Sends the current Pokémon to the dead list.
             </summary>
         </member>
+        <member name="M:Library.Game.Players.Player.ResetForTesting">
+            <summary>
+            Resets the game state for testing by setting the players to null.
+            This is typically used to prepare the system for a fresh test, ensuring
+            that no previous state influences the test results.
+            </summary>
+        </member>
         <member name="T:Library.Game.Pokemons.IPokemon">
             <summary>
             Interface for Pokémon 

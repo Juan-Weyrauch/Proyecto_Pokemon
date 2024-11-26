@@ -1,18 +1,20 @@
 ﻿/*
-using Library.Interfaces;
-using Library.StaticClasses;
+using Library.Game.Attacks;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Library.Tests
+namespace LibraryTests
 {
+    /// <summary>
+    /// Test class for attack generation.
+    /// </summary>
     [TestFixture]
     public class AttackGeneratorTests
     {
+        /// <summary>
+        /// Tests that the GenerateRandomAttack method returns exactly four attacks.
+        /// </summary>
         [Test]
-        public void GenerateRandomAttack_CorrectNumberOfAttacks_ReturnsFourAttacks()
+        public void GenerateRandomAttackCorrectNumberOfAttacksReturnsFourAttacks()
         {
             // Arrange
             string type = "Fire";
@@ -23,9 +25,11 @@ namespace Library.Tests
             // Assert
             Assert.That(result.Count, Is.EqualTo(4), "The number of generated attacks should be 4.");
         }
-
+        /// <summary>
+        /// Prueba que verifica si el generador de ataques genera exactamente tres ataques del tipo especificado.
+        /// </summary>
         [Test]
-        public void GenerateRandomAttack_ThreeAttacksOfSpecifiedType_ReturnsCorrectType()
+        public void GenerateRandomAttackThreeAttacksOfSpecifiedTypeReturnsCorrectType()
         {
             // Arrange
             string type = "Water";
@@ -37,9 +41,11 @@ namespace Library.Tests
             int countOfType = result.Count(attack => attack.Type == type);
             Assert.That(countOfType, Is.EqualTo(3), "There should be exactly 3 attacks of the specified type.");
         }
-
+        /// <summary>
+        /// Tests that GenerateRandomAttack throws an ArgumentException when provided with an invalid type.
+        /// </summary>
         [Test]
-        public void GenerateRandomAttack_OneAttackOfDifferentType_ReturnsDifferentType()
+        public void GenerateRandomAttackOneAttackOfDifferentTypeReturnsDifferentType()
         {
             // Arrange
             string type = "Electric";
@@ -52,9 +58,11 @@ namespace Library.Tests
             // Verificamos que el tipo del cuarto ataque no sea el mismo que el del Pokémon
             Assert.That(randomAttack.Type, Is.Not.EqualTo(type), "The fourth attack should be of a different type.");
         }
-
+        /// <summary>
+        /// Tests that GenerateRandomAttack throws an ArgumentException when provided with an invalid type.
+        /// </summary>
         [Test]
-        public void GenerateRandomAttack_InvalidType_ThrowsArgumentException()
+        public void GenerateRandomAttackInvalidTypeThrowsArgumentException()
         {
             // Arrange
             string invalidType = "InvalidType";
@@ -63,9 +71,11 @@ namespace Library.Tests
             var ex = Assert.Throws<ArgumentException>(() => AttackGenerator.GenerateRandomAttack(invalidType));
             Assert.That(ex.Message, Is.EqualTo("Tipo de Pokémon no reconocido."));
         }
-
+        /// <summary>
+        /// Tests that GenerateRandomAttack generates valid attacks that are non-empty.
+        /// </summary>
         [Test]
-        public void GenerateRandomAttack_GeneratesValidAttacks_ReturnsNonEmptyAttacks()
+        public void GenerateRandomAttackGeneratesValidAttacksReturnsNonEmptyAttacks()
         {
             // Arrange
             string type = "Ghost";

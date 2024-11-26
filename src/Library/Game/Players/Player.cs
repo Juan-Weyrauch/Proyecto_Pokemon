@@ -173,6 +173,16 @@ public class Player : IPlayer
         Pokemons.Remove(SelectedPokemon);
     }
     
-    
+    /// <summary>
+    /// Resets the game state for testing by setting the players to null.
+    /// This is typically used to prepare the system for a fresh test, ensuring
+    /// that no previous state influences the test results.
+    /// </summary>
+    public static void ResetForTesting()
+    {
+        _player1 = null;
+        _player2 = null;
+    }
+
     
 }
