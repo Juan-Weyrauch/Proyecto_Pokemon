@@ -188,6 +188,8 @@ namespace LibraryTests
     /// </summary>
     public class MockPokemon : IPokemon
     {
+        private SpecialEffect _state;
+
         /// <summary>
         /// Gets or sets the name of the Pokémon.
         /// </summary>
@@ -207,6 +209,14 @@ namespace LibraryTests
         /// Gets or sets the type of the Pokémon (e.g., "Fire", "Water").
         /// </summary>
         public string Type { get; set; }
+
+        public int SleepTurns { get; }
+
+        SpecialEffect IPokemon.State
+        {
+            get => _state;
+            set => _state = value;
+        }
 
         /// <summary>
         /// Gets or sets the current state of the Pokémon (e.g., "Normal", "Poisoned").
@@ -244,6 +254,26 @@ namespace LibraryTests
         /// Creates a clone of this <see cref="MockPokemon"/>.
         /// </summary>
         public IPokemon Clone() => new MockPokemon(Name);
+
+        public void DecreaseHealth(int damage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ProcessTurnEffects()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResetStatus()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ApplyStatusEffect(SpecialEffect effect)
+        {
+            throw new NotImplementedException();
+        }
     }
     
     

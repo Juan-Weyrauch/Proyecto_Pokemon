@@ -1,98 +1,209 @@
+using Library.Facade;
+using Library.Game.Utilities;
 using Library.Game.Pokemons;
 using Library.Game.Players;
-using Library.Game.Utilities;
-using Library.Facade;
-using NUnit.Framework;
 using Library.Game.Attacks;
-using System.Collections.Generic;
+using NUnit.Framework;
 
-namespace Library.Tests
+namespace LibraryTests
 {
     [TestFixture]
     public class FacadeTests
     {
-        private IPokemon _bulbasaur;
-        private IPokemon _charmander;
+        private StringWriter _consoleOutput;
+        private StringReader _consoleInput;
 
         [SetUp]
         public void Setup()
         {
-            // Crear Pokémon de prueba
-            string playerName = $"p1";
-            string playerName2 = $"p2";
+            // Redirigir la salida de consola
+            _consoleOutput = new StringWriter();
+            Console.SetOut(_consoleOutput);
 
-            // Crear el catálogo de Pokémon
+            // Limpiar jugadores y catálogo antes de cada prueba
+            typeof(Player)
+                .GetField("_player1", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)
+                ?.SetValue(null, null);
+            typeof(Player)
+                .GetField("_player2", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)
+                ?.SetValue(null, null);
+            Catalogue.GetPokedex()?.Clear();
         }
 
         [Test]
-        public void Start_ShouldExit_WhenSelectionIs2_AndContinue_WhenSelectionIs1()
+        public void CreatePlayers_FirstPlayer_ShouldInitializePlayer1()
         {
-            // --- Test Case 1: Selection 1 (Continue) ---
-        
-            // Arrange: Simulate user input for selecting "1"
-            var input1 = new StringReader("1");
-            Console.SetIn(input1);
+            // Arrange
+            string playerName = "Ash";
+            List<IPokemon> playerPokemons = CreateMockPokemonList();
+            IPokemon selectedPokemon = playerPokemons[0];
 
-            // Redirect the console output to capture printed output
-            var output1 = new StringWriter();
-            Console.SetOut(output1);
+            // Act
+            Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 0);
 
-            // Act: Call Start method (this should continue the flow)
-            Facade.Facade.Start();
-
-            // Assert: Verify that the output contains the expected start message
-            string consoleOutput1 = output1.ToString();
-            Assert.That(consoleOutput1, Does.Contain("╔════════════════════════════╗"));
-            Assert.That(consoleOutput1, Does.Contain("╚════════════════════════════╝"));
-
-            // --- Test Case 2: Selection 2 (Exit) ---
-        
-            // Arrange: Simulate user input for selecting "2"
-            var input2 = new StringReader("2");
-            Console.SetIn(input2);
-
-            // Redirect the console output to capture printed output
-            var output2 = new StringWriter();
-            Console.SetOut(output2);
-
-            // Act: Call Start method (this should trigger exit)
-            bool didExit = false;
-            try
-            {
-                Facade.Facade.Start();
-            }
-            catch (ExitException)
-            {
-                didExit = true; // Expected behavior is that the program exits
-            }
-
-            // Assert: Verify that the exit behavior occurred
-            Assert.That(didExit, Is.True);
+            // Assert
+            var player1 = Player.Player1;
+            Assert.That(player1, Is.Not.Null);
+            Assert.That(player1.Name, Is.EqualTo(playerName));
+            Assert.That(player1.SelectedPokemon, Is.EqualTo(selectedPokemon));
         }
-}
-        
 
-        public class ExitException : Exception { } // Esta excepción simula el comportamiento de Environment.Exit(0)
-
-    /*    [Test]
-        public void Start_CallsSelections_WhenSelectionIs1()
+        [Test]
+        public void CreatePlayers_SecondPlayer_ShouldInitializePlayer2()
         {
-            // Redirigir entrada simulada (el usuario ingresa "1")
-            var input = new StringReader("1\n");
-            Console.SetIn(input);
+            // Arrange
+            string playerName = "Gary";
+            List<IPokemon> playerPokemons = CreateMockPokemonList();
+            IPokemon selectedPokemon = playerPokemons[1];
 
-            // Redirigir salida estándar para capturar el texto impreso
-            var output = new StringWriter();
-            Console.SetOut(output);
+            // Act
+            Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 1);
 
-            // Ejecutar el método
-            //Facade.Facade.Start();
-
-            // Verificar la salida esperada
-            string consoleOutput = output.ToString();
-            Assert.That(consoleOutput.Contains("Welcome!"), "El mensaje de bienvenida no se imprimió correctamente.");
-
-            // Verificar que el programa continuó (esto requiere que `Facade.Selections` funcione correctamente)
+            // Assert
+            var player2 = Player.Player2;
+            Assert.That(player2, Is.Not.Null);
+            Assert.That(player2.Name, Is.EqualTo(playerName));
+            Assert.That(player2.SelectedPokemon, Is.EqualTo(selectedPokemon));
         }
-*/
+
+        [Test]
+        public void CreatePlayers_InvalidPlayerIndex_ShouldThrowException()
+        {
+            // Arrange
+            string playerName = "Invalid";
+            List<IPokemon> playerPokemons = CreateMockPokemonList();
+            IPokemon selectedPokemon = playerPokemons[0];
+
+            // Act & Assert
+            // Cambia el tipo de excepción si es diferente en tu implementación
+            Assert.Throws<ArgumentException>(() => 
+            {
+                Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 2);
+            }, "Debería lanzar una excepción para un índice de jugador inválido");
+        }
+
+
+        private List<IPokemon> CreateMockPokemonList()
+        {
+            return new List<IPokemon>
+            {
+                new MockPokemon { Name = "Pikachu" },
+                new MockPokemon { Name = "Charizard" },
+                new MockPokemon { Name = "Squirtle" },
+                new MockPokemon { Name = "Bulbasaur" },
+                new MockPokemon { Name = "Charmander" },
+                new MockPokemon { Name = "Pidgey" }
+            };
+        }
+
+        private void MockPrinterAndCalculator()
+        {
+            // Mockear métodos de Printer
+            typeof(Printer).GetMethod("StartPrint",
+                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
+                ?.Invoke(null, null);
+
+            // Mockear métodos de Calculator
+            typeof(Calculator).GetMethod("ValidateSelectionInGivenRange",
+                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
+                ?.Invoke(null, new object[] { 1, 2 });
+        }
+        private class MockPokemon : IPokemon
+        {
+            public string Name { get; set; }
+            public int Health { get; set; }
+            public int InitialHealth { get; set; }
+            public int Defense { get; set; }
+            public List<IAttack> AtackList { get; set; }
+            public int SleepTurns { get; }
+            public string Type { get; set; }
+            public  SpecialEffect State { get; set; }
+
+            public MockPokemon()
+            {
+                Health = 100; // Valores por defecto
+                InitialHealth = 100;
+                Defense = 50;
+                AtackList = new List<IAttack>
+                {
+                    new MockAttack { Name = "Thunderbolt", Damage = 40 },
+                    new MockAttack { Name = "Quick Attack", Damage = 20 }
+                };
+                Type = "Electric";
+                State = 0; // Normal
+            }
+
+            public IAttack GetAttack(int index)
+            {
+                return AtackList[index];
+            }
+
+            public IPokemon Clone()
+            {
+                return new MockPokemon
+                {
+                    Name = Name,
+                    Health = Health,
+                    InitialHealth = InitialHealth,
+                    Defense = Defense,
+                    AtackList = new List<IAttack>(AtackList),
+                    Type = Type,
+                    State = State
+                };
+            }
+
+            public void DecreaseHealth(int damage)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void ProcessTurnEffects()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void ResetStatus()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void ApplyStatusEffect(SpecialEffect effect)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private class MockAttack : IAttack
+        {
+            public string Name { get; set; }
+            public int Damage { get; set; }
+
+            SpecialEffect IAttack.Special { get; set; }
+
+            public int Special { get; set; }
+            public string Type { get; set; }
+
+            public bool IsCritical()
+            {
+                throw new NotImplementedException();
+            }
+
+            public int Accuracy { get; set; }
+
+            public MockAttack()
+            {
+                Name = "MockAttack";
+                Damage = 50;
+                Special = 0;
+                Type = "Normal";
+            }
+        }
+        
+        [TearDown]
+        public void Cleanup()
+        {
+            Console.SetIn(Console.In);
+            Console.SetOut(Console.Out);
+        }
     }
+}
