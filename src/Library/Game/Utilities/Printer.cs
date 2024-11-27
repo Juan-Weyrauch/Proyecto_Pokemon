@@ -174,7 +174,7 @@ public static class Printer
     /// <summary>
     /// Formats a Pokémon entry as a fixed-width box.
     /// </summary>
-    private static string[] FormatPokemonBox(int index, string name, int life, int boxWidth)
+    public static string[] FormatPokemonBox(int index, string name, int life, int boxWidth)
     {
         string indexMessage = $"Number: {index}";
         string nameMessage = $"Name: {name}";
@@ -196,7 +196,7 @@ public static class Printer
     /// <summary>
     /// Prints a row of Pokémon boxes with horizontal spacing.
     /// </summary>
-    private static void PrintRow(List<string[]> boxes, int spacing)
+    public static void PrintRow(List<string[]> boxes, int spacing)
     {
         string space = new string(' ', spacing);
 
