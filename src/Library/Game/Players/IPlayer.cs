@@ -68,5 +68,18 @@ namespace Library.Game.Players
         /// </summary>
         /// <param name="itemListIndex">The index of the item in the list to be removed.</param>
         void RemoveItem(int itemListIndex);
+
+        /// <summary>
+        /// Returns the amount of items the player has.
+        /// </summary>
+        /// <returns></returns>
+        int ReturnItemCount();
+
+        /// <summary>
+        /// Returns the amount of pokemons the player has.
+        /// </summary>
+        /// <returns></returns>
+        public int ReturnPokemonsCount();
+
     }
 }

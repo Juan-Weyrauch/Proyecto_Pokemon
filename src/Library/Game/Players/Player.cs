@@ -200,5 +200,16 @@ namespace Library.Game.Players
             itemListIndex--; // Adjust for 1-based indexing
             Items[itemListIndex].RemoveAt(0);
         }
+
+        /// <inheritdoc />
+        public int ReturnItemCount()
+        {
+            return this.Items.Count;
+        }
+
+        public int ReturnPokemonsCount()
+        {
+            return this.Pokemons.Count;
+        }
     }
 }

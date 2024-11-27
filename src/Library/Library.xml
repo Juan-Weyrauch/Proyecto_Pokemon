@@ -20,6 +20,13 @@
             Starts the battle by selecting the turn order and guiding each player's actions.
             </summary>
         </member>
+        <member name="M:Library.Facade.Battle.DisplayAdvantages(Library.Game.Players.IPlayer,Library.Game.Players.IPlayer)">
+            <summary>
+            Calculates and displays the advantage of each player.
+            </summary>
+            <param name="player"></param>
+            <param name="rival"></param>
+        </member>
         <member name="M:Library.Facade.Battle.ProcessTurnEffectsForPlayers(Library.Game.Players.Player)">
             <summary>
             Process turn-based effects for current players' Pokémon
@@ -317,6 +324,18 @@
             </summary>
             <param name="itemListIndex">The index of the item in the list to be removed.</param>
         </member>
+        <member name="M:Library.Game.Players.IPlayer.ReturnItemCount">
+            <summary>
+            Returns the amount of items the player has.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Game.Players.IPlayer.ReturnPokemonsCount">
+            <summary>
+            Returns the amount of pokemons the player has.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Library.Game.Players.Player">
             <inheritdoc />
         </member>
@@ -419,6 +438,9 @@
             Removes an item from the player's inventory list based on the given index.
             </summary>
             <param name="itemListIndex">The index of the item to remove from the inventory.</param>
+        </member>
+        <member name="M:Library.Game.Players.Player.ReturnItemCount">
+            <inheritdoc />
         </member>
         <member name="T:Library.Game.Pokemons.IPokemon">
             <summary>
@@ -682,6 +704,13 @@
             <param name="player"></param>
             <returns></returns>
         </member>
+        <member name="M:Library.Game.Utilities.Calculator.ReturnAdvantage(Library.Game.Players.IPlayer)">
+            <summary>
+            Returns the advantage the player has of either: Item or Pokémon. Depending on the type it receives.
+            </summary>
+            <param name="player"></param>
+            <returns>Advantage</returns>
+        </member>
         <member name="T:Library.Game.Utilities.Catalogue">
             <summary>
             This class receives a created Pokémon and adds it to its catalog.
@@ -913,6 +942,13 @@
             Box that lets the player know it has lost its turn due to the status
             of its Pokémon.
             </summary>
+        </member>
+        <member name="M:Library.Game.Utilities.Printer.Advantage(System.Int32,System.String)">
+            <summary>
+            Displays the advantage of each player.
+            </summary>
+            <param name="advantage"></param>
+            <param name="name"></param>
         </member>
     </members>
 </doc>

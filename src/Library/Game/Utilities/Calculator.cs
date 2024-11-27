@@ -1,4 +1,5 @@
 using System.Data;
+using System.Net.Http.Headers;
 using Library.Game.Attacks;
 using Library.Game.Players;
 using Library.Game.Pokemons;
@@ -270,5 +271,55 @@ public static class Calculator
         return true; // Default case (should not be reached).
     }
 
+    /// <summary>
+    /// Returns the advantage the player has of either: Item or Pokémon. Depending on the type it receives.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns>Advantage</returns>
+    public static int ReturnAdvantage(IPlayer player)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+        
+        int itemAdvantage = 0; // max of 60 points
+        int pokemonAdvantage = 0; // max of 30 points
+        
+        switch (player.ReturnItemCount())
+            {
+                case 1: itemAdvantage = (1*10); break;
+                case 2: itemAdvantage = (2*10); break;
+                case 3: itemAdvantage = (3*10); break;
+                case 4: itemAdvantage = (4*10); break;
+                case 5: itemAdvantage = (5*10); break;
+                case 6: itemAdvantage = (6*10); break;
+                case 0: itemAdvantage = (0)   ; break;
+            }
+            
+        switch (player.ReturnPokemonsCount())
+            {
+                case 1: pokemonAdvantage = (1*5); break;
+                case 2: pokemonAdvantage = (2*5); break;
+                case 3: pokemonAdvantage = (3*5); break;
+                case 4: pokemonAdvantage = (4*5); break;
+                case 5: pokemonAdvantage = (5*5); break;
+                case 6: pokemonAdvantage = (6*5); break;
+                case 0: pokemonAdvantage = (0)   ; break;
+            }
 
+        foreach (IPokemon pokemon in player.Pokemons)
+        {
+            // If the state is not normal, or it has less than 30 HP.
+            if (pokemon.State != SpecialEffect.None || pokemon.Health < 31)
+            {
+                pokemonAdvantage--;
+            }
+        }
+        
+        // maybe?
+        if (pokemonAdvantage < 0) { pokemonAdvantage = 0; }
+        int totalAdvantage = pokemonAdvantage + itemAdvantage;
+        if (totalAdvantage < 0) { totalAdvantage = 0;}
+        
+        // (max of 90 points).
+        return totalAdvantage;
+    }
 }

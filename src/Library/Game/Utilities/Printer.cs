@@ -816,5 +816,26 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         Console.WriteLine(bottomBorder);
     }
 
+    /// <summary>
+    /// Displays the advantage of each player.
+    /// </summary>
+    /// <param name="advantage"></param>
+    /// <param name="name"></param>
+    public static void Advantage(int advantage, string name)
+    {
+        string line1 = $"{name} has {advantage} advantage!";
+        // Determine the box width dynamically
+        int boxWidth = line1.Length + 4;
+
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+        
+        // Print 
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
+
 
 }

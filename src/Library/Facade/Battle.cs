@@ -43,6 +43,7 @@ public static class Battle
             // Apply turn-based effects on both players' Pokémon.
             ProcessTurnEffectsForPlayers(currentPlayer);
             
+            
             // chequeamos que el actual tenga vida:
             if (currentPlayer.SelectedPokemon.Health == 0)
             {
@@ -64,15 +65,38 @@ public static class Battle
                 ForceSwitchPokemon(currentPlayer);
             }
 
+            // Display the users the advantage each has.
+            DisplayAdvantages(currentPlayer, opposingPlayer);
+            
             // si aún tiene pokemons activos:
-
-
-            // si aún tiene vida, el jugador elije que hacer:
             PlayerAction(currentPlayer, opposingPlayer);
             
             // cuando vuelva se cambian los turnos
             (currentPlayer, opposingPlayer) = (opposingPlayer, currentPlayer);
         }
+    }
+    
+    /// <summary>
+    /// Calculates and displays the advantage of each player.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="rival"></param>
+    private static void DisplayAdvantages(IPlayer player, IPlayer rival)
+    {
+        if (player == null || rival == null)
+        { return; }
+        
+        // 1) Create a method that returns the advantage taking into account: the item count of each player.
+        // 2) Create a method that returns the advantage taking into account: the Pokémon count of each player.
+        // this can be done by calling the returnAdvantage in the Calculator class. 
+        int advantagePlayer1 = Calculator.ReturnAdvantage(player); // store P1 advantage.
+        int advantagePlayer2 = Calculator.ReturnAdvantage(rival); // store P2 advantage.
+        
+        // 3) now we print it to the user./*
+        Console.Clear();
+        Printer.Advantage(advantagePlayer1, player.Name);
+        Printer.Advantage(advantagePlayer2, rival.Name);
+        Printer.PressToContinue(); // wait for player input to make sure they see them.
     }
     
     /// <summary>
