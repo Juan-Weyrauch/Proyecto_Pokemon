@@ -329,7 +329,7 @@ public static class Calculator
         
         if(contadorP1 < contadorP2)
         {
-            return $"P2 gano con {contadorP2} y P2 tiene {contadorP1}";
+            return $"P1 gano con {contadorP2} y P2 tiene {contadorP1}";
         }
         else
         {
