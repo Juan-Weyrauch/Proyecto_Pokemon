@@ -1,11 +1,10 @@
-using Library.Facade;
-using Library.Game.Utilities;
-using Library.Game.Pokemons;
-using Library.Game.Players;
 using Library.Game.Attacks;
+using Library.Game.Players;
+using Library.Game.Pokemons;
+using Library.Game.Utilities;
 using NUnit.Framework;
-
-namespace LibraryTests
+using static Library.Facade.Facade;
+namespace LibraryTests.Facade
 {
     [TestFixture]
     public class FacadeTests
@@ -39,8 +38,7 @@ namespace LibraryTests
             IPokemon selectedPokemon = playerPokemons[0];
 
             // Act
-            Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 0);
-
+            Library.Facade.Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 0);
             // Assert
             var player1 = Player.Player1;
             Assert.That(player1, Is.Not.Null);
@@ -57,7 +55,7 @@ namespace LibraryTests
             IPokemon selectedPokemon = playerPokemons[1];
 
             // Act
-            Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 1);
+            Library.Facade.Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 1);
 
             // Assert
             var player2 = Player.Player2;
@@ -78,7 +76,7 @@ namespace LibraryTests
             // Cambia el tipo de excepción si es diferente en tu implementación
             Assert.Throws<ArgumentException>(() => 
             {
-                Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 2);
+                Library.Facade.Facade.CreatePlayers(playerName, playerPokemons, selectedPokemon, 2);
             }, "Debería lanzar una excepción para un índice de jugador inválido");
         }
 

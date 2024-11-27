@@ -87,9 +87,17 @@ public static class Facade
 
 
 
+    /// <summary>
+    /// Creates the player instances. 
+    /// </summary>
+    /// <param name="playerName"></param>
+    /// <param name="playerPokemons"></param>
+    /// <param name="selectedPokemon"></param>
+    /// <param name="playerIndex"></param>
+    /// <exception cref="ArgumentException"></exception>
     public static void CreatePlayers(string playerName, List<IPokemon> playerPokemons, IPokemon selectedPokemon, int playerIndex)
     {
-        if (playerIndex < 0 || playerIndex > 1)
+        if (playerIndex is < 0 or > 1)
         {
             throw new ArgumentException("Invalid player index.");
         }
