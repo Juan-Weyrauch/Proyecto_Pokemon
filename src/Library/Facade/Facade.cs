@@ -35,7 +35,7 @@ public static class Facade
         Facade.Selections();
     }
 
-    private static void Selections()
+    public static void Selections()
     {
         // Crear el catálogo de Pokémon
         Catalogue.CreateCatalogue();
@@ -87,13 +87,18 @@ public static class Facade
 
 
 
-    private static void CreatePlayers(string playerName, List<IPokemon> playerPokemons, IPokemon selectedPokemon, int playerIndex)
+    public static void CreatePlayers(string playerName, List<IPokemon> playerPokemons, IPokemon selectedPokemon, int playerIndex)
     {
+        if (playerIndex < 0 || playerIndex > 1)
+        {
+            throw new ArgumentException("Invalid player index.");
+        }
+
         if (playerIndex == 0)
         {
             Player.InitializePlayer1(playerName, playerPokemons, selectedPokemon);
         }
-        else if (playerIndex == 1)
+        else // playerIndex == 1
         {
             Player.InitializePlayer2(playerName, playerPokemons, selectedPokemon);
         }
