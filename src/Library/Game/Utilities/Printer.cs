@@ -815,6 +815,21 @@ public static void ShowAttacks(IPokemon attacker, IPokemon receiver)
         Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
         Console.WriteLine(bottomBorder);
     }
+    public static void ProbabilidadDeVictoria (int Probabilidad)
+    {
+        // Message content
+        string line1 = $"{DefesaJesus.Probabilidad} % pobability to win";
+        int boxWidth = Math.Max(line1.Length, line2.Length) + 4;
 
+        // Create borders
+        string topBorder = $"╔{new string('═', boxWidth - 2)}╗";
+        string bottomBorder = $"╚{new string('═', boxWidth - 2)}╝";
+
+        // Print status message
+        Console.WriteLine(topBorder);
+        Console.WriteLine($"║ {line1.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine($"║ {line2.PadRight(boxWidth - 4)} ║");
+        Console.WriteLine(bottomBorder);
+    }
 
 }

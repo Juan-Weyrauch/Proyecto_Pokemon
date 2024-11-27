@@ -53,7 +53,7 @@ public class Pokemon : IPokemon
     /// <param name="defense"></param>
     /// <param name="type"></param>
     /// <param name="atacks"></param>
-    public Pokemon(string name, int defense, string type, List<IAttack> atacks)
+    public Pokemon(string name, int defense, string type, List<IAttack> atacks, int Probabilidad)
     {
         InitialHealth = 100;
         Name = name;
@@ -62,6 +62,7 @@ public class Pokemon : IPokemon
         Type = type;
         AtackList = atacks;
         State = SpecialEffect.None;
+        Probabilidad = Health / 10;
     }
 
     /// <summary>
@@ -80,7 +81,7 @@ public class Pokemon : IPokemon
     /// <returns></returns>
     public IPokemon Clone()
     {
-        return new Pokemon(this.Name, this.Defense, this.Type, this.AtackList);
+        return new Pokemon(this.Name, this.Defense, this.Type, this.AtackList,this.Probabilidad);
     }
 
     /// <summary>
@@ -123,10 +124,12 @@ public class Pokemon : IPokemon
         switch (State)
         {
             case SpecialEffect.Sleep:
+                Probabilidad = -10;
                 SleepTurns--;
                 if (SleepTurns <= 0) State = SpecialEffect.None;
                 break;
             case SpecialEffect.Poison:
+                Probabilidad = -10;
                 int auxHealth = Health;
                 Health -= (int)(0.05 * InitialHealth);
                 if (Health < 0) Health = 0;
@@ -136,6 +139,7 @@ public class Pokemon : IPokemon
                 Printer.PressToContinue();
                 break;
             case SpecialEffect.Burn:
+                Probabilidad = -10;
                 auxHealth = Health;
                 Health -= (int)(0.10 * InitialHealth);
                 if (Health < 0) Health = 0;
@@ -156,5 +160,7 @@ public class Pokemon : IPokemon
     {
         State = SpecialEffect.None;
         SleepTurns = 0;
+        Probabilidad = 10;
+
     }
 }

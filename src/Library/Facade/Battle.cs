@@ -206,6 +206,8 @@ public static class Battle
                 int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Pokemons.Count) -1;
                 item.Use(player,pokemonChoice); // Use the item on the selected Pokémon
                 player.RemoveItem(itemSelection);
+                Probabilidad = -6;
+
             }
             // If it's a revive potion, use it on a Pokémon in the cemetery
             else if (item is RevivePotion)
@@ -217,6 +219,8 @@ public static class Battle
                     int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Cementerio.Count) -1;
                     item.Use(player, pokemonChoice); // Revive the selected Pokémon
                     player.RemoveItem(itemSelection);
+                    Probabilidad = -6;
+
                 }
                 else
                 {

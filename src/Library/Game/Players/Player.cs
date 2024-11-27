@@ -90,7 +90,6 @@ namespace Library.Game.Players
             Name = name;
             Pokemons = pokemons;
             Cementerio = new List<IPokemon>();
-
             // Initialize the Items list with some predefined items
             this.Items = new List<List<Item>>
             {
@@ -201,4 +200,5 @@ namespace Library.Game.Players
             Items[itemListIndex].RemoveAt(0);
         }
     }
+    
 }

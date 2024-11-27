@@ -99,5 +99,65 @@
             Creates a clone of this <see cref="T:LibraryTests.MockPokemon"/>.
             </summary>
         </member>
+        <member name="T:LibraryTests.PokemonTests">
+            <summary>
+            Tests for the <see cref="T:Library.Game.Pokemons.Pokemon"/> class.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests.PokemonCreationAssignsPropertiesCorrectly">
+            <summary>
+            Verifies that the <see cref="T:Library.Game.Pokemons.Pokemon"/> constructor assigns properties correctly.
+            </summary>
+        </member>
+        <member name="T:LibraryTests.PokemonTests._PokemonTests">
+            <summary>
+            Tests for the <see cref="T:Library.Game.Pokemons.Pokemon"/> class.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests._PokemonTests.PokemonGetAttackReturnsCorrectAttack">
+            <summary>
+            Verifies that <see cref="M:Library.Game.Pokemons.Pokemon.GetAttack(System.Int32)"/> returns the correct attack based on the index.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests._PokemonTests.PokemonCloneCreatesIdenticalPokemon">
+            <summary>
+            Verifies that <see cref="M:Library.Game.Pokemons.Pokemon.Clone"/> creates an identical copy of the Pokémon.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests._PokemonTests.DecreaseHealthReducesHealthCorrectly">
+            <summary>
+            Verifies that <see cref="M:Library.Game.Pokemons.Pokemon.DecreaseHealth(System.Int32)"/> decreases health correctly.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests._PokemonTests.DecreaseHealthDoesNotAllowNegativeHealth">
+            <summary>
+            Verifies that <see cref="M:Library.Game.Pokemons.Pokemon.DecreaseHealth(System.Int32)"/> does not allow negative health.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests._PokemonTests.ApplyStatusEffectSetsStateCorrectly">
+            <summary>
+            Verifies that <see cref="M:Library.Game.Pokemons.Pokemon.ApplyStatusEffect(Library.Game.Pokemons.SpecialEffect)"/> sets the state correctly.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests._PokemonTests.ApplyStatusEffectDoesNotOverwriteExistingState">
+            <summary>
+            Verifies that <see cref="M:Library.Game.Pokemons.Pokemon.ApplyStatusEffect(Library.Game.Pokemons.SpecialEffect)"/> does not overwrite existing state.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests._PokemonTests.ProcessTurnEffectsHandlesPoisonCorrectly">
+            <summary>
+            Verifies that <see cref="M:Library.Game.Pokemons.Pokemon.ProcessTurnEffects"/> decreases health for Poison effect.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests._PokemonTests.ProcessTurnEffectsHandlesBurnCorrectly">
+            <summary>
+            Verifies that <see cref="M:Library.Game.Pokemons.Pokemon.ProcessTurnEffects"/> decreases health for Burn effect.
+            </summary>
+        </member>
+        <member name="M:LibraryTests.PokemonTests._PokemonTests.ResetStatusClearsAllEffectsAndSleepTurns">
+            <summary>
+            Verifies that <see cref="M:Library.Game.Pokemons.Pokemon.ResetStatus"/> resets all effects and sleep turns.
+            </summary>
+        </member>
     </members>
 </doc>
