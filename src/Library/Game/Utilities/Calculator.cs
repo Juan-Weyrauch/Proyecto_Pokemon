@@ -269,6 +269,4 @@ public static class Calculator
 
         return true; // Default case (should not be reached).
     }
-
-
 }
