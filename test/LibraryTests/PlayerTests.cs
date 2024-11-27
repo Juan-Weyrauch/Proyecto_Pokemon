@@ -181,6 +181,25 @@ namespace LibraryTests
             });
         }
 
+        [Test]
+        public void ReturnPokemonCountIsCorerrect()
+        {
+            var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
+            Player.InitializePlayer2("Misty", pokemons, _mockPokemon2);
+            // Act & Assert
+            var player2 = Player.Player2;
+            Assert.That(player2.ReturnPokemonsCount(), Is.EquivalentTo(pokemons));
+        }
+
+        [Test]
+        public void ReturnItemCountIsCorrect()
+        {
+            var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
+            Player.InitializePlayer2("Misty", pokemons, _mockPokemon2);
+            var player2 = Player.Player2;
+            Assert.That(player2.ReturnItemCount(), Is.EquivalentTo(pokemons));
+        }
+
     }
 
     /// <summary>
