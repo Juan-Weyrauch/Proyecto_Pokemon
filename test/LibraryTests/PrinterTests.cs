@@ -1,4 +1,5 @@
 ﻿
+using Library.Facade;
 using Library.Game.Pokemons;
 using NUnit.Framework;
 
@@ -7,6 +8,9 @@ using Library.Game.Attacks;//using NUnit.Framework;
 using Moq;
 
 using Library.Game.Items;
+using Library.Game.Players;
+using Library.Tests;
+using NUnit.Framework.Internal;
 using NUnit.Framework.Legacy;
 using Assert = NUnit.Framework.Assert;
 using StringWriter = System.IO.StringWriter;
@@ -333,7 +337,8 @@ public class PrinterTests
             }
         }
     }
-[Test]
+
+    [Test]
     public void AskForPokemon_ShouldContainPokemonNameAndIndex()
     {
         // Arrange
@@ -365,61 +370,305 @@ public class PrinterTests
                 Console.SetOut(originalOut);
             }
         }
+
     }
-            
-        }
-[Test]
-public void ShowInventory_ShouldContainPokemonNames()
-{
-    // Arrange
-    var inventory = new List<IPokemon>
+
+    [Test]
+    public void ShowInventory_ShouldPrintInventoryBoxesCorrectly()
     {
-        new Pokemon { Name = "Pikachu", Health = 100 },
-        new Pokemon { Name = "Bulbasaur", Health = 50 },
-        new Pokemon { Name = "Charmander", Health = 75 },
-        new Pokemon { Name = "Squirtle", Health = 80 },
-        new Pokemon { Name = "Eevee", Health = 60 }
-    };
+        // Arrange
+        var mockPokemon1 = new Mock<IPokemon>();
+        var mockPokemon2 = new Mock<IPokemon>();
+        var mockPokemon3 = new Mock<IPokemon>();
+        var mockPokemon4 = new Mock<IPokemon>();
+        var mockPokemon5 = new Mock<IPokemon>();
+        var mockPokemon6 = new Mock<IPokemon>();
 
-    // Definimos los nombres esperados de los Pokémon en el inventario
-    var expectedFragments = new List<string>
-    {
-        "Pikachu",
-        "Bulbasaur",
-        "Charmander",
-        "Squirtle",
-        "Eevee"
-    };
+        // Set up Pokémon names and health
+        mockPokemon1.Setup(p => p.Name).Returns("Pikachu");
+        mockPokemon2.Setup(p => p.Name).Returns("Bulbasaur");
+        mockPokemon3.Setup(p => p.Name).Returns("Charmander");
+        mockPokemon4.Setup(p => p.Name).Returns("Squirtle");
+        mockPokemon5.Setup(p => p.Name).Returns("Eevee");
+        mockPokemon6.Setup(p => p.Name).Returns("Jigglypuff");
 
-    var originalOut = Console.Out; // Guardamos la salida original de la consola
+        mockPokemon1.Setup(p => p.Health).Returns(100);
+        mockPokemon2.Setup(p => p.Health).Returns(80);
+        mockPokemon3.Setup(p => p.Health).Returns(60);
+        mockPokemon4.Setup(p => p.Health).Returns(50);
+        mockPokemon5.Setup(p => p.Health).Returns(30);
+        mockPokemon6.Setup(p => p.Health).Returns(20);
 
-    using (StringWriter sw = new StringWriter())
-    {
-        Console.SetOut(sw); // Redirigimos la salida de la consola a StringWriter
-
-        try
+        var inventory = new List<IPokemon>
         {
-            // Act
-            Printer.ShowInventory(inventory);
+            mockPokemon1.Object,
+            mockPokemon2.Object,
+            mockPokemon3.Object,
+            mockPokemon4.Object,
+            mockPokemon5.Object,
+            mockPokemon6.Object
+        };
 
-            // Assert
-            string actualOutput = sw.ToString().Trim(); // Quitamos los espacios extra
+        // Redirect the console output to a StringWriter to capture it
+        var originalOut = Console.Out;
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter);
 
-            // Comprobamos si la salida contiene los nombres de los Pokémon
-            foreach (var expectedFragment in expectedFragments)
-            {
-                Assert.That(actualOutput, Does.Contain(expectedFragment),
-                    $"La salida no contiene el nombre esperado del Pokémon: '{expectedFragment}'");
-            }
-        }
-        finally
+        // Act
+        Printer.ShowInventory(inventory);
+
+        // Assert
+        // Use Does.Contain to check if the inventory contains the Pokémon names in the output
+        foreach (var pokemon in inventory)
         {
-            // Restauramos la salida original de la consola
-            Console.SetOut(originalOut);
+            Assert.That(stringWriter.ToString(), Does.Contain(pokemon.Name),
+                $"The inventory does not contain {pokemon.Name}");
         }
+
+        // Restore the original console output
+        Console.SetOut(originalOut);
     }
-}
 
-    
+    [Test]
+    public void PrintInventoryHeader_ShouldPrintCorrectHeader()
+    {
+        // Arrange
+        var originalOut = Console.Out;
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter); // Redirect console output to StringWriter
+
+        // Act
+        Printer.PrintInventoryHeader();
+
+        // Assert
+        // Verify that the expected header content is printed to the console
+        Assert.That(stringWriter.ToString(), Does.Contain("Your Team"), "The header does not contain 'Your Team'");
+        Assert.That(stringWriter.ToString(),
+            Does.Contain(
+                "╔════════════════════════════════════════════════════════════════════════════════════════════╗"),
+            "The header does not contain the top border");
+        Assert.That(stringWriter.ToString(),
+            Does.Contain(
+                "╚════════════════════════════════════════════════════════════════════════════════════════════╝"),
+            "The header does not contain the bottom border");
+
+        // Restore original console output
+        Console.SetOut(originalOut);
+    }
+
+    [Test]
+    public void ShowSelectedPokemon_ShouldPrintPokemonInfoCorrectly()
+    {
+        // Arrange
+        var mockPokemon = new Mock<IPokemon>();
+        mockPokemon.Setup(p => p.Name).Returns("Pikachu");
+        mockPokemon.Setup(p => p.Health).Returns(100);
+
+        string playerName = "Ash";
+
+        var originalOut = Console.Out;
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter); // Redirect console output to StringWriter
+
+        // Act
+        Printer.ShowSelectedPokemon(mockPokemon.Object, playerName);
+
+        // Assert
+        // Verify that the output contains expected Pokémon info
+        Assert.That(stringWriter.ToString(), Does.Contain("This is your pokemon Ash!"));
+
+        // Restore original console output
+        Console.SetOut(originalOut);
+    }
+
+
+    [Test]
+    public void ShowAttacks_ShouldPrintAttacksDetailsCorrectly()
+    {
+        // Arrange
+        var attack1 = new Attack("Flame Thrower", 40, SpecialEffect.Burn, "Fire", 90);
+        var attack2 = new Attack("Water Gun", 30, SpecialEffect.None, "Water", 100);
+
+        var pokemon = new Pokemon("Charmander", 10, "Fire", new List<IAttack> { attack1, attack2 });
+
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter); // Redirect console output to StringWriter
+
+        // Act
+        Printer.ShowAttacks(pokemon,
+            pokemon); // Usamos el mismo Pokémon para atacar y recibir el ataque (puedes cambiarlo si es necesario)
+
+        // Assert
+        var output = stringWriter.ToString();
+
+        // Verificar que la salida contiene los detalles correctos de los ataques
+        Assert.That(output, Contains.Substring("Attacks of Charmander"));
+        Assert.That(output, Contains.Substring("Attack 1"));
+        Assert.That(output, Contains.Substring("Name: Flame Thrower"));
+        Assert.That(output, Contains.Substring("Damage: 40"));
+        Assert.That(output, Contains.Substring("Type: Fire"));
+        Assert.That(output, Contains.Substring("Special Effect: Burn"));
+
+        Assert.That(output, Contains.Substring("Attack 2"));
+        Assert.That(output, Contains.Substring("Name: Water Gun"));
+        Assert.That(output, Contains.Substring("Damage: 30"));
+        Assert.That(output, Contains.Substring("Type: Water"));
+        Assert.That(output, Contains.Substring("Special Effect: None"));
+
+        // Verificar que la salida contiene los bordes del formato esperado
+
+    }
+
+    [Test]
+    public void WasAfected_ShouldPrintCorrectMessage()
+    {
+        // Arrange
+        var attack = new Attack("Flame Thrower", 40, SpecialEffect.Burn, "Fire", 90);
+        var pokemon = new Pokemon("Charmander", 10, "Fire", new List<IAttack> { attack });
+
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter); // Redirigir la salida de la consola a StringWriter
+
+        // Act
+        Printer.WasAfected(pokemon, attack); // Llamamos al método WasAfected
+
+        // Assert
+        var output = stringWriter.ToString();
+
+        // Verificar que el mensaje contiene el nombre del Pokémon y del ataque
+        Assert.That(output, Contains.Substring("Charmander is affected by Flame Thrower's special effect!"));
+
+    }
+
+    [Test]
+    public void SwitchQuestion_ShouldPrintCorrectMessages()
+    {
+        // Arrange
+        var player = new Mock<IPlayer>();
+        var pokemon = new Mock<IPokemon>();
+
+        // Establecer valores de prueba para el jugador y su Pokémon seleccionado
+        player.Setup(p => p.Name).Returns("Ash");
+        player.Setup(p => p.SelectedPokemon).Returns(pokemon.Object);
+        pokemon.Setup(p => p.Name).Returns("Pikachu");
+
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter); // Redirigir la salida de la consola a StringWriter
+
+        // Act
+        Printer.SwitchQuestion(player.Object); // Llamamos al método SwitchQuestion
+
+        // Assert
+        var output = stringWriter.ToString();
+
+        // Verificar que la salida contiene los mensajes correctos
+        Assert.That(output, Contains.Substring("Ash, do you want to change your Pokémon Pikachu?"));
+        Assert.That(output, Contains.Substring("1) Yes  2) No"));
+
+        // Verificar que la salida contiene los bordes de la caja correctamente formateados
+    }
+
+    [Test]
+    public void SwitchConfirmation_ShouldPrintCorrectMessages_WhenOptionIsZero()
+    {
+        // Arrange
+        var player = new Mock<IPlayer>();
+        var pokemon = new Mock<IPokemon>();
+
+        // Establecer valores de prueba para el jugador y su Pokémon seleccionado
+        player.Setup(p => p.Name).Returns("Ash");
+        player.Setup(p => p.SelectedPokemon).Returns(pokemon.Object);
+        pokemon.Setup(p => p.Name).Returns("Pikachu");
+
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter); // Redirigir la salida de la consola a StringWriter
+
+        // Act
+        Printer.SwitchConfirmation(player.Object, 0); // Llamamos al método SwitchConfirmation con la opción 0
+
+        // Assert
+        var output = stringWriter.ToString();
+
+        // Verificar que la salida contiene los mensajes correctos
+        Assert.That(output, Contains.Substring("Ash, your selected Pokémon has been changed!"));
+        Assert.That(output, Contains.Substring("Now it is Pikachu."));
+
+        // Verificar que la salida contiene los bordes de la caja correctamente formateados
+
+    }
+
+    [Test]
+    public void SwitchConfirmation_ShouldNotPrintAnything_WhenOptionIsNonZero()
+    {
+        // Arrange
+        var player = new Mock<IPlayer>();
+        var pokemon = new Mock<IPokemon>();
+
+        // Establecer valores de prueba para el jugador y su Pokémon seleccionado
+        player.Setup(p => p.Name).Returns("Ash");
+        player.Setup(p => p.SelectedPokemon).Returns(pokemon.Object);
+        pokemon.Setup(p => p.Name).Returns("Pikachu");
+
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter); // Redirigir la salida de la consola a StringWriter
+
+        // Act
+        Printer.SwitchConfirmation(player.Object,
+            1); // Llamamos al método SwitchConfirmation con una opción diferente a 0
+
+        // Assert
+        var output = stringWriter.ToString();
+
+        // Verificar que no se imprime nada cuando la opción no es 0
+        Assert.That(output, Is.Empty);
+    }
+
+    [Test]
+    public void SkippingDueToStatus_ShouldPrintCorrectMessage()
+    {
+        // Arrange
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter); // Redirigir la salida de la consola a StringWriter
+
+        // Act
+        Printer.SkippingDueToStatus(); // Llamamos al método SkippingDueToStatus
+
+        // Assert
+        var output = stringWriter.ToString();
+
+        // Verificar que la salida contiene el mensaje esperado
+        Assert.That(output, Does.Contain("Skipping turn due to status effect."));
+
+        // Verificar que la salida contiene los bordes de la caja correctamente formateados
+
+    }
+
+    [Test]
+    public void ShowTurnInfo_ShouldPrintCorrectTurnInfo()
+    {
+        // Arrange
+        var player = new MockPlayer();
+        var pokemon = new MockPokemon();
+
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter); // Redirigir la salida de la consola a StringWriter
+
+        // Act
+        Printer.ShowTurnInfo(player, pokemon); // Llamamos al método ShowTurnInfo
+
+        // Assert
+        var output = stringWriter.ToString();
+
+        // Verificar que el mensaje contiene el nombre del jugador y el Pokémon
+
+        // Verificar que las opciones están en el formato correcto
+        Assert.That(output, Does.Contain("What would you like to do?"));
+        Assert.That(output, Does.Contain("1. Attack"));
+        Assert.That(output, Does.Contain("2. Use Item"));
+        Assert.That(output, Does.Contain("3. Switch Pokémon"));
 
         
+        
+    }
+    
+}

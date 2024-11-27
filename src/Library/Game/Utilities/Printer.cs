@@ -271,7 +271,7 @@ public static class Printer
     /// <summary>
     /// Prints the header box for the inventory.
     /// </summary>
-    private static void PrintInventoryHeader()
+    public static void PrintInventoryHeader()
     {
         string top = "╔════════════════════════════════════════════════════════════════════════════════════════════╗";
         string title = "║                                      Your Team                                             ║";
