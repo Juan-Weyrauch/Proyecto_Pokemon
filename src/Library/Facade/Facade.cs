@@ -63,7 +63,7 @@ public static class Facade
             for (int j = 0; j < 6; j++)
             {
                 Printer.AskForPokemon(j + 1, playerName); // Mostrar mensaje para seleccionar Pokémon
-                int playerSelection = Calculator.ValidateSelectionInGivenRange(1, 20);
+                int playerSelection = Calculator.ValidateSelectionInGivenRange(1, 30);
                 playerPokemons.Add(Catalogue.GetPokemon(playerSelection).Clone()); // Agregar Pokémon a la lista
             }
 
