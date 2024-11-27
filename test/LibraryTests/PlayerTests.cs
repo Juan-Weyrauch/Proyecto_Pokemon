@@ -24,7 +24,7 @@ namespace LibraryTests
         [SetUp]
         public void Setup()
         {
-            Player.ResetForTesting(); // Restablecer el estado de los jugadores
+            //Player.ResetForTesting(); // Restablecer el estado de los jugadores
             _mockPokemon1 = new MockPokemon("Charmander");
             _mockPokemon2 = new MockPokemon("Bulbasaur");
         }

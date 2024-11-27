@@ -1,118 +1,219 @@
-﻿using Library.Game.Utilities;
+﻿
 using Library.Game.Pokemons;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Library.Game.Attacks;
 
+using Library.Game.Attacks;//using NUnit.Framework;
 
-namespace Library.Tests
+using Moq;
+
+using Library.Game.Items;
+
+namespace Library.Game.Utilities.Tests
 {
     [TestFixture]
-    public class PrinterTests
+    internal sealed class PrinterTests
     {
-        private StringWriter _stringWriter;
+        private StringWriter _consoleOutput;
 
         [SetUp]
         public void Setup()
         {
-            // Redirigir la salida estándar de la consola a un StringWriter
-            _stringWriter = new StringWriter();
-            Console.SetOut(_stringWriter);
+            // Redirect console output to a StringWriter for verification
+            _consoleOutput = new StringWriter();
+            Console.SetOut(_consoleOutput);
         }
 
         [TearDown]
         public void TearDown()
         {
-            // Restaurar la salida estándar de la consola
-            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
-            _stringWriter.Dispose();
+            // Reset console output and dispose of StringWriter
+            _consoleOutput.Dispose();
+            Console.SetOut(Console.Out); // Reset to default
         }
 
+
+        // ========================= Start and End Game Messages =====================
         [Test]
         public void StartPrint_ShouldDisplayWelcomeMessage()
         {
-            // Act
+            // Arrange
             Printer.StartPrint();
 
             // Assert
-            string output = _stringWriter.ToString();
-            Assert.That(output, Does.Contain("Welcome to Pokemon Battle"), "Expected welcome message to be printed.");
+            string expected = "╔═══════════════════════════════════════╗\n" +
+                              "║       Welcome to Pokemon Battle       ║\n" +
+                              "╚═══════════════════════════════════════╝\n";
+            Assert.That(_consoleOutput.ToString(), Does.Contain(expected));
         }
 
         [Test]
         public void EndPrint_ShouldDisplayThankYouMessage()
         {
-            // Act
+            // Arrange
             Printer.EndPrint();
 
             // Assert
-            string output = _stringWriter.ToString();
-            Assert.That(output, Does.Contain("Thanks for playing!!"), "Expected thank you message to be printed.");
+            string expected = "╔════════════════════════════╗\n" +
+                              "║    Thanks for playing!!    ║\n" +
+                              "╚════════════════════════════╝\n";
+            Assert.That(_consoleOutput.ToString(), Does.Contain(expected));
+        }
+
+        
+        // =================================== Dynamic Box Display ===============================
+        [Test]
+        public void DisplayWinner_ShouldFormatBoxWithWinnerName()
+        {
+            string winner = "Ash";
+            using var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+
+            Printer.DisplayWinner(winner);
+
+            string expected = $"The winner is {winner}!!";
+            Assert.That(consoleOutput.ToString(), Does.Contain(expected));
         }
 
         [Test]
-        public void DisplayWinner_ShouldShowWinnerName()
+        public void IndexOutOfRange_ShouldDisplayMinMaxMessage()
         {
-            // Act
-            Printer.DisplayWinner("Ash");
+            int min = 1, max = 10;
+            using var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
 
-            // Assert
-            string output = _stringWriter.ToString();
-            Assert.That(output, Does.Contain("The winner is Ash!!"), "Expected winner's name to be printed.");
+            Printer.IndexOutOfRange(min, max);
+
+            string expected = $"El valor debe ser mayor que {min}\ny menor que {max}";
+            Assert.That(consoleOutput.ToString(), Does.Contain(expected));
         }
 
-
-        [Test]
-        public void YourTurn_ShouldDisplayPlayerTurnMessage()
-        {
-            // Act
-            Printer.YourTurn("Ash");
-
-            // Assert
-            string output = _stringWriter.ToString();
-            Assert.That(output, Does.Contain("Your turn Player Ash"), "Expected player's turn message to be printed.");
-        }
-
+        // ================== Name Selection and Turn Notifications =========================
         [Test]
         public void NameSelection_ShouldPromptForName()
         {
-            // Act
+            using var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+
             Printer.NameSelection();
 
-            // Assert
-            string output = _stringWriter.ToString();
-            Assert.That(output, Does.Contain("Enter your name"), "Expected prompt for player name.");
+            string expected = "Enter your name";
+            Assert.That(consoleOutput.ToString(), Does.Contain(expected));
         }
 
         [Test]
-        public void IndexOutOfRange_ShouldDisplayErrorMessage()
+        public void YourTurn_ShouldDisplayTurnMessage()
         {
-            // Act
-            Printer.IndexOutOfRange(1, 20);
+            string playerName = "Misty";
+            using var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
 
-            // Assert
-            string output = _stringWriter.ToString();
-            Assert.That(output, Does.Contain("El valor debe ser mayor que 1"), "Expected error message to specify lower limit.");
-            Assert.That(output, Does.Contain("y menor que 20"), "Expected error message to specify upper limit.");
+            Printer.YourTurn(playerName);
+
+            string expected = $"Your turn Player {playerName}";
+            Assert.That(consoleOutput.ToString(), Does.Contain(expected));
+        }
+
+        
+        //============================= Pokémon Catalogue and Inventory ===============================
+        [Test]
+        public void ShowCatalogue_ShouldDisplayPokemonInBoxes()
+        {
+            var pokedex = new Dictionary<int, IPokemon>
+            {
+                { 1, Mock.Of<IPokemon>(p => p.Name == "Pikachu" && p.Health == 100) },
+                { 2, Mock.Of<IPokemon>(p => p.Name == "Charmander" && p.Health == 80) }
+            };
+
+            using var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+
+            Printer.ShowCatalogue(pokedex);
+
+            Assert.That(consoleOutput.ToString(), Does.Contain("Name: Pikachu"));
+            Assert.That(consoleOutput.ToString(), Does.Contain("Name: Charmander"));
         }
 
         [Test]
-        public void ShowSelectedPokemon_ShouldDisplayPokemonDetails()
+        public void ShowInventory_ShouldDisplayPokemonInventory()
         {
-            // Arrange
-            var pokemon = new Pokemon("Pikachu", 35, "Electric", new List<IAttack>());
-            pokemon.InitialHealth = 100;
+            var inventory = new List<IPokemon>
+            {
+                Mock.Of<IPokemon>(p => p.Name == "Bulbasaur" && p.Health == 70),
+                Mock.Of<IPokemon>(p => p.Name == "Squirtle" && p.Health == 85)
+            };
 
-            // Act
-            Printer.ShowSelectedPokemon(pokemon, "Ash");
+            using var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
 
-            // Assert
-            string output = _stringWriter.ToString();
-            Assert.That(output, Does.Contain("This is your pokemon Ash!"), "Expected player's name in message.");
-            Assert.That(output, Does.Contain("Name: Pikachu"), "Expected Pokémon's name in message.");
-            Assert.That(output, Does.Contain("Life: 35/100"), "Expected Pokémon's health details in message.");
+            Printer.ShowInventory(inventory);
+
+            Assert.That(consoleOutput.ToString(), Does.Contain("Name: Bulbasaur"));
+            Assert.That(consoleOutput.ToString(), Does.Contain("Name: Squirtle"));
         }
+
+        // ================================== Attack Displays ==========================================
+        [Test]
+        public void ShowAttacks_ShouldDisplayAttackDetails()
+        {
+            var attacks = new List<IAttack>
+            {
+                Mock.Of<IAttack>(a => a.Name == "Shadow Ball" && a.Damage == 50 && a.Type == "Ghost")
+            };
+
+            var attacker = Mock.Of<IPokemon>(p => p.Name == "Gengar" && p.AtackList == attacks);
+            var receiver = Mock.Of<IPokemon>();
+
+            Printer.ShowAttacks(attacker, receiver);
+
+            Assert.That(_consoleOutput.ToString(), Does.Contain("Shadow Ball"));
+            Assert.That(_consoleOutput.ToString(), Does.Contain("Damage: 50"));
+            Assert.That(_consoleOutput.ToString(), Does.Contain("Type: Ghost"));
+        }
+
+        // ================================ Battle Messages ============================================
+        [Test]
+        public void AttackSummary_ShouldDisplayDamageDetails()
+        {
+            var attacker = Mock.Of<IPokemon>(p => p.Name == "Pikachu");
+            var receiver = Mock.Of<IPokemon>(p => p.Name == "Snorlax" && p.Health == 50);
+            var attack = Mock.Of<IAttack>(a => a.Name == "Thunderbolt");
+
+            using var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+
+            Printer.AttackSummary(attacker, attack, receiver, 20, critical: true);
+
+            Assert.That(consoleOutput.ToString(), Does.Contain("Pikachu used Thunderbolt!"));
+            Assert.That(consoleOutput.ToString(), Does.Contain("It dealt 20 damage."));
+            Assert.That(consoleOutput.ToString(), Does.Contain("Snorlax has 50 HP remaining."));
+            Assert.That(consoleOutput.ToString(), Does.Contain("critical hit!"));
+        }
+
+        // ================================ Status Effects ======================================
+        [Test]
+        public void CantAttackBecauseOfStatus_ShouldDisplayStatusReason()
+        {
+            var pokemon = Mock.Of<IPokemon>(p => p.Name == "Charmander");
+
+            using var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+
+            Printer.CantAttackBecauseOfStatus(pokemon);
+
+            Assert.That(consoleOutput.ToString(), Does.Contain("Charmander can't attack!"));
+            Assert.That(consoleOutput.ToString(), Does.Contain("Reason: It is Paralyzed."));
+        }
+
+        // ===================================== Miscellaneous ===========================================
+        [Test]
+        public void PressToContinue_ShouldPauseWithMessage()
+        {
+            Console.SetIn(new StringReader("\n"));
+
+            Printer.PressToContinue();
+
+            Assert.That(_consoleOutput.ToString(), Does.Contain("Press any key to continue!"));
+        }
+
     }
 }

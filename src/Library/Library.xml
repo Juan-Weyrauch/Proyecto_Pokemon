@@ -401,6 +401,12 @@
             Moves the currently selected Pokémon to the cemetery list and removes it from the player's active Pokémon list.
             </summary>
         </member>
+        <member name="M:Library.Game.Players.Player.CarryToTeam(Library.Game.Pokemons.IPokemon)">
+            <summary>
+            Changes the pokemon to a 'dead' pokemon list.
+            </summary>
+            <param name="pokemon"></param>
+        </member>
         <member name="M:Library.Game.Players.Player.GetItem(System.Int32)">
             <summary>
             Retrieves an item from the player's inventory based on the given index.
@@ -679,7 +685,7 @@
         <member name="T:Library.Game.Utilities.Catalogue">
             <summary>
             This class receives a created Pokémon and adds it to its catalog.
-            </summary>
+            </summary>      
         </member>
         <member name="F:Library.Game.Utilities.Catalogue._pokedex">
             <summary>
