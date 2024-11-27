@@ -4,7 +4,7 @@ namespace Library.Game.Utilities;
 
 /// <summary>
 /// This class receives a created Pokémon and adds it to its catalog.
-/// </summary>      
+/// </summary>
 public static class Catalogue
 {
     /// <summary>
