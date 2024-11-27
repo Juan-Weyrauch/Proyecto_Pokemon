@@ -1,0 +1,12 @@
+Buenas noches profesor, disculpe esta nota pero considero necesario comunicarle la situación del equipo.
+
+El proyecto de este semestre se encuentra incompleto en nuestro repositorio, ya que en mi equipo no fuimos capaces de finalizar el trabajo. Esto es debido a múltiples factores, pero el más relevante es la delegación de trabajos y los problemas que tuvimos para trabajar en equipo. 
+
+Explayándome:
+	- Dentro del equipo fuimos solamente dos personas las cuales realmente hicimos trabajo con relevancia, esos fuimos Juan Manuel Lorenzo y yo, Juan Ignacio Weyrauch. 
+	- No podíamos contar con ninguno de los otros dos integrantes para realizar ningún trabajo, ya que no teníamos certeza de que: lo fueran a hacer, o si lo hacían, que esté correcto. 
+	- Esto nos atrasó de sobremanera como equipo, hasta el punto que para la tercera entrega me tomé el tiempo de escribir desde cero un programa nuevo y compartirlo con mis compañeros para que todos pudiéramos colaborar. 
+	Esta decisión tuvo efectos positivos como negativos. Primero negativos, ya que a mis compañeros no les gustó que haya realizado una gran parte del programa solo, pero con el tiempo lo agradecimos todos ya que tuvimos una base mucho más sólida sobre la cual construir el resto del programa. 
+	Otra decisión que impulsó al equipo fue (intentar) enseñarles a mi equipo a usar git y GitHub como corresponde, creando los pull request, revisando entre todos el código del prójimo, y manteniéndonos al día sobre lo que estábamos trabajando. Puse "intentar" entre paréntesis porque no puedo dar extensión al tiempo que me tomé para poder explicárselos, y que de igual manera terminen haciendo "git push --force" porque no saben resolver conflictos. Gracias a experiencias previas aprendí que a veces la mejor manera de hacer las cosas es cuando uno toma el rol de "dictador" lo cual resultó ser bastante beneficioso para el equipo, ya que podía controlar la mayoría de las acciones de los integrantes a traves de GitHub.
+
+Contándole todo esto, no busco ningún tipo de reprimenda hacia mis compañeros, simplemente dejar por escrito como fue la situación del equipo (cosa que Juan Manuel ya hizo via mail), y solicitar algún tipo de consideración por los elementos no implementados en el  proyecto.
