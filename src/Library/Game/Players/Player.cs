@@ -47,6 +47,8 @@ namespace Library.Game.Players
             }
         }
 
+        
+        public int contador { get; set; }
         // Public properties
         /// <summary>
         /// The name of the player.
@@ -101,6 +103,7 @@ namespace Library.Game.Players
 
             SelectedPokemon = selectedPokemon;
             Turn = 0;
+            contador = 0;
         }
 
         // Initialization methods for the players

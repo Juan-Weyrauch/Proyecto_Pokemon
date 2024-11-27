@@ -40,6 +40,9 @@ public static class Battle
 
         while (true)
         {
+            // chequea las posibilidades de ganar del pokemon:
+            ProbabilidadDeGanar(currentPlayer, opposingPlayer);
+            
             // Apply turn-based effects on both players' Pokémon.
             ProcessTurnEffectsForPlayers(currentPlayer);
             
@@ -144,6 +147,71 @@ public static class Battle
     }
 
     
+    
+    private static bool ProbabilidadDeGanar(IPlayer player, IPlayer rival)
+    {
+        bool Ganas = false;         //bool si ganas
+        bool tieneEstado = false;   //bool chequea estado
+        player.contador = 0;        //contador
+        rival.contador = 0;         //contador
+
+        foreach (var pokemon in player.Pokemons)    //chequea la cantidad de pokemons
+        {
+            player.contador = player.contador + 10; //60 puntos en total
+            
+            if (pokemon.State != SpecialEffect.None)    //chequea si algun pokemon tiene un estado
+            {
+                if (!tieneEstado)
+                {
+                    player.contador = player.contador - 10;
+                    tieneEstado = true;
+                }
+            }
+        }
+
+        foreach (var items in player.Items) //chequea la cantidad de items
+        {
+            foreach (var item in items)
+            {
+                player.contador = player.contador + 5; //30 puntos en total
+            }
+        }
+        
+        foreach (var pokemon in rival.Pokemons)
+        {
+            rival.contador = rival.contador + 10; //60 puntos en total
+            
+            if (pokemon.State != SpecialEffect.None)
+            {
+                if (!tieneEstado)
+                {
+                    player.contador = player.contador - 10;
+                    tieneEstado = true;
+                }
+            }
+        }
+
+        foreach (var items in rival.Items)
+        {
+            foreach (var item in items)
+            {
+                rival.contador = rival.contador + 5; //30 puntos en total
+            }
+        }
+        
+        if (player.contador > rival.contador)
+        {
+            Ganas = true;
+        }
+        
+        Console.WriteLine($"{player.Name}");
+        Console.WriteLine(player.contador); //debe dar 90 puntos
+        Console.WriteLine(rival.contador);
+        return Ganas;       //no consegui test pero haciendo debug cumple
+    }
+
+
+
 
     /// <summary>
     /// This method is responsible for:

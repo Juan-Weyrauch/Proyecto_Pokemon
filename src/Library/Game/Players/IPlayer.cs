@@ -9,6 +9,7 @@ namespace Library.Game.Players
     /// </summary>
     public interface IPlayer
     {
+        int contador { get; set; }
         /// <summary>
         /// Gets the name of the player.
         /// </summary>
