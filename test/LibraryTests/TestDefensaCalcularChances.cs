@@ -35,13 +35,13 @@ namespace Library.Tests
             Poke2.Add(pokedex[25]);
             
             Player.InitializePlayer1("example", Poke1, Poke1[1]);
-            Player.InitializePlayer2("example", Poke2, pokedex[10]);
+            Player.InitializePlayer2("example", Poke2, Poke2[4]);
             
             IPlayer p1 = Player.Player1;
             IPlayer p2 = Player.Player2;
-           p2.SelectedPokemon.State = SpecialEffect.Burn;
+           p2.SelectedPokemon.State = SpecialEffect.Burn; // Doble Pokemons con un estado alterado para demostrar que se queda a 90.
            p2.Pokemons[4].State = SpecialEffect.Burn;
-           Assert.That(Calculator.FuncionCalcularChances(p1,p2).Equals("P1 gano con 100 y P2 tiene 80"));
+           Assert.That(Calculator.FuncionCalcularChances(p1,p2).Equals("P1 gano con 100 y P2 tiene 90"));
         }
 
         [Test]
@@ -66,11 +66,12 @@ namespace Library.Tests
             Poke2.Add(pokedex[25]);
 
             Player.InitializePlayer1("example", Poke1, Poke1[1]);
-            Player.InitializePlayer2("example", Poke2, pokedex[10]);
+            Player.InitializePlayer2("example", Poke2, Poke2[10]);
 
             IPlayer p1 = Player.Player1;
             IPlayer p2 = Player.Player2;
             p1.Items.RemoveAt(0); // Elimina la primera lista de items del jugador 1. 
            Assert.That(Calculator.FuncionCalcularChances(p1, p2).Equals("P2 gano con 100 y P2 tiene 95"));
         }}
+    
     }

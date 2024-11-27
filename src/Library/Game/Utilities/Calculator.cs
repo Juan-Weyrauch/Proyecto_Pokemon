@@ -272,26 +272,33 @@ public static class Calculator
     }
     public static string FuncionCalcularChances(IPlayer player1, IPlayer player2)
     {
-        int contadorP1 = 10; //  Comienza con 10 para poder utilizar el Foreach Y eliminar ese 10. r
+        int contadorP1 = 10; //  Comienza con 10 para poder utilizar el Foreach Y eliminar ese 10. 
         int contadorP2 = 10;
         
-        foreach (var pokemon in player1.Pokemons)
+        foreach (IPokemon pokemon in player1.Pokemons)
+        
         {
             if (pokemon.Health > 0)
             {
                 contadorP1 += 10;
             }
+        }
 
+        foreach (IPokemon pokemon in player1.Pokemons)
+        {
             if (pokemon.State != SpecialEffect.None)
             {
-                contadorP1 -= 10; // Si uno no es diferente se le restan 10. 
+                contadorP1 -= 10; // Si uno  es diferente se le restan 10. 
                 break;
             }
         }
+        
         foreach (var item in player1.Items)
         {
             contadorP1 += 5 * (item.Count); // Son 6 items * 5 = 30, que es lo maximo.
         }
+        
+        // Jugador 2 
         foreach (IPokemon pokemon in player2.Pokemons)
         
         {
@@ -299,13 +306,17 @@ public static class Calculator
             {
                 contadorP2 += 10;
             }
+        }
 
+        foreach (IPokemon pokemon in player2.Pokemons)
+        {
             if (pokemon.State != SpecialEffect.None)
             {
                 contadorP2 -= 10; // Si uno  es diferente se le restan 10. 
                 break;
             }
         }
+
         foreach (var item in player2.Items)
         {
             contadorP2 += 5 * (item.Count); // Son 6 items * 5 = 30, que es lo maximo.
@@ -324,10 +335,6 @@ public static class Calculator
         {
             return "Ha sido Empate";
         }
-
-
-
-        // Lista simplemente para recorrer con mas facilidad.
-
     }
+    
 }
