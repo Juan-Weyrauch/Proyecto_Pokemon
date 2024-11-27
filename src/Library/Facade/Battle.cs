@@ -38,25 +38,27 @@ public static class Battle
         Player currentPlayer = Player.Player1; // Se establece a traves de un Singelton los dos jugadores. 
         Player opposingPlayer = Player.Player2;
 
-        while (true)  // Se mantiene siempre.
+        while (true) // Se mantiene siempre.
         {
             // Apply turn-based effects on both players' Pokémon.
             ProcessTurnEffectsForPlayers(currentPlayer);
-            
+
             // chequeamos que el actual tenga vida:
             if (currentPlayer.SelectedPokemon.Health == 0) // Si esta muerto va para el cementerio. 
             {
                 // si el pokemon seleccionado no tiene vida:
                 currentPlayer.CarryToCementerio(); // se elimina el pokemon del equipo del player.
             }
-            
+
             // check if the player still has active Pokémon
-            if (!Calculator.HasActivePokemon(currentPlayer)) // En el caso de que el jugador no tenga pokemons activos el juego termina. 
+            if (!Calculator
+                    .HasActivePokemon(
+                        currentPlayer)) // En el caso de que el jugador no tenga pokemons activos el juego termina. 
             {
                 Printer.DisplayWinner(opposingPlayer.Name); // si no tiene, se muestra al ganador y termina el programa
                 break;
             }
-            
+
             // si entra aca es poruqe 1) el pokemon seleccionado no tiene vida y 2) todavía tiene pokemons
             if (currentPlayer.SelectedPokemon.Health == 0)
             {
@@ -69,18 +71,20 @@ public static class Battle
 
             // si aún tiene vida, el jugador elije que hacer:
             PlayerAction(currentPlayer, opposingPlayer); // Elije entre las 3 opciones. 
-            
+
             // cuando vuelva se cambian los turnos
-            (currentPlayer, opposingPlayer) = (opposingPlayer, currentPlayer); // Se dan vuelta los turnos de los jugadores. 
+            (currentPlayer, opposingPlayer) =
+                (opposingPlayer, currentPlayer); // Se dan vuelta los turnos de los jugadores. 
         }
     }
-    
+
     /// <summary>
     /// Process turn-based effects for current players' Pokémon
     /// </summary>
     private static void ProcessTurnEffectsForPlayers(Player currentPlayer)
     {
-        currentPlayer.SelectedPokemon.ProcessTurnEffects(); // Se le aplica el efecto de los pokemons al pokemon selecionado.
+        currentPlayer.SelectedPokemon
+            .ProcessTurnEffects(); // Se le aplica el efecto de los pokemons al pokemon selecionado.
     }
 
     /// <summary>
@@ -104,7 +108,7 @@ public static class Battle
             Printer.PressToContinue();
             return; // End the turn without further actions.
         }
-        
+
         // if everything checks, we procede with the players turn
         Printer.YourTurn(player.Name);
         Printer.ShowTurnInfo(player, player.SelectedPokemon);
@@ -137,13 +141,14 @@ public static class Battle
                     {
                         // If no Pokémon was switched, show options again
                         Printer.ShowTurnInfo(player, player.SelectedPokemon);
-                    } 
+                    }
+
                     break;
             }
         }
     }
 
-    
+
 
     /// <summary>
     /// This method is responsible for:
@@ -178,10 +183,11 @@ public static class Battle
             receiver.ApplyStatusEffect(attack.Special);
             Printer.WasAfected(receiver, attack);
         }
+
         Printer.PressToContinue();
     }
-    
-     /// <summary>
+
+    /// <summary>
     /// Method that allows the player to use an item during their turn. 
     /// Depending on the item, the player may use it on a Pokémon from their team or the cemetery.
     /// </summary>
@@ -193,7 +199,8 @@ public static class Battle
         Printer.PrintItems(player.Items);
 
         // Ask the player to select an item
-        int itemSelection = Calculator.ValidateSelectionInGivenRange(1, player.Items.Count); // Assuming 3 types of items
+        int itemSelection =
+            Calculator.ValidateSelectionInGivenRange(1, player.Items.Count); // Assuming 3 types of items
         Item item = player.GetItem(itemSelection); // Call the player's UseItem method
 
         if (item != null)
@@ -203,8 +210,8 @@ public static class Battle
             {
                 Printer.ShowInventory(player.Pokemons);
                 Console.WriteLine($"Which Pokémon do you want to use {item.Name} on?");
-                int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Pokemons.Count) -1;
-                item.Use(player,pokemonChoice); // Use the item on the selected Pokémon
+                int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Pokemons.Count) - 1;
+                item.Use(player, pokemonChoice); // Use the item on the selected Pokémon
                 player.RemoveItem(itemSelection);
             }
             // If it's a revive potion, use it on a Pokémon in the cemetery
@@ -214,7 +221,7 @@ public static class Battle
                 {
                     Printer.ShowInventory(player.Cementerio);
                     Console.WriteLine($"Which Pokémon do you want to revive with {item.Name}?");
-                    int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Cementerio.Count) -1;
+                    int pokemonChoice = Calculator.ValidateSelectionInGivenRange(1, player.Cementerio.Count) - 1;
                     item.Use(player, pokemonChoice); // Revive the selected Pokémon
                     player.RemoveItem(itemSelection);
                 }
@@ -226,7 +233,7 @@ public static class Battle
             }
         }
     }
-    
+
     /// <summary>
     /// Method that allows the player to voluntarily change their selected Pokémon during their turn.
     /// </summary>
@@ -278,7 +285,7 @@ public static class Battle
         Printer.ShowInventory(player.Pokemons);
         int selectedIndex = Calculator.ValidateSelectionInGivenRange(1, player.Pokemons.Count) - 1;
         IPokemon selectedPokemon = player.Pokemons[selectedIndex];
-        
+
         // se efectúa el cambio
         player.SwitchPokemon(selectedIndex);
         Printer.SwitchConfirmation(player, 0);
@@ -286,4 +293,12 @@ public static class Battle
         Console.ReadLine();
 
     }
+
+    
 }
+
+
+
+// mira cuantos tiene en vida de los pokemons y por cada uno suma 10. para los dos players. 
+// A eso ￼se le suman la cantidad segun los items, es 30 si tiene todo el inventario completo.
+// Si no tiene ningun pokemon afectador por un estado se le suma 10 puntos.

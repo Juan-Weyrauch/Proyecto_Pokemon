@@ -9,6 +9,11 @@
             Tests for the Attack class.
             </summary>
         </member>
+        <member name="T:Library.Tests.CalcularChances">
+            <summary>
+            Tests for the Attack class.
+            </summary>
+        </member>
         <member name="T:LibraryTests.PlayerTests">
             <summary>
             Tests for the Player class.
