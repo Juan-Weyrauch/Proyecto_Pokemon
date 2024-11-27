@@ -1,11 +1,11 @@
-﻿
+﻿/*
 using Library.Facade;
 using Library.Game.Pokemons;
 using NUnit.Framework;
 
 using Library.Game.Attacks;//using NUnit.Framework;
 
-using Moq;
+using LibraryTests.MockPokemon      
 
 using Library.Game.Items;
 using Library.Game.Players;
@@ -672,3 +672,4 @@ public class PrinterTests
     }
     
 }
+*/

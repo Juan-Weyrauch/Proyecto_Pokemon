@@ -35,23 +35,23 @@ public static class Battle
     /// </summary>
     public static void StartBattle()
     {
-        Player currentPlayer = Player.Player1;
+        Player currentPlayer = Player.Player1; // Se establece a traves de un Singelton los dos jugadores. 
         Player opposingPlayer = Player.Player2;
 
-        while (true)
+        while (true)  // Se mantiene siempre.
         {
             // Apply turn-based effects on both players' Pokémon.
             ProcessTurnEffectsForPlayers(currentPlayer);
             
             // chequeamos que el actual tenga vida:
-            if (currentPlayer.SelectedPokemon.Health == 0)
+            if (currentPlayer.SelectedPokemon.Health == 0) // Si esta muerto va para el cementerio. 
             {
                 // si el pokemon seleccionado no tiene vida:
                 currentPlayer.CarryToCementerio(); // se elimina el pokemon del equipo del player.
             }
             
             // check if the player still has active Pokémon
-            if (!Calculator.HasActivePokemon(currentPlayer))
+            if (!Calculator.HasActivePokemon(currentPlayer)) // En el caso de que el jugador no tenga pokemons activos el juego termina. 
             {
                 Printer.DisplayWinner(opposingPlayer.Name); // si no tiene, se muestra al ganador y termina el programa
                 break;
@@ -68,10 +68,10 @@ public static class Battle
 
 
             // si aún tiene vida, el jugador elije que hacer:
-            PlayerAction(currentPlayer, opposingPlayer);
+            PlayerAction(currentPlayer, opposingPlayer); // Elije entre las 3 opciones. 
             
             // cuando vuelva se cambian los turnos
-            (currentPlayer, opposingPlayer) = (opposingPlayer, currentPlayer);
+            (currentPlayer, opposingPlayer) = (opposingPlayer, currentPlayer); // Se dan vuelta los turnos de los jugadores. 
         }
     }
     
@@ -80,7 +80,7 @@ public static class Battle
     /// </summary>
     private static void ProcessTurnEffectsForPlayers(Player currentPlayer)
     {
-        currentPlayer.SelectedPokemon.ProcessTurnEffects();
+        currentPlayer.SelectedPokemon.ProcessTurnEffects(); // Se le aplica el efecto de los pokemons al pokemon selecionado.
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public static class Battle
         Printer.ShowSelectedPokemon(rival.SelectedPokemon, rival.Name);
 
         // Validate the state before allowing any actions.
-        if (!Calculator.StateValidation(player))
+        if (!Calculator.StateValidation(player)) //Check si el pokemon
         {
             IPokemon pokemon = player.SelectedPokemon;
             Console.Clear();
