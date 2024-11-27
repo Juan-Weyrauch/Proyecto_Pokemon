@@ -1,13 +1,9 @@
-﻿
-using System.Reflection;
-using Library.Game.Players;
-using Library.Game.Pokemons;
+﻿using System.Reflection;
 using Library.Game.Attacks;
+using Library.Game.Pokemons;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
-
-namespace LibraryTests
+namespace LibraryTests.Game.Player
 {
     /// <summary>
     /// Tests for the Player class.
@@ -40,8 +36,8 @@ namespace LibraryTests
 
             // Act
 
-            Player.InitializePlayer1("Ash", pokemons, _mockPokemon1);
-            var player1 = Player.Player1;
+            Library.Game.Players.Player.InitializePlayer1("Ash", pokemons, _mockPokemon1);
+            var player1 = Library.Game.Players.Player.Player1;
 
             // Assert
             Assert.Multiple(() =>
@@ -61,18 +57,18 @@ namespace LibraryTests
         {
             // Arrange
             var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
-            Player.InitializePlayer1("Ash", pokemons, _mockPokemon1);
+            Library.Game.Players.Player.InitializePlayer1("Ash", pokemons, _mockPokemon1);
 
             // Act & Assert
             var ex = Assert.Throws<System.InvalidOperationException>(() =>
-                Player.InitializePlayer1("Ash", pokemons, _mockPokemon1));
+                Library.Game.Players.Player.InitializePlayer1("Ash", pokemons, _mockPokemon1));
 
             // Additional assertions to verify no unintended state change
             Assert.Multiple(() =>
             {
                 Assert.That(ex.Message, Is.EqualTo("Player1 has already been initialized."));
-                Assert.That(Player.Player1.Name, Is.EqualTo("Ash"));
-                Assert.That(Player.Player1.Pokemons, Is.EquivalentTo(pokemons));
+                Assert.That(Library.Game.Players.Player.Player1.Name, Is.EqualTo("Ash"));
+                Assert.That(Library.Game.Players.Player.Player1.Pokemons, Is.EquivalentTo(pokemons));
             });
         }
 
@@ -80,7 +76,7 @@ namespace LibraryTests
         public void Player2Getter_ShouldThrowInvalidOperationException_WhenPlayer2IsNull()
         {
             // Usamos Reflection para forzar que _player2 sea null
-            var playerType = typeof(Player);
+            var playerType = typeof(Library.Game.Players.Player);
             var player2Field = playerType.GetField("_player2", BindingFlags.NonPublic | BindingFlags.Static);
 
             // Aseguramos que _player2 sea null
@@ -89,7 +85,7 @@ namespace LibraryTests
             // Act & Assert
             var ex = Assert.Throws<InvalidOperationException>(() =>
             {
-                var player = Player.Player2; // Esto debería disparar la excepción
+                var player = Library.Game.Players.Player.Player2; // Esto debería disparar la excepción
             });
 
             // Verificamos que el mensaje de la excepción sea correcto
@@ -104,8 +100,8 @@ namespace LibraryTests
         {
             // Arrange
             var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
-            Player.InitializePlayer1("Ash", pokemons, _mockPokemon1);
-            var player1 = Player.Player1;
+            Library.Game.Players.Player.InitializePlayer1("Ash", pokemons, _mockPokemon1);
+            var player1 = Library.Game.Players.Player.Player1;
 
             // Act
             player1.SwitchPokemon(0); // Usando índice 0 para el primer Pokémon
@@ -120,8 +116,8 @@ namespace LibraryTests
             {
                 // Arrange
                 var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
-                Player.InitializePlayer1("Ash", pokemons, _mockPokemon1);
-                var player1 = Player.Player1;
+                Library.Game.Players.Player.InitializePlayer1("Ash", pokemons, _mockPokemon1);
+                var player1 = Library.Game.Players.Player.Player1;
 
                 // Act
                 player1.CarryToCementerio();
@@ -145,8 +141,8 @@ namespace LibraryTests
             var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
 
             // Act
-            Player.InitializePlayer2("Misty", pokemons, _mockPokemon2);
-            var player2 = Player.Player2;
+            Library.Game.Players.Player.InitializePlayer2("Misty", pokemons, _mockPokemon2);
+            var player2 = Library.Game.Players.Player.Player2;
 
             // Assert
             Assert.Multiple(() =>
@@ -166,18 +162,18 @@ namespace LibraryTests
         {
             // Arrange
             var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
-            Player.InitializePlayer2("Misty", pokemons, _mockPokemon2);
+            Library.Game.Players.Player.InitializePlayer2("Misty", pokemons, _mockPokemon2);
 
             // Act & Assert
             var ex = Assert.Throws<System.InvalidOperationException>(() =>
-                Player.InitializePlayer2("Misty", pokemons, _mockPokemon2));
+                Library.Game.Players.Player.InitializePlayer2("Misty", pokemons, _mockPokemon2));
 
             // Additional assertions to verify no unintended state change
             Assert.Multiple(() =>
             {
                 Assert.That(ex.Message, Is.EqualTo("Player2 has already been initialized."));
-                Assert.That(Player.Player2.Name, Is.EqualTo("Misty"));
-                Assert.That(Player.Player2.Pokemons, Is.EquivalentTo(pokemons));
+                Assert.That(Library.Game.Players.Player.Player2.Name, Is.EqualTo("Misty"));
+                Assert.That(Library.Game.Players.Player.Player2.Pokemons, Is.EquivalentTo(pokemons));
             });
         }
 
@@ -185,9 +181,9 @@ namespace LibraryTests
         public void ReturnPokemonCountIsCorerrect()
         {
             var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
-            Player.InitializePlayer2("Misty", pokemons, _mockPokemon2);
+            Library.Game.Players.Player.InitializePlayer2("Misty", pokemons, _mockPokemon2);
             // Act & Assert
-            var player2 = Player.Player2;
+            var player2 = Library.Game.Players.Player.Player2;
             Assert.That(player2.ReturnPokemonsCount(), Is.EquivalentTo(pokemons));
         }
 
@@ -195,8 +191,8 @@ namespace LibraryTests
         public void ReturnItemCountIsCorrect()
         {
             var pokemons = new List<IPokemon> { _mockPokemon1, _mockPokemon2 };
-            Player.InitializePlayer2("Misty", pokemons, _mockPokemon2);
-            var player2 = Player.Player2;
+            Library.Game.Players.Player.InitializePlayer2("Misty", pokemons, _mockPokemon2);
+            var player2 = Library.Game.Players.Player.Player2;
             Assert.That(player2.ReturnItemCount(), Is.EquivalentTo(pokemons));
         }
 

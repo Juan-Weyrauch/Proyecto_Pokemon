@@ -81,10 +81,12 @@ public static class Battle
     /// </summary>
     /// <param name="player"></param>
     /// <param name="rival"></param>
-    private static void DisplayAdvantages(IPlayer player, IPlayer rival)
+    public static void DisplayAdvantages(IPlayer player, IPlayer rival)
     {
         if (player == null || rival == null)
-        { return; }
+        {
+            throw new ArgumentNullException(player == null ? "player" : "rival");
+        }
         
         // 1) Create a method that returns the advantage taking into account: the item count of each player.
         // 2) Create a method that returns the advantage taking into account: the Pokémon count of each player.
@@ -310,4 +312,5 @@ public static class Battle
         Console.ReadLine();
 
     }
+    
 }

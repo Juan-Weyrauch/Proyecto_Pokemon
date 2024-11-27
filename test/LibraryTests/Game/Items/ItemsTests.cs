@@ -84,6 +84,16 @@ namespace Library.Tests
         {
             throw new NotImplementedException();
         }
+
+        public int ReturnItemCount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int ReturnPokemonsCount()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     [TestFixture]
