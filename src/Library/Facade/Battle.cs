@@ -54,6 +54,7 @@ public static class Battle
             if (!Calculator.HasActivePokemon(currentPlayer))
             {
                 Printer.DisplayWinner(opposingPlayer.Name); // si no tiene, se muestra al ganador y termina el programa
+                Console.ReadLine();
                 break;
             }
             

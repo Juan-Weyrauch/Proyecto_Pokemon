@@ -67,7 +67,7 @@ public static class Printer
         Console.WriteLine(bottomBorder);
         EndPrint();
         Console.Write("> ");
-        Console.ReadKey();
+       // Console.ReadKey();
     }
 
 
