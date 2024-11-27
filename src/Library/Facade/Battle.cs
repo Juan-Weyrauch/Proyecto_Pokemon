@@ -58,7 +58,7 @@ public static class Battle
                 break;
             }
             
-            // si entra aca es poruqe 1) el pokemon seleccionado no tiene vida y 2) todavía tiene pokemons
+            // si entra aca es porque 1) el pokemon seleccionado no tiene vida y 2) todavía tiene pokemons
             if (currentPlayer.SelectedPokemon.Health == 0)
             {
                 Printer.ForceSwitchMessage(currentPlayer);
